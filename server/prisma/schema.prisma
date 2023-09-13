@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Habit {
+  id Int @id @default(autoincrement())
+  name String
+  dueDate DateTime?
+  isPaused Boolean @default(false)
+  dailyHabits DailyHabitHistory[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  dailyHabits DailyHabitHistory[]
+}
+
+model DailyHabitHistory {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+  habit Habit @relation(fields: [habitId], references: [id])
+  habitId Int @unique
+  date DateTime
+  points Int
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+  title String
+  dueDate DateTime?
+  userId Int @unique
+  complex Complexities @relation(fields: [complexId], references: [id])
+  complexId Int @unique
+  completedDate DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Complexities {
+  id Int @id @default(autoincrement())
+  name String
+  tasks Task[]
+}
