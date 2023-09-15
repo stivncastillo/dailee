@@ -33,7 +33,7 @@ type Query {
   habits(isPaused: String): [Habit!]!
   habit(id: String!): Habit!
   habitTrackings(date: DateTime): [HabitTracking!]!
-  habitTracking(id: Int!): HabitTracking!
+  habitTracking(id: Float!): HabitTracking!
   user(id: Int!): User!
 }
 
@@ -43,7 +43,7 @@ type Mutation {
   deleteHabit(deleteHabitData: DeleteHabitInput!): Habit!
   createHabitTracking(createHabitTrackingInput: CreateHabitTrackingInput!): HabitTracking!
   updateHabitTracking(updateHabitTrackingInput: UpdateHabitTrackingInput!): HabitTracking!
-  removeHabitTracking(id: Int!): HabitTracking!
+  removeHabitTracking(deleteHabitTracking: DeleteHabitTrackingInput!): HabitTracking!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
@@ -78,10 +78,14 @@ input CreateHabitTrackingInput {
 
 input UpdateHabitTrackingInput {
   date: DateTime
-  points: Int
+  points: Boolean
   habitId: String
-  userId: String
-  id: Int!
+  userId: DateTime
+  id: String!
+}
+
+input DeleteHabitTrackingInput {
+  id: Float!
 }
 
 input CreateUserInput {

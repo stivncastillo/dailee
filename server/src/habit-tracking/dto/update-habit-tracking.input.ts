@@ -1,4 +1,10 @@
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import {
+  InputType,
+  Field,
+  PartialType,
+  GraphQLISODateTime,
+} from '@nestjs/graphql';
+import { HabitTracking as HabitTrackingDB } from '@prisma/client';
 
 import { CreateHabitTrackingInput } from './create-habit-tracking.input';
 
@@ -6,6 +12,15 @@ import { CreateHabitTrackingInput } from './create-habit-tracking.input';
 export class UpdateHabitTrackingInput extends PartialType(
   CreateHabitTrackingInput,
 ) {
-  @Field(() => Int)
-  id: number;
+  @Field(() => String)
+  id: HabitTrackingDB['id'];
+
+  @Field(() => Boolean, { nullable: true })
+  points: HabitTrackingDB['points'];
+
+  @Field(() => String, { nullable: true })
+  habitId: HabitTrackingDB['habitId'];
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  userId?: HabitTrackingDB['userId'];
 }

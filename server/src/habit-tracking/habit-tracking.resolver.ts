@@ -4,7 +4,6 @@ import {
   Query,
   Mutation,
   Args,
-  Int,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
@@ -12,21 +11,37 @@ import { HabitsService } from 'src/habits/habits.service';
 import { UserService } from 'src/user/user.service';
 
 import { CreateHabitTrackingInput } from './dto/create-habit-tracking.input';
-import { GetHabitTrackingArgs } from './dto/get-habit-trackings.args';
+import { DeleteHabitTrackingInput } from './dto/delete-habit-tracking.input';
+import { GetHabitTrackingArgs } from './dto/get-habit-tracking.args';
+import { GetHabitTrackingsArgs } from './dto/get-habit-trackings.args';
 import { UpdateHabitTrackingInput } from './dto/update-habit-tracking.input';
 import { HabitTracking } from './entities/habit-tracking.entity';
 import { HabitTrackingService } from './habit-tracking.service';
 
 @Resolver(() => HabitTracking)
 export class HabitTrackingResolver {
+  constructor(private readonly habitTrackingService: HabitTrackingService) {}
+
   @Inject(UserService)
   private readonly userService: UserService;
 
   @Inject(HabitsService)
   private readonly habitService: HabitsService;
 
-  constructor(private readonly habitTrackingService: HabitTrackingService) {}
+  // Queries
+  @Query(() => [HabitTracking], { name: 'habitTrackings' })
+  getHabitTrackings(@Args() getHabitTrackingArgs: GetHabitTrackingsArgs) {
+    return this.habitTrackingService.getHabitTrackings(getHabitTrackingArgs);
+  }
 
+  @Query(() => HabitTracking, { name: 'habitTracking', nullable: false })
+  getHabitTracking(
+    @Args() getHabitTrackingArgs: GetHabitTrackingArgs,
+  ): Promise<HabitTracking> {
+    return this.habitTrackingService.getHabitTracking(getHabitTrackingArgs);
+  }
+
+  // Mutations
   @Mutation(() => HabitTracking)
   createHabitTracking(
     @Args('createHabitTrackingInput')
@@ -35,6 +50,22 @@ export class HabitTrackingResolver {
     return this.habitTrackingService.create(createHabitTrackingInput);
   }
 
+  @Mutation(() => HabitTracking)
+  updateHabitTracking(
+    @Args('updateHabitTrackingInput')
+    updateHabitTrackingInput: UpdateHabitTrackingInput,
+  ): Promise<HabitTracking> {
+    return this.habitTrackingService.update(updateHabitTrackingInput);
+  }
+
+  @Mutation(() => HabitTracking)
+  removeHabitTracking(
+    @Args('deleteHabitTracking') deleteHabitTracking: DeleteHabitTrackingInput,
+  ): Promise<HabitTracking> {
+    return this.habitTrackingService.deleteHabitTracking(deleteHabitTracking);
+  }
+
+  // Resolvers
   @ResolveField()
   async userId(@Parent() habitTracking: HabitTracking) {
     const { userId } = habitTracking;
@@ -45,31 +76,5 @@ export class HabitTrackingResolver {
   async habitId(@Parent() habitTracking: HabitTracking) {
     const { habitId } = habitTracking;
     return this.habitService.getHabit({ id: habitId });
-  }
-
-  @Query(() => [HabitTracking], { name: 'habitTrackings' })
-  getHabitsTracking(@Args() getHabitTrackingArgs: GetHabitTrackingArgs) {
-    return this.habitTrackingService.getHabitsTracking(getHabitTrackingArgs);
-  }
-
-  @Query(() => HabitTracking, { name: 'habitTracking' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.habitTrackingService.findOne(id);
-  }
-
-  @Mutation(() => HabitTracking)
-  updateHabitTracking(
-    @Args('updateHabitTrackingInput')
-    updateHabitTrackingInput: UpdateHabitTrackingInput,
-  ) {
-    return this.habitTrackingService.update(
-      updateHabitTrackingInput.id,
-      updateHabitTrackingInput,
-    );
-  }
-
-  @Mutation(() => HabitTracking)
-  removeHabitTracking(@Args('id', { type: () => Int }) id: number) {
-    return this.habitTrackingService.remove(id);
   }
 }

@@ -6,6 +6,13 @@ import { PrismaService } from 'src/database/prisma/prisma.service';
 export class HabitTrackingRepository {
   constructor(private prisma: PrismaService) {}
 
+  async getHabitTracking(params: {
+    where?: Prisma.HabitTrackingWhereUniqueInput;
+  }): Promise<HabitTracking> {
+    const { where } = params;
+    return this.prisma.habitTracking.findUnique({ where });
+  }
+
   async getHabitTrackings(params: {
     skip?: number;
     take?: number;
@@ -30,34 +37,18 @@ export class HabitTrackingRepository {
     return this.prisma.habitTracking.create({ data });
   }
 
-  // async getHabit(params: {
-  //   where?: Prisma.HabitWhereUniqueInput;
-  // }): Promise<Habit> {
-  //   const { where } = params;
-  //   return this.prisma.habit.findUnique({ where });
-  // }
+  async updateHabitTracking(params: {
+    where: Prisma.HabitTrackingWhereUniqueInput;
+    data: Prisma.HabitTrackingUpdateInput;
+  }): Promise<HabitTracking> {
+    const { where, data } = params;
+    return this.prisma.habitTracking.update({ where, data });
+  }
 
-  // async getHabits(params: {
-  //   skip?: number;
-  //   take?: number;
-  //   cursor?: Prisma.HabitWhereUniqueInput;
-  //   where?: Prisma.HabitWhereInput;
-  //   orderBy?: Prisma.HabitOrderByWithRelationInput;
-  // }): Promise<Habit[]> {
-  //   const { skip, take, cursor, where, orderBy } = params;
-  //   return this.prisma.habit.findMany({ skip, take, cursor, where, orderBy });
-  // }
-
-  // async createHabit(params: { data: Prisma.HabitCreateInput }): Promise<Habit> {
-  //   const { data } = params;
-  //   return this.prisma.habit.create({ data });
-  // }
-
-  // async updateReview(params: {
-  //   where: Prisma.HabitWhereUniqueInput;
-  //   data: Prisma.HabitUpdateInput;
-  // }): Promise<Habit> {
-  //   const { where, data } = params;
-  //   return this.prisma.habit.update({ where, data });
-  // }
+  async deleteHabitTracking(params: {
+    where: Prisma.HabitTrackingWhereUniqueInput;
+  }): Promise<HabitTracking> {
+    const { where } = params;
+    return this.prisma.habitTracking.delete({ where });
+  }
 }
