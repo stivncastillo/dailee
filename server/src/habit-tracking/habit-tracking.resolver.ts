@@ -47,7 +47,7 @@ export class HabitTrackingResolver {
     return this.habitService.getHabit({ id: habitId });
   }
 
-  @Query(() => [HabitTracking], { name: 'habitTracking' })
+  @Query(() => [HabitTracking], { name: 'habitTrackings' })
   getHabitsTracking(@Args() getHabitTrackingArgs: GetHabitTrackingArgs) {
     return this.habitTrackingService.getHabitsTracking(getHabitTrackingArgs);
   }

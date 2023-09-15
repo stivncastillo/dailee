@@ -32,6 +32,7 @@ type HabitTracking {
 type Query {
   habits(isPaused: String): [Habit!]!
   habit(id: String!): Habit!
+  habitTrackings(date: DateTime): [HabitTracking!]!
   habitTracking(id: Int!): HabitTracking!
   user(id: Int!): User!
 }
