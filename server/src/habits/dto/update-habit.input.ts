@@ -1,4 +1,3 @@
-import { CreateHabitInput } from './create-habit.input';
 import {
   InputType,
   Field,
@@ -6,6 +5,8 @@ import {
   GraphQLISODateTime,
 } from '@nestjs/graphql';
 import { Habit as HabitDB } from '@prisma/client';
+
+import { CreateHabitInput } from './create-habit.input';
 
 @InputType()
 export class UpdateHabitInput extends PartialType(CreateHabitInput) {

@@ -25,15 +25,16 @@ model User {
   id String @id @default(uuid())
   name String
   habitTracking HabitTracking[]
+  tasks Task[]
   @@map("user")
 }
 
 model HabitTracking {
   id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id])
-  userId String @unique
-  habit Habit @relation(fields: [habitId], references: [id])
-  habitId String @unique
+  userId String
+  user User? @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  habitId String
+  habit Habit? @relation(fields: [habitId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   date DateTime
   points Int
   @@map("habit_tracking")
@@ -43,9 +44,10 @@ model Task {
   id String @id @default(uuid())
   title String
   dueDate DateTime?
-  userId Int @unique
-  complex Complexities @relation(fields: [complexId], references: [id])
-  complexId Int @unique
+  userId String
+  user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  complexId Int?
+  complex Complexities? @relation(fields: [complexId], references: [id], onUpdate: SetNull, onDelete: SetNull)
   completedDate DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

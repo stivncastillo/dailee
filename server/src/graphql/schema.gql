@@ -16,24 +16,36 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  id: String!
+  name: String!
+}
+
 type HabitTracking {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: String!
+  date: DateTime!
+  points: Int!
+  habitId: Habit!
+  userId: User!
 }
 
 type Query {
   habits(isPaused: String): [Habit!]!
   habit(id: String!): Habit!
   habitTracking(id: Int!): HabitTracking!
+  user(id: Int!): User!
 }
 
 type Mutation {
   createHabit(createHabitInput: CreateHabitInput!): Habit!
   updateHabit(updateHabitInput: UpdateHabitInput!): Habit!
-  removeHabit(id: Int!): Habit!
+  deleteHabit(deleteHabitData: DeleteHabitInput!): Habit!
   createHabitTracking(createHabitTrackingInput: CreateHabitTrackingInput!): HabitTracking!
   updateHabitTracking(updateHabitTrackingInput: UpdateHabitTrackingInput!): HabitTracking!
   removeHabitTracking(id: Int!): HabitTracking!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
 }
 
 input CreateHabitInput {
@@ -52,13 +64,32 @@ input UpdateHabitInput {
   id: String!
 }
 
+input DeleteHabitInput {
+  id: String!
+}
+
 input CreateHabitTrackingInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  date: DateTime
+  points: Int!
+  habitId: String!
+  userId: String!
 }
 
 input UpdateHabitTrackingInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  date: DateTime
+  points: Int
+  habitId: String
+  userId: String
+  id: Int!
+}
+
+input CreateUserInput {
+  """Name of habit"""
+  name: String!
+}
+
+input UpdateUserInput {
+  """Name of habit"""
+  name: String
   id: Int!
 }

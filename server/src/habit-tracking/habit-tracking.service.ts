@@ -1,15 +1,32 @@
 import { Injectable } from '@nestjs/common';
+
 import { CreateHabitTrackingInput } from './dto/create-habit-tracking.input';
+import { GetHabitTrackingArgs } from './dto/get-habit-trackings.args';
 import { UpdateHabitTrackingInput } from './dto/update-habit-tracking.input';
+import { HabitTracking } from './entities/habit-tracking.entity';
+import { HabitTrackingRepository } from './habit-tracking.repository';
 
 @Injectable()
 export class HabitTrackingService {
-  create(createHabitTrackingInput: CreateHabitTrackingInput) {
-    return 'This action adds a new habitTracking';
+  constructor(private habitTrackingRepository: HabitTrackingRepository) {}
+
+  public async create(
+    createHabitData: CreateHabitTrackingInput,
+  ): Promise<HabitTracking> {
+    const habitTracking =
+      await this.habitTrackingRepository.createHabitTracking({
+        data: {
+          ...createHabitData,
+        },
+      });
+
+    return habitTracking;
   }
 
-  findAll() {
-    return `This action returns all habitTracking`;
+  public async getHabitsTracking(getHabitTrackingArgs: GetHabitTrackingArgs) {
+    return await this.habitTrackingRepository.getHabitTrackings({
+      where: { date: getHabitTrackingArgs.date },
+    });
   }
 
   findOne(id: number) {

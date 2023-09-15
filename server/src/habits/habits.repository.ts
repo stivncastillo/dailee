@@ -36,4 +36,11 @@ export class HabitRepository {
     const { where, data } = params;
     return this.prisma.habit.update({ where, data });
   }
+
+  async deleteHabit(params: {
+    where: Prisma.HabitWhereUniqueInput;
+  }): Promise<Habit> {
+    const { where } = params;
+    return this.prisma.habit.delete({ where });
+  }
 }

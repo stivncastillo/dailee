@@ -1,49 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHabitInput } from './dto/create-habit.input';
-import { UpdateHabitInput } from './dto/update-habit.input';
-import { HabitRepository } from './habits.repository';
-import { Habit } from './entities/habit.entity';
 import { v4 as uuidv4 } from 'uuid';
-import { GetHabitsArgs } from './dto/get-habits.args';
+
+import { CreateHabitInput } from './dto/create-habit.input';
+import { DeleteHabitInput } from './dto/delete-habit.input';
 import { GetHabitArgs } from './dto/get-habit.args';
+import { GetHabitsArgs } from './dto/get-habits.args';
+import { UpdateHabitInput } from './dto/update-habit.input';
+import { Habit } from './entities/habit.entity';
+import { HabitRepository } from './habits.repository';
 
 @Injectable()
 export class HabitsService {
   constructor(private habitRepository: HabitRepository) {}
 
-  public async create(createHabitInput: CreateHabitInput): Promise<Habit> {
-    const review = await this.habitRepository.createHabit({
+  public async create(createHabitData: CreateHabitInput): Promise<Habit> {
+    const habit = await this.habitRepository.createHabit({
       data: {
         id: uuidv4(),
-        ...createHabitInput,
+        ...createHabitData,
       },
     });
 
-    return review;
+    return habit;
   }
 
-  public async findAll(getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
+  public async getHabits(getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
     return await this.habitRepository.getHabits({
       where: { isPaused: getHabitsArgs.isPaused },
     });
   }
 
-  public async findOne(getHabitArgs: GetHabitArgs) {
+  public async getHabit(getHabitArgs: GetHabitArgs) {
     return await this.habitRepository.getHabit({
       where: { id: getHabitArgs.id },
     });
   }
 
-  public async update(updateHabitInput: UpdateHabitInput) {
+  public async update(updateHabitData: UpdateHabitInput) {
     const review = await this.habitRepository.updateReview({
-      where: { id: updateHabitInput.id },
-      data: updateHabitInput,
+      where: { id: updateHabitData.id },
+      data: updateHabitData,
     });
 
     return review;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} habit`;
+  public async deleteHabit(deleteHabitData: DeleteHabitInput): Promise<Habit> {
+    const review = await this.habitRepository.deleteHabit({
+      where: { id: deleteHabitData.id },
+    });
+
+    return review;
   }
 }
