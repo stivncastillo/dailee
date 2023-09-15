@@ -4,7 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { UuidScalar } from './common/scalars';
+import { HabitsModule } from './habits/habits.module';
+import { HabitTrackingModule } from './habit-tracking/habit-tracking.module';
+import { PrismaModule } from './database/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -12,8 +14,10 @@ import { UuidScalar } from './common/scalars';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),
       sortSchema: false,
-      resolvers: { UUID: UuidScalar },
     }),
+    HabitsModule,
+    HabitTrackingModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

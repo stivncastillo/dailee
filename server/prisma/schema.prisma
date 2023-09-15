@@ -11,33 +11,36 @@ datasource db {
 }
 
 model Habit {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   name String
   dueDate DateTime?
   isPaused Boolean @default(false)
-  dailyHabits DailyHabitHistory[]
+  habitTracking HabitTracking[]
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  @@map("habit")
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   name String
-  dailyHabits DailyHabitHistory[]
+  habitTracking HabitTracking[]
+  @@map("user")
 }
 
-model DailyHabitHistory {
+model HabitTracking {
   id Int @id @default(autoincrement())
   user User @relation(fields: [userId], references: [id])
-  userId Int @unique
+  userId String @unique
   habit Habit @relation(fields: [habitId], references: [id])
-  habitId Int @unique
+  habitId String @unique
   date DateTime
   points Int
+  @@map("habit_tracking")
 }
 
 model Task {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   title String
   dueDate DateTime?
   userId Int @unique
@@ -46,10 +49,14 @@ model Task {
   completedDate DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@map("task")
+
 }
 
 model Complexities {
   id Int @id @default(autoincrement())
   name String
   tasks Task[]
+  @@map("complexities")
+
 }
