@@ -1,0 +1,14 @@
+fragment HabitFields on Habit {
+  id
+  name
+  isPaused
+  dueDate
+  createdAt
+  updatedAt
+}
+
+query getHabits {
+  habits {
+    ...HabitFields
+  }
+}

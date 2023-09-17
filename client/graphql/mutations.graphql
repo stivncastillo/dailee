@@ -1,0 +1,5 @@
+mutation CreateHabit($createHabitInput: CreateHabitInput!) {
+  createHabit(createHabitInput: $createHabitInput) {
+    ...HabitFields
+  }
+}
