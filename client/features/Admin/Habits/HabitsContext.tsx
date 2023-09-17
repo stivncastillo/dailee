@@ -5,33 +5,59 @@ import {
   CreateHabitMutation,
   CreateHabitMutationVariables,
   CreateHabitInput,
+  UpdateHabitDocument,
+  UpdateHabitMutation,
+  UpdateHabitMutationVariables,
+  UpdateHabitInput,
+  DeleteHabitDocument,
+  DeleteHabitMutation,
+  DeleteHabitMutationVariables,
+  DeleteHabitInput,
 } from "@/graphql/codegen/graphql";
-import React, { createContext, useContext } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { ApolloError, useMutation, useQuery } from "@apollo/client";
-import { useDisclosure } from "@nextui-org/react";
 
 export type HabitsContextType = {
   items: Habit[];
   loading: boolean;
   error?: ApolloError;
-  isOpenModal: boolean;
-  onOpenModal: () => void;
-  onOpenChangeModal: () => void;
   createHabit: (data: CreateHabitInput) => Promise<void>;
   createHabitData: Habit | null;
   createHabitLoading: boolean;
   createHabitError?: ApolloError;
+  habitToEdit: Habit | null;
+  setHabitToEdit: Dispatch<SetStateAction<Habit | null>>;
+  habitToDelete: Habit | null;
+  setHabitToDelete: Dispatch<SetStateAction<Habit | null>>;
+  updateHabit: (data: UpdateHabitInput) => Promise<void>;
+  updateHabitData: UpdateHabitMutation | null | undefined;
+  updateHabitLoading: boolean;
+  updateHabitError?: ApolloError;
+  deleteHabit: (data: DeleteHabitInput) => Promise<void>;
+  deleteHabitLoading: boolean;
 };
 
 const DEFAULT_VALUES = {
   items: [],
   loading: false,
-  isOpenModal: false,
-  onOpenModal: () => {},
-  onOpenChangeModal: () => {},
   createHabit: async () => {},
   createHabitData: null,
   createHabitLoading: false,
+  habitToEdit: null,
+  setHabitToEdit: () => {},
+  habitToDelete: null,
+  setHabitToDelete: () => {},
+  updateHabit: async () => {},
+  updateHabitData: null,
+  updateHabitLoading: false,
+  deleteHabit: async () => {},
+  deleteHabitLoading: false,
 };
 
 const HabitsContext = createContext<HabitsContextType>(DEFAULT_VALUES);
@@ -39,7 +65,8 @@ const HabitsContext = createContext<HabitsContextType>(DEFAULT_VALUES);
 const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [habitToEdit, setHabitToEdit] = useState<Habit | null>(null);
+  const [habitToDelete, setHabitToDelete] = useState<Habit | null>(null);
   const { data, loading, error } = useQuery(GetHabitsDocument, {
     fetchPolicy: "cache-and-network",
   });
@@ -54,6 +81,21 @@ const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
     CreateHabitDocument,
     { refetchQueries: "active" }
   );
+  const [
+    onUpdateHabit,
+    {
+      data: updateHabitData,
+      loading: updateHabitLoading,
+      error: updateHabitError,
+    },
+  ] = useMutation<UpdateHabitMutation, UpdateHabitMutationVariables>(
+    UpdateHabitDocument,
+    { refetchQueries: "active" }
+  );
+  const [onDeleteHabit, { loading: deleteHabitLoading }] = useMutation<
+    DeleteHabitMutation,
+    DeleteHabitMutationVariables
+  >(DeleteHabitDocument, { refetchQueries: "active" });
 
   const createHabit = async ({
     name,
@@ -71,6 +113,34 @@ const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const updateHabit = async ({
+    id,
+    name,
+    dueDate,
+    isPaused = false,
+  }: UpdateHabitInput): Promise<void> => {
+    await onUpdateHabit({
+      variables: {
+        updateHabitInput: {
+          id,
+          isPaused,
+          name,
+          dueDate: dueDate === "" ? null : dueDate,
+        },
+      },
+    });
+  };
+
+  const deleteHabit = async ({ id }: DeleteHabitInput): Promise<void> => {
+    await onDeleteHabit({
+      variables: {
+        deleteHabitInput: {
+          id,
+        },
+      },
+    });
+  };
+
   return (
     <HabitsContext.Provider
       value={{
@@ -81,9 +151,16 @@ const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
         createHabitData: createHabitData?.createHabit ?? null,
         createHabitLoading,
         createHabitError,
-        isOpenModal: isOpen,
-        onOpenModal: onOpen,
-        onOpenChangeModal: onOpenChange,
+        habitToEdit,
+        setHabitToEdit,
+        updateHabit,
+        updateHabitData,
+        updateHabitLoading,
+        updateHabitError,
+        deleteHabit,
+        deleteHabitLoading,
+        habitToDelete,
+        setHabitToDelete,
       }}
     >
       {children}

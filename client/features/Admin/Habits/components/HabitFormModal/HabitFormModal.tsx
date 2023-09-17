@@ -12,49 +12,82 @@ import {
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useHabitsContext } from "../../HabitsContext";
 
-type Props = {
-  isOpen: boolean;
-  onOpenChange: () => void;
-};
-
-type Inputs = {
+type CreateHabitInputs = {
+  id: string;
   name: string;
   dueDate: string;
   isPaused: boolean;
 };
 
+type Props = {
+  isOpen: boolean;
+  onOpenChange: () => void;
+};
+
+const INITIAL_VALUES = {
+  id: "",
+  name: "",
+  dueDate: "",
+  isPaused: false,
+};
+
 const HabitFormModal = ({ isOpen, onOpenChange }: Props) => {
-  const { createHabit, createHabitLoading } = useHabitsContext();
+  const {
+    createHabit,
+    createHabitLoading,
+    habitToEdit,
+    updateHabit,
+    updateHabitLoading,
+    setHabitToEdit,
+  } = useHabitsContext();
   const {
     control,
     register,
     handleSubmit,
     reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+    formState: { isValid },
+  } = useForm<CreateHabitInputs>({
+    values: {
+      id: habitToEdit?.id ?? INITIAL_VALUES.id,
+      name: habitToEdit?.name ?? INITIAL_VALUES.name,
+      dueDate: habitToEdit?.dueDate ?? INITIAL_VALUES.dueDate,
+      isPaused: habitToEdit?.isPaused ?? INITIAL_VALUES.isPaused,
+    },
+  });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(
-      "👻 ~ file: HabitFormModal.tsx:36 ~ constonSubmit:SubmitHandler<Inputs>= ~ data:",
-      data
-    );
-    await createHabit(data);
+  const onSubmit: SubmitHandler<CreateHabitInputs> = async (data) => {
+    if (habitToEdit) {
+      await updateHabit(data);
+      setHabitToEdit(null);
+    } else {
+      await createHabit(data);
+    }
   };
 
+  const loading = createHabitLoading || updateHabitLoading;
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+    <Modal
+      backdrop="blur"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      onClose={() => {
+        reset(INITIAL_VALUES);
+      }}
+      placement="top-center"
+    >
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Create new habit
+              {habitToEdit ? `Edit ${habitToEdit.name}` : "Create new habit"}
             </ModalHeader>
             <ModalBody>
               <Input
                 autoFocus
                 label="Name"
                 variant="bordered"
-                {...register("name")}
+                {...register("name", { required: true })}
               />
               <Input
                 label="Due Date"
@@ -78,14 +111,15 @@ const HabitFormModal = ({ isOpen, onOpenChange }: Props) => {
                 Cancel
               </Button>
               <Button
-                isLoading={createHabitLoading}
+                isLoading={loading}
+                isDisabled={!isValid}
                 color="primary"
                 onPress={() => {
                   handleSubmit(onSubmit)();
                   onClose();
                 }}
               >
-                Create
+                {habitToEdit ? "Update" : "Create"}
               </Button>
             </ModalFooter>
           </>

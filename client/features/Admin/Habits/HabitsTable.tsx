@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 
 import {
   Table,
@@ -13,16 +13,15 @@ import {
   DropdownMenu,
   DropdownItem,
   CircularProgress,
+  Chip,
+  useDisclosure,
 } from "@nextui-org/react";
-import { VerticalDotsIcon } from "../../../components/icons";
 import { Habit } from "@/graphql/codegen/graphql";
-import { HabitsProvider, useHabitsContext } from "./HabitsContext";
+import { useHabitsContext } from "./HabitsContext";
 import HabitFormModal from "./components/HabitFormModal/HabitFormModal";
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
+import { ActionsCell } from "./components/Cells";
+import dayjs from "dayjs";
+import { DeleteModal } from "@/components/Modals";
 
 const columns = [
   { name: "NAME", uid: "name" },
@@ -36,8 +35,25 @@ type ExtendedHabitKey = HabitKey | "actions";
 
 export default function HabitsTable() {
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const { items, loading, onOpenModal, isOpenModal, onOpenChangeModal } =
-    useHabitsContext();
+  const {
+    isOpen: isOpenHabitForm,
+    onOpen: onOpenHabitForm,
+    onOpenChange: onOpenChangeHabitForm,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDeleteModal,
+    onOpen: onOpenDeleteModal,
+    onOpenChange: onOpenChangeDeleteModal,
+  } = useDisclosure();
+
+  const {
+    items,
+    loading,
+    setHabitToEdit,
+    setHabitToDelete,
+    habitToDelete,
+    deleteHabit,
+  } = useHabitsContext();
 
   const topContent = React.useMemo(
     () => (
@@ -53,10 +69,7 @@ export default function HabitsTable() {
                 Actions
               </Button>
             </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Bulk actions"
-              // disabledKeys={["pause", "delete"]}
-            >
+            <DropdownMenu aria-label="Bulk actions">
               <DropdownItem key="pause">Pause</DropdownItem>
               <DropdownItem key="delete" className="text-danger" color="danger">
                 Delete
@@ -64,7 +77,7 @@ export default function HabitsTable() {
             </DropdownMenu>
           </Dropdown>
 
-          <Button color="primary" onPress={onOpenModal}>
+          <Button color="primary" onPress={onOpenHabitForm}>
             Add Habit
           </Button>
         </div>
@@ -76,27 +89,24 @@ export default function HabitsTable() {
         </div>
       </div>
     ),
-    [items.length, selectedKeys, onOpenModal]
+    [items.length, selectedKeys, onOpenHabitForm]
   );
 
   const renderCell = React.useCallback(
     (habit: Habit, columnKey: ExtendedHabitKey) => {
       if (columnKey === "actions") {
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+          <ActionsCell
+            habit={habit}
+            onDelete={() => {
+              setHabitToDelete(habit);
+              onOpenDeleteModal();
+            }}
+            onEdit={() => {
+              setHabitToEdit(habit);
+              onOpenHabitForm();
+            }}
+          />
         );
       }
 
@@ -104,13 +114,28 @@ export default function HabitsTable() {
 
       switch (columnKey) {
         case "isPaused":
-          return <span>{cellValue ? "YES" : "NO"}</span>;
+          return (
+            <Chip
+              size="sm"
+              color={cellValue ? "warning" : "success"}
+              variant="flat"
+            >
+              {cellValue ? "Paused" : "Active"}
+            </Chip>
+          );
+        case "createdAt":
+        case "dueDate":
+          return cellValue ? dayjs(cellValue).format("DD/MM/YYYY") : "";
         default:
           return cellValue;
       }
     },
-    []
+    [onOpenHabitForm, setHabitToEdit, onOpenDeleteModal, setHabitToDelete]
   );
+
+  const handleDeleteHabit = React.useCallback(async () => {
+    if (habitToDelete) await deleteHabit({ id: habitToDelete.id });
+  }, [habitToDelete, deleteHabit]);
 
   return (
     <>
@@ -129,6 +154,9 @@ export default function HabitsTable() {
             <TableColumn
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
+              style={{
+                textAlign: column.uid === "actions" ? "center" : "start",
+              }}
             >
               {column.name}
             </TableColumn>
@@ -152,7 +180,16 @@ export default function HabitsTable() {
         </TableBody>
       </Table>
 
-      <HabitFormModal isOpen={isOpenModal} onOpenChange={onOpenChangeModal} />
+      <HabitFormModal
+        isOpen={isOpenHabitForm}
+        onOpenChange={onOpenChangeHabitForm}
+      />
+      <DeleteModal
+        isOpen={isOpenDeleteModal}
+        onOpenChange={onOpenChangeDeleteModal}
+        onDelete={handleDeleteHabit}
+        entityName={habitToDelete?.name ?? ""}
+      />
     </>
   );
 }

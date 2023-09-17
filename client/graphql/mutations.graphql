@@ -3,3 +3,15 @@ mutation CreateHabit($createHabitInput: CreateHabitInput!) {
     ...HabitFields
   }
 }
+
+mutation UpdateHabit($updateHabitInput: UpdateHabitInput!) {
+  updateHabit(updateHabitInput: $updateHabitInput) {
+    ...HabitFields
+  }
+}
+
+mutation DeleteHabit($deleteHabitInput: DeleteHabitInput!) {
+  deleteHabit(deleteHabitData: $deleteHabitInput){
+    id
+  }
+}
