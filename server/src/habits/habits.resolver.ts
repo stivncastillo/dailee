@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 
 import { CreateHabitInput } from './dto/create-habit.input';
 import { DeleteHabitInput } from './dto/delete-habit.input';
+import { DeleteHabitsInput } from './dto/delete-habits.input';
 import { GetHabitArgs } from './dto/get-habit.args';
 import { GetHabitsArgs } from './dto/get-habits.args';
 import { UpdateHabitInput } from './dto/update-habit.input';
@@ -36,8 +37,15 @@ export class HabitsResolver {
 
   @Mutation(() => Habit)
   async deleteHabit(
-    @Args('deleteHabitData') deleteHabitData: DeleteHabitInput,
+    @Args('deleteHabitInput') deleteHabitInput: DeleteHabitInput,
   ): Promise<Habit> {
-    return this.habitsService.deleteHabit(deleteHabitData);
+    return this.habitsService.deleteHabit(deleteHabitInput);
+  }
+
+  @Mutation(() => Number)
+  async deleteHabits(
+    @Args('deleteHabitsInput') deleteHabitsInput: DeleteHabitsInput,
+  ): Promise<number> {
+    return await this.habitsService.deleteHabits(deleteHabitsInput);
   }
 }

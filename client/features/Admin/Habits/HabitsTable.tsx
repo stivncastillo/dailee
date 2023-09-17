@@ -22,6 +22,8 @@ import HabitFormModal from "./components/HabitFormModal/HabitFormModal";
 import { ActionsCell } from "./components/Cells";
 import dayjs from "dayjs";
 import { DeleteModal } from "@/components/Modals";
+import { useDeleteHabit } from "./hooks";
+import BulkActions from "./components/BulkActions/BulkActions";
 
 const columns = [
   { name: "NAME", uid: "name" },
@@ -35,6 +37,7 @@ type ExtendedHabitKey = HabitKey | "actions";
 
 export default function HabitsTable() {
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
+
   const {
     isOpen: isOpenHabitForm,
     onOpen: onOpenHabitForm,
@@ -46,36 +49,18 @@ export default function HabitsTable() {
     onOpenChange: onOpenChangeDeleteModal,
   } = useDisclosure();
 
-  const {
-    items,
-    loading,
-    setHabitToEdit,
-    setHabitToDelete,
-    habitToDelete,
-    deleteHabit,
-  } = useHabitsContext();
+  const { items, loading, setHabitToEdit, setHabitToDelete, habitToDelete } =
+    useHabitsContext();
+  const { deleteHabit } = useDeleteHabit();
 
   const topContent = React.useMemo(
     () => (
       <div className="flex flex-col gap-2">
         <div className="flex flex-row justify-between">
-          <Dropdown>
-            <DropdownTrigger>
-              <Button
-                color="primary"
-                variant="bordered"
-                isDisabled={!Boolean(selectedKeys.size)}
-              >
-                Actions
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Bulk actions">
-              <DropdownItem key="pause">Pause</DropdownItem>
-              <DropdownItem key="delete" className="text-danger" color="danger">
-                Delete
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <BulkActions
+            isDisabled={!Boolean(selectedKeys.size)}
+            items={Array.from(selectedKeys)}
+          />
 
           <Button color="primary" onPress={onOpenHabitForm}>
             Add Habit
@@ -146,8 +131,16 @@ export default function HabitsTable() {
         selectionMode="multiple"
         topContent={topContent}
         topContentPlacement="inside"
-        // @ts-ignore
-        onSelectionChange={setSelectedKeys}
+        onSelectionChange={(value) => {
+          if (typeof value === "string" && value === "all") {
+            const ids = items.map((item) => item.id);
+            // @ts-ignore
+            setSelectedKeys(new Set(ids));
+          } else {
+            // @ts-ignore
+            setSelectedKeys(value);
+          }
+        }}
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -188,7 +181,7 @@ export default function HabitsTable() {
         isOpen={isOpenDeleteModal}
         onOpenChange={onOpenChangeDeleteModal}
         onDelete={handleDeleteHabit}
-        entityName={habitToDelete?.name ?? ""}
+        deleteText={`Do you want delete ${habitToDelete?.name}?`}
       />
     </>
   );

@@ -43,4 +43,11 @@ export class HabitRepository {
     const { where } = params;
     return this.prisma.habit.delete({ where });
   }
+
+  async deleteHabits(params: {
+    where: Prisma.HabitWhereInput;
+  }): Promise<Prisma.BatchPayload> {
+    const { where } = params;
+    return this.prisma.habit.deleteMany({ where });
+  }
 }

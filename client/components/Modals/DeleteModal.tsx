@@ -12,10 +12,10 @@ type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
   onDelete: () => void;
-  entityName: string;
+  deleteText: string;
 };
 
-const DeleteModal = ({ isOpen, onOpenChange, onDelete, entityName }: Props) => {
+const DeleteModal = ({ isOpen, onOpenChange, onDelete, deleteText }: Props) => {
   return (
     <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
@@ -23,7 +23,7 @@ const DeleteModal = ({ isOpen, onOpenChange, onDelete, entityName }: Props) => {
           <>
             <ModalHeader className="flex flex-col gap-1">Delete</ModalHeader>
             <ModalBody>
-              <p>Do you want to remove {entityName}?</p>
+              <p>{deleteText}</p>
             </ModalBody>
             <ModalFooter>
               <Button color="default" variant="light" onPress={onClose}>

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { CreateHabitInput } from './dto/create-habit.input';
 import { DeleteHabitInput } from './dto/delete-habit.input';
+import { DeleteHabitsInput } from './dto/delete-habits.input';
 import { GetHabitArgs } from './dto/get-habit.args';
 import { GetHabitsArgs } from './dto/get-habits.args';
 import { UpdateHabitInput } from './dto/update-habit.input';
@@ -51,5 +52,19 @@ export class HabitsService {
     });
 
     return review;
+  }
+
+  public async deleteHabits(
+    deleteHabitData: DeleteHabitsInput,
+  ): Promise<number> {
+    const { count } = await this.habitRepository.deleteHabits({
+      where: {
+        id: {
+          in: deleteHabitData.ids,
+        },
+      },
+    });
+
+    return count;
   }
 }

@@ -11,7 +11,11 @@ mutation UpdateHabit($updateHabitInput: UpdateHabitInput!) {
 }
 
 mutation DeleteHabit($deleteHabitInput: DeleteHabitInput!) {
-  deleteHabit(deleteHabitData: $deleteHabitInput){
+  deleteHabit(deleteHabitInput: $deleteHabitInput){
     id
   }
+}
+
+mutation DeleteHabits($deleteHabitsInput: DeleteHabitsInput!) {
+  deleteHabits(deleteHabitsInput: $deleteHabitsInput)
 }

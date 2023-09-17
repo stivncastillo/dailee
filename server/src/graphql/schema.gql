@@ -40,7 +40,8 @@ type Query {
 type Mutation {
   createHabit(createHabitInput: CreateHabitInput!): Habit!
   updateHabit(updateHabitInput: UpdateHabitInput!): Habit!
-  deleteHabit(deleteHabitData: DeleteHabitInput!): Habit!
+  deleteHabit(deleteHabitInput: DeleteHabitInput!): Habit!
+  deleteHabits(deleteHabitsInput: DeleteHabitsInput!): Float!
   createHabitTracking(createHabitTrackingInput: CreateHabitTrackingInput!): HabitTracking!
   updateHabitTracking(updateHabitTrackingInput: UpdateHabitTrackingInput!): HabitTracking!
   removeHabitTracking(deleteHabitTracking: DeleteHabitTrackingInput!): HabitTracking!
@@ -67,6 +68,10 @@ input UpdateHabitInput {
 
 input DeleteHabitInput {
   id: String!
+}
+
+input DeleteHabitsInput {
+  ids: [String!]!
 }
 
 input CreateHabitTrackingInput {

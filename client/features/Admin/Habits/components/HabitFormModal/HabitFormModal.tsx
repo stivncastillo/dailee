@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useHabitsContext } from "../../HabitsContext";
+import { useCreateHabit, useUpdateHabit } from "../../hooks/";
 
 type CreateHabitInputs = {
   id: string;
@@ -32,14 +33,10 @@ const INITIAL_VALUES = {
 };
 
 const HabitFormModal = ({ isOpen, onOpenChange }: Props) => {
-  const {
-    createHabit,
-    createHabitLoading,
-    habitToEdit,
-    updateHabit,
-    updateHabitLoading,
-    setHabitToEdit,
-  } = useHabitsContext();
+  const { habitToEdit, setHabitToEdit } = useHabitsContext();
+  const { createHabit, loading: createHabitLoading } = useCreateHabit();
+  const { updateHabit, loading: updateHabitLoading } = useUpdateHabit();
+
   const {
     control,
     register,
