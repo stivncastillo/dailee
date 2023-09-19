@@ -1,14 +1,14 @@
 "use client";
-import HabitsTable from "@/components/HabitsTable";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { title } from "@/components/primitives";
 import { Divider } from "@nextui-org/react";
+import HabitsTrackingTableContainer from "@/features/Dashboard/HabitsTrakingTable";
 
 export default function Home() {
   return (
     <section className="flex flex-col gap-4 pt-4">
-      <div className="grid grid-cols-[1fr_400px] gap-4">
-        <HabitsTable />
+      <div className="grid grid-cols-[1fr_300px] gap-4">
+        <HabitsTrackingTableContainer />
 
         <div className="flex flex-col gap-4">
           <Card shadow="sm" className=" flex-shrink-0 flex-grow">

@@ -33,7 +33,12 @@ export class HabitTrackingService {
 
   public async getHabitTrackings(getHabitTrackingArgs: GetHabitTrackingsArgs) {
     return await this.habitTrackingRepository.getHabitTrackings({
-      where: { date: getHabitTrackingArgs.date },
+      where: {
+        date: {
+          gte: getHabitTrackingArgs.dateStart,
+          lte: getHabitTrackingArgs.dateEnd,
+        },
+      },
     });
   }
 

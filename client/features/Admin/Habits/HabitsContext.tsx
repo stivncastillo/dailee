@@ -1,15 +1,4 @@
-import {
-  GetHabitsDocument,
-  Habit,
-  UpdateHabitDocument,
-  UpdateHabitMutation,
-  UpdateHabitMutationVariables,
-  UpdateHabitInput,
-  DeleteHabitDocument,
-  DeleteHabitMutation,
-  DeleteHabitMutationVariables,
-  DeleteHabitInput,
-} from "@/graphql/codegen/graphql";
+import { GetHabitsDocument, Habit } from "@/graphql/codegen/graphql";
 import React, {
   Dispatch,
   SetStateAction,
@@ -17,7 +6,8 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { ApolloError, useMutation, useQuery } from "@apollo/client";
+import { ApolloError, useQuery } from "@apollo/client";
+import { COLUMNS } from "./utils/constants";
 
 export type HabitsContextType = {
   items: Habit[];
@@ -27,6 +17,7 @@ export type HabitsContextType = {
   setHabitToEdit: Dispatch<SetStateAction<Habit | null>>;
   habitToDelete: Habit | null;
   setHabitToDelete: Dispatch<SetStateAction<Habit | null>>;
+  columns: typeof COLUMNS;
 };
 
 const DEFAULT_VALUES = {
@@ -36,6 +27,7 @@ const DEFAULT_VALUES = {
   setHabitToEdit: () => {},
   habitToDelete: null,
   setHabitToDelete: () => {},
+  columns: [],
 };
 
 const HabitsContext = createContext<HabitsContextType>(DEFAULT_VALUES);
@@ -59,6 +51,7 @@ const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
         setHabitToEdit,
         habitToDelete,
         setHabitToDelete,
+        columns: COLUMNS,
       }}
     >
       {children}

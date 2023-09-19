@@ -26,8 +26,15 @@ export class HabitsService {
   }
 
   public async getHabits(getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
+    const orDueDate = {
+      OR: [{ dueDate: null }, { dueDate: { gte: getHabitsArgs.dueDate } }],
+    };
+
     return await this.habitRepository.getHabits({
-      where: { isPaused: getHabitsArgs.isPaused },
+      where: {
+        isPaused: getHabitsArgs.isPaused,
+        ...(getHabitsArgs.dueDate ? orDueDate : {}),
+      },
     });
   }
 

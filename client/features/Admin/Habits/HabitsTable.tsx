@@ -8,12 +8,7 @@ import {
   TableRow,
   TableCell,
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   CircularProgress,
-  Chip,
   useDisclosure,
 } from "@nextui-org/react";
 import { Habit } from "@/graphql/codegen/graphql";
@@ -24,14 +19,8 @@ import dayjs from "dayjs";
 import { DeleteModal } from "@/components/Modals";
 import { useDeleteHabit } from "./hooks";
 import BulkActions from "./components/BulkActions/BulkActions";
+import StatusCell from "./components/Cells/StatusCell";
 
-const columns = [
-  { name: "NAME", uid: "name" },
-  { name: "STATUS", uid: "isPaused" },
-  { name: "DUE DATE", uid: "dueDate" },
-  { name: "CREATED AT", uid: "createdAt" },
-  { name: "ACTIONS", uid: "actions" },
-];
 type HabitKey = keyof Habit;
 type ExtendedHabitKey = HabitKey | "actions";
 
@@ -49,8 +38,14 @@ export default function HabitsTable() {
     onOpenChange: onOpenChangeDeleteModal,
   } = useDisclosure();
 
-  const { items, loading, setHabitToEdit, setHabitToDelete, habitToDelete } =
-    useHabitsContext();
+  const {
+    items,
+    loading,
+    setHabitToEdit,
+    setHabitToDelete,
+    habitToDelete,
+    columns,
+  } = useHabitsContext();
   const { deleteHabit } = useDeleteHabit();
 
   const topContent = React.useMemo(
@@ -99,15 +94,7 @@ export default function HabitsTable() {
 
       switch (columnKey) {
         case "isPaused":
-          return (
-            <Chip
-              size="sm"
-              color={cellValue ? "warning" : "success"}
-              variant="flat"
-            >
-              {cellValue ? "Paused" : "Active"}
-            </Chip>
-          );
+          return <StatusCell value={cellValue} />;
         case "createdAt":
         case "dueDate":
           return cellValue ? dayjs(cellValue).format("DD/MM/YYYY") : "";

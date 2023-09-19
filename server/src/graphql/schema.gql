@@ -30,9 +30,9 @@ type HabitTracking {
 }
 
 type Query {
-  habits(isPaused: String): [Habit!]!
+  habits(isPaused: Boolean, dueDate: DateTime): [Habit!]!
   habit(id: String!): Habit!
-  habitTrackings(date: DateTime): [HabitTracking!]!
+  habitTrackings(dateStart: DateTime, dateEnd: DateTime): [HabitTracking!]!
   habitTracking(id: Float!): HabitTracking!
   user(id: Int!): User!
 }

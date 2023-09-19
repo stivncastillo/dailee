@@ -6,9 +6,22 @@ fragment HabitFields on Habit {
   createdAt
   updatedAt
 }
-
-query getHabits {
-  habits {
+fragment HabitTrackingFields on HabitTracking {
+  id
+  points
+  date
+  habitId {
     ...HabitFields
+  }
+}
+
+query getHabits($isPaused: Boolean, $dueDate: DateTime) {
+  habits(isPaused: $isPaused, dueDate: $dueDate) {
+    ...HabitFields
+  }
+}
+query getHabitTrackings($dateStart: DateTime, $dateEnd: DateTime) {
+  habitTrackings(dateStart: $dateStart, dateEnd: $dateEnd) {
+    ...HabitTrackingFields
   }
 }

@@ -31,9 +31,19 @@ export class HabitTrackingRepository {
   }
 
   async createHabitTracking(params: {
-    data: Prisma.HabitTrackingCreateInput;
+    data: Prisma.HabitTrackingUncheckedCreateInput;
   }): Promise<HabitTracking> {
     const { data } = params;
+    const ht = await this.prisma.habitTracking.findFirst({
+      where: {
+        habitId: { equals: data.habitId },
+        date: { equals: data.date },
+      },
+    });
+
+    if (ht) {
+      return this.updateHabitTracking({ where: { id: ht.id }, data });
+    }
     return this.prisma.habitTracking.create({ data });
   }
 
