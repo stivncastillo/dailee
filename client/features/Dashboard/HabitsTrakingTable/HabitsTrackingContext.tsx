@@ -21,15 +21,11 @@ import {
 export type HabitsTrackingContextType = {
   columns: ColumnType[];
   rows: RowType[];
-  dataHabitTrackings: HabitTrackingFieldsFragment[];
-  loadingHabitTracking: boolean;
 };
 
 const DEFAULT_VALUES = {
   columns: [],
   rows: [],
-  dataHabitTrackings: [],
-  loadingHabitTracking: false,
 };
 
 const HabitsTrackingContext =
@@ -78,8 +74,6 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         columns,
         rows,
-        dataHabitTrackings: dataHabitTrackings?.habitTrackings ?? [],
-        loadingHabitTracking,
       }}
     >
       {children}

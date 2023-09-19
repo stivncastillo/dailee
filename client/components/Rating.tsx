@@ -24,7 +24,7 @@ type Props = {
 export function Rating({ onChange, value }: Props) {
   return (
     <ReactRating
-      style={{ maxWidth: 300 }}
+      style={{ width: 90 }}
       value={value}
       onChange={onChange}
       itemStyles={customStyles}

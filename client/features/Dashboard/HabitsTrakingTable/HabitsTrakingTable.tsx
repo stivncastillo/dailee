@@ -7,22 +7,20 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  getKeyValue,
 } from "@nextui-org/table";
 import { useHabitsTrackingContext } from "./HabitsTrackingContext";
-import { RowType } from "./utils/helpers";
+import { RowType, getCurrentWeek } from "./utils/helpers";
 import Score from "./components/Score";
 import useCreateHabitTracking from "./hooks/useCreateHabitTracking";
+import { Divider } from "@nextui-org/react";
 import dayjs from "dayjs";
-import { HabitTrackingFieldsFragment } from "@/graphql/codegen/graphql";
-
-type Props = {};
 
 type RowTypeKey = keyof RowType;
 
-const HabitsTrakingTable = (props: Props) => {
-  const { columns, rows, dataHabitTrackings } = useHabitsTrackingContext();
+const HabitsTrakingTable = () => {
+  const { columns, rows } = useHabitsTrackingContext();
   const { createHabitTracking } = useCreateHabitTracking();
+  const week = getCurrentWeek();
 
   const renderCell = React.useCallback(
     (item: RowType, columnKey: RowTypeKey) => {
@@ -46,19 +44,38 @@ const HabitsTrakingTable = (props: Props) => {
     [columns, createHabitTracking]
   );
 
+  const topContent = React.useMemo(
+    () => (
+      <div className="flex flex-row gap-2">
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">
+            {dayjs(week[0].date).format("MMM DD")} to{" "}
+            {dayjs(week[week.length - 1].date).format("MMM DD")}
+          </span>
+        </div>
+      </div>
+    ),
+    [week]
+  );
+
   return (
     <>
       {columns.length ? (
-        <Table shadow="sm" aria-label="Example table with dynamic content">
+        <Table
+          topContent={topContent}
+          topContentPlacement="inside"
+          shadow="sm"
+          aria-label="Weekly habits table"
+        >
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn
                 key={column.key}
                 style={{
                   textAlign: column.key !== "habits" ? "center" : "left",
-                  minWidth: column.key !== "habits" ? "auto" : "150px",
                   textTransform: "uppercase",
                 }}
+                width={column.key !== "habits" ? "100" : "200"}
               >
                 {column.label}
               </TableColumn>
