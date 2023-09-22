@@ -2,6 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { HabitTracking, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 
+type GetHabitTrackingAgregateParams = {
+  where?: Prisma.HabitTrackingWhereInput;
+  _sum?: Prisma.HabitTrackingSumAggregateInputType;
+  _avg?: Prisma.HabitTrackingAvgAggregateInputType;
+};
 @Injectable()
 export class HabitTrackingRepository {
   constructor(private prisma: PrismaService) {}
@@ -60,5 +65,18 @@ export class HabitTrackingRepository {
   }): Promise<HabitTracking> {
     const { where } = params;
     return this.prisma.habitTracking.delete({ where });
+  }
+
+  async getHabitTrackingAgregate(
+    params: GetHabitTrackingAgregateParams,
+  ): Promise<
+    Prisma.GetHabitTrackingAggregateType<GetHabitTrackingAgregateParams>
+  > {
+    const { _avg, _sum, where } = params;
+    return this.prisma.habitTracking.aggregate({
+      ...(_avg ? { _avg } : {}),
+      ...(_sum ? { _sum } : {}),
+      where,
+    });
   }
 }

@@ -7,7 +7,11 @@ type Props = {
 };
 
 const Score = ({ value, onChange }: Props) => {
-  return <Rating value={value} onChange={onChange} />;
+  return (
+    <div className="flex flex-row items-center justify-center">
+      <Rating value={value} onChange={onChange} />
+    </div>
+  );
 };
 
 export default Score;

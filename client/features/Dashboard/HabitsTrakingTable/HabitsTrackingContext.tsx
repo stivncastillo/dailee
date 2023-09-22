@@ -9,7 +9,6 @@ import { useQuery } from "@apollo/client";
 import {
   GetHabitTrackingsDocument,
   GetHabitsDocument,
-  HabitTrackingFieldsFragment,
 } from "@/graphql/codegen/graphql";
 import {
   ColumnType,
@@ -21,11 +20,13 @@ import {
 export type HabitsTrackingContextType = {
   columns: ColumnType[];
   rows: RowType[];
+  loading: boolean;
 };
 
 const DEFAULT_VALUES = {
   columns: [],
   rows: [],
+  loading: false,
 };
 
 const HabitsTrackingContext =
@@ -39,13 +40,16 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
   const today = useMemo(() => new Date(), []);
   const week = getCurrentWeek();
 
-  const { data } = useQuery(GetHabitsDocument, {
-    variables: {
-      isPaused: false,
-      dueDate: today,
-    },
-    fetchPolicy: "cache-and-network",
-  });
+  const { data: dataHabits, loading: loadingHabits } = useQuery(
+    GetHabitsDocument,
+    {
+      variables: {
+        isPaused: false,
+        dueDate: today,
+      },
+      fetchPolicy: "cache-and-network",
+    }
+  );
 
   const { data: dataHabitTrackings, loading: loadingHabitTracking } = useQuery(
     GetHabitTrackingsDocument,
@@ -59,21 +63,22 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   useEffect(() => {
-    if (data?.habits && data?.habits.length) {
+    if (dataHabits?.habits && dataHabits?.habits.length) {
       const { columns, rows } = generateDataGrid(
-        data?.habits,
+        dataHabits?.habits,
         dataHabitTrackings?.habitTrackings ?? []
       );
       setColumns(columns);
       setRows(rows);
     }
-  }, [data?.habits, dataHabitTrackings?.habitTrackings]);
+  }, [dataHabits?.habits, dataHabitTrackings?.habitTrackings]);
 
   return (
     <HabitsTrackingContext.Provider
       value={{
         columns,
         rows,
+        loading: loadingHabits || loadingHabitTracking,
       }}
     >
       {children}

@@ -67,6 +67,7 @@ export function getCurrentWeek(): { day: string; date: string }[] {
     const formattedDate = date.toISOString().split('T')[0]; // Get the date in "YYYY-MM-DD" format
 
     currentWeek.push({ day: dayOfWeek, date: formattedDate });
+
   }
 
   return currentWeek;

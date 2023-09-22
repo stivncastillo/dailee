@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { Tooltip } from "@nextui-org/react";
 import {
   Table,
   TableHeader,
@@ -7,12 +8,11 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from "@nextui-org/table";
+} from "@nextui-org/react";
 import { useHabitsTrackingContext } from "./HabitsTrackingContext";
 import { RowType, getCurrentWeek } from "./utils/helpers";
 import Score from "./components/Score";
 import useCreateHabitTracking from "./hooks/useCreateHabitTracking";
-import { Divider } from "@nextui-org/react";
 import dayjs from "dayjs";
 
 type RowTypeKey = keyof RowType;
@@ -59,7 +59,7 @@ const HabitsTrakingTable = () => {
   );
 
   return (
-    <>
+    <div>
       {columns.length ? (
         <Table
           topContent={topContent}
@@ -77,7 +77,9 @@ const HabitsTrakingTable = () => {
                 }}
                 width={column.key !== "habits" ? "100" : "200"}
               >
-                {column.label}
+                <Tooltip content={column.date || "Habits"}>
+                  <span>{column.label}</span>
+                </Tooltip>
               </TableColumn>
             )}
           </TableHeader>
@@ -97,7 +99,7 @@ const HabitsTrakingTable = () => {
           </TableBody>
         </Table>
       ) : null}
-    </>
+    </div>
   );
 };
 

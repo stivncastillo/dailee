@@ -10,11 +10,15 @@ import {
 import { HabitsService } from 'src/habits/habits.service';
 import { UserService } from 'src/user/user.service';
 
-import { CreateHabitTrackingInput } from './dto/create-habit-tracking.input';
-import { DeleteHabitTrackingInput } from './dto/delete-habit-tracking.input';
-import { GetHabitTrackingArgs } from './dto/get-habit-tracking.args';
-import { GetHabitTrackingsArgs } from './dto/get-habit-trackings.args';
-import { UpdateHabitTrackingInput } from './dto/update-habit-tracking.input';
+import {
+  CreateHabitTrackingInput,
+  DeleteHabitTrackingInput,
+  GetHabitTrackingArgs,
+  GetHabitTrackingsAggregateArgs,
+  GetHabitTrackingsArgs,
+  UpdateHabitTrackingInput,
+} from './dto';
+import { HabitTrackingAggregate } from './entities/habit-tracking-aggregate';
 import { HabitTracking } from './entities/habit-tracking.entity';
 import { HabitTrackingService } from './habit-tracking.service';
 
@@ -39,6 +43,18 @@ export class HabitTrackingResolver {
     @Args() getHabitTrackingArgs: GetHabitTrackingArgs,
   ): Promise<HabitTracking> {
     return this.habitTrackingService.getHabitTracking(getHabitTrackingArgs);
+  }
+
+  @Query(() => HabitTrackingAggregate, {
+    name: 'habitTrackingsAggregate',
+    nullable: false,
+  })
+  getHabitTrackingAggregate(
+    @Args() getHabitTrackingsAggregateArgs: GetHabitTrackingsAggregateArgs,
+  ) {
+    return this.habitTrackingService.getSumPointsByDateRange(
+      getHabitTrackingsAggregateArgs,
+    );
   }
 
   // Mutations

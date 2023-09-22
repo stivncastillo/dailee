@@ -25,3 +25,14 @@ query getHabitTrackings($dateStart: DateTime, $dateEnd: DateTime) {
     ...HabitTrackingFields
   }
 }
+
+query getHabitTrackingAggregate($dateStart: DateTime, $dateEnd: DateTime) {
+  habitTrackingsAggregate(dateStart: $dateStart, dateEnd: $dateEnd) {
+    _avg {
+      points
+    }
+    _sum {
+      points
+    }
+  }
+}

@@ -21,6 +21,19 @@ type User {
   name: String!
 }
 
+type HabitTrackingAvgAggregate {
+  points: Float!
+}
+
+type HabitTrackingSumAggregate {
+  points: Int!
+}
+
+type HabitTrackingAggregate {
+  _sum: HabitTrackingSumAggregate
+  _avg: HabitTrackingAvgAggregate
+}
+
 type HabitTracking {
   id: String!
   date: DateTime!
@@ -34,6 +47,7 @@ type Query {
   habit(id: String!): Habit!
   habitTrackings(dateStart: DateTime, dateEnd: DateTime): [HabitTracking!]!
   habitTracking(id: Float!): HabitTracking!
+  habitTrackingsAggregate(dateStart: DateTime, dateEnd: DateTime): HabitTrackingAggregate!
   user(id: Int!): User!
 }
 

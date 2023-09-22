@@ -1,0 +1,9 @@
+{
+  "name": "dailee",
+  "version": "1.0.0",
+  "description": "Habits and tasks tracking",
+  "author": "Stiven Castillo",
+  "license": "MIT",
+  "private": true,
+  "workspaces": ["client", "server"]
+}

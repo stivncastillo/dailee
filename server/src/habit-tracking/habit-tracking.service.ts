@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateHabitTrackingInput } from './dto/create-habit-tracking.input';
-import { DeleteHabitTrackingInput } from './dto/delete-habit-tracking.input';
-import { GetHabitTrackingArgs } from './dto/get-habit-tracking.args';
-import { GetHabitTrackingsArgs } from './dto/get-habit-trackings.args';
-import { UpdateHabitTrackingInput } from './dto/update-habit-tracking.input';
+import {
+  CreateHabitTrackingInput,
+  DeleteHabitTrackingInput,
+  GetHabitTrackingArgs,
+  GetHabitTrackingsAggregateArgs,
+  GetHabitTrackingsArgs,
+  UpdateHabitTrackingInput,
+} from './dto';
 import { HabitTracking } from './entities/habit-tracking.entity';
 import { HabitTrackingRepository } from './habit-tracking.repository';
 
@@ -32,6 +35,19 @@ export class HabitTrackingService {
   }
 
   public async getHabitTrackings(getHabitTrackingArgs: GetHabitTrackingsArgs) {
+    console.log(
+      await this.habitTrackingRepository.getHabitTrackingAgregate({
+        _sum: {
+          points: true,
+        },
+        where: {
+          date: {
+            gte: new Date('2023-09-21').toISOString(),
+            lte: new Date('2023-09-21').toISOString(),
+          },
+        },
+      }),
+    );
     return await this.habitTrackingRepository.getHabitTrackings({
       where: {
         date: {
@@ -51,6 +67,7 @@ export class HabitTrackingService {
 
     return habitTracking;
   }
+
   public async deleteHabitTracking(
     deleteHabitData: DeleteHabitTrackingInput,
   ): Promise<HabitTracking> {
@@ -59,5 +76,24 @@ export class HabitTrackingService {
     });
 
     return review;
+  }
+
+  public async getSumPointsByDateRange(
+    getPointsArgs: GetHabitTrackingsAggregateArgs,
+  ) {
+    return await this.habitTrackingRepository.getHabitTrackingAgregate({
+      _sum: {
+        points: true,
+      },
+      _avg: {
+        points: true,
+      },
+      where: {
+        date: {
+          gte: getPointsArgs.dateStart,
+          lte: getPointsArgs.dateEnd,
+        },
+      },
+    });
   }
 }
