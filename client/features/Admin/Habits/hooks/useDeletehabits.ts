@@ -1,10 +1,11 @@
+import { useMutation } from "@apollo/client";
+
 import {
   DeleteHabitsDocument,
   DeleteHabitsInput,
   DeleteHabitsMutation,
   DeleteHabitsMutationVariables,
 } from "@/graphql/codegen/graphql";
-import { useMutation } from "@apollo/client";
 
 const useDeleteHabits = () => {
   const [onDeleteHabits, { data, loading, error }] = useMutation<

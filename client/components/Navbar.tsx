@@ -1,3 +1,4 @@
+import { Link } from "@nextui-org/link";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -6,17 +7,13 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from "@nextui-org/navbar";
-import { Link } from "@nextui-org/link";
-
 import { link as linkStyles } from "@nextui-org/theme";
-
-import { siteConfig } from "@/config/site";
-import NextLink from "next/link";
 import clsx from "clsx";
-
-import { ThemeSwitch } from "@/components/ThemeSwitch";
+import NextLink from "next/link";
 
 import { Logo } from "@/components/icons";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
+import { siteConfig } from "@/config/site";
 
 export const Navbar = () => {
   return (
@@ -34,7 +31,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium",
                 )}
                 color="foreground"
                 href={item.href}

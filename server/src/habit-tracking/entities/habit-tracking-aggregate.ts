@@ -1,7 +1,7 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field } from "@nestjs/graphql";
 
-import { HabitTrackingAvgAggregate } from './habit-tracking-avg-aggregate';
-import { HabitTrackingSumAggregate } from './habit-tracking-sum-aggregate';
+import { HabitTrackingAvgAggregate } from "./habit-tracking-avg-aggregate";
+import { HabitTrackingSumAggregate } from "./habit-tracking-sum-aggregate";
 
 @ObjectType()
 export class HabitTrackingAggregate {

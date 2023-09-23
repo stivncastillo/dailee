@@ -1,5 +1,6 @@
-import { Chip } from "@nextui-org/react";
 import React from "react";
+
+import { Chip } from "@nextui-org/react";
 
 type Props = {
   value: boolean;

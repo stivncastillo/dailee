@@ -1,1 +1,1 @@
-export * from './uuid.scalar';
+export * from "./uuid.scalar";

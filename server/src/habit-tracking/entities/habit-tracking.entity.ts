@@ -1,22 +1,22 @@
-import { ObjectType, Field, Int, GraphQLISODateTime } from '@nestjs/graphql';
-import { HabitTracking as HabitTrackingDB } from '@prisma/client';
-import { Habit } from 'src/habits/entities/habit.entity';
-import { User } from 'src/user/entities/user.entity';
+import { ObjectType, Field, Int, GraphQLISODateTime } from "@nestjs/graphql";
+import { HabitTracking as HabitTrackingDB } from "@prisma/client";
+import { Habit } from "src/habits/entities/habit.entity";
+import { User } from "src/user/entities/user.entity";
 
 @ObjectType()
 export class HabitTracking {
   @Field(() => String)
-  id: HabitTrackingDB['id'];
+  id: HabitTrackingDB["id"];
 
   @Field(() => GraphQLISODateTime)
-  date: HabitTrackingDB['date'];
+  date: HabitTrackingDB["date"];
 
   @Field(() => Int)
-  points: HabitTrackingDB['points'];
+  points: HabitTrackingDB["points"];
 
   @Field(() => Habit)
-  habitId: HabitTrackingDB['habitId'];
+  habitId: HabitTrackingDB["habitId"];
 
   @Field(() => User)
-  userId: HabitTrackingDB['userId'];
+  userId: HabitTrackingDB["userId"];
 }

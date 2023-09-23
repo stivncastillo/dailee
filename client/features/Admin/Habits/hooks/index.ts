@@ -1,5 +1,5 @@
 import useCreateHabit from "./useCreateHabit";
-import useUpdateHabit from "./useUpdateHabit";
 import useDeleteHabit from "./useDeleteHabit";
+import useUpdateHabit from "./useUpdateHabit";
 
-export {useCreateHabit, useUpdateHabit, useDeleteHabit}
+export { useCreateHabit, useUpdateHabit, useDeleteHabit };

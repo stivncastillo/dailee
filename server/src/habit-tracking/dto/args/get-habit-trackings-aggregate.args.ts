@@ -1,4 +1,4 @@
-import { ArgsType, Field, GraphQLISODateTime } from '@nestjs/graphql';
+import { ArgsType, Field, GraphQLISODateTime } from "@nestjs/graphql";
 
 @ArgsType()
 export class GetHabitTrackingsAggregateArgs {

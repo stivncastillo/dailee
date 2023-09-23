@@ -1,4 +1,5 @@
-import { DeleteModal } from "@/components/Modals";
+import React from "react";
+
 import {
   Button,
   Dropdown,
@@ -7,8 +8,9 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@nextui-org/react";
-import React from "react";
+
 import useDeleteHabits from "../../hooks/useDeletehabits";
+import { DeleteModal } from "@/components/Modals";
 
 type Props = {
   isDisabled?: boolean;

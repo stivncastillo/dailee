@@ -1,4 +1,3 @@
-import { GetHabitsDocument, Habit } from "@/graphql/codegen/graphql";
 import React, {
   Dispatch,
   SetStateAction,
@@ -6,8 +5,11 @@ import React, {
   useContext,
   useState,
 } from "react";
+
 import { ApolloError, useQuery } from "@apollo/client";
+
 import { COLUMNS } from "./utils/constants";
+import { GetHabitsDocument, Habit } from "@/graphql/codegen/graphql";
 
 export type HabitsContextType = {
   items: Habit[];

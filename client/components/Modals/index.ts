@@ -1,3 +1,3 @@
 import DeleteModal from "./DeleteModal";
 
-export {DeleteModal}
+export { DeleteModal };

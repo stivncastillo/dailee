@@ -1,23 +1,23 @@
-import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
-import { Habit as HabitDB } from '@prisma/client';
+import { ObjectType, Field, GraphQLISODateTime } from "@nestjs/graphql";
+import { Habit as HabitDB } from "@prisma/client";
 
 @ObjectType()
 export class Habit {
   @Field(() => String)
-  id: HabitDB['id'];
+  id: HabitDB["id"];
 
   @Field(() => String)
-  name: HabitDB['name'];
+  name: HabitDB["name"];
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  dueDate?: HabitDB['dueDate'];
+  dueDate?: HabitDB["dueDate"];
 
   @Field(() => Boolean)
-  isPaused: HabitDB['isPaused'];
+  isPaused: HabitDB["isPaused"];
 
   @Field(() => GraphQLISODateTime)
-  createdAt: HabitDB['createdAt'];
+  createdAt: HabitDB["createdAt"];
 
   @Field(() => GraphQLISODateTime)
-  updatedAt: HabitDB['updatedAt'];
+  updatedAt: HabitDB["updatedAt"];
 }

@@ -1,10 +1,11 @@
+import { useMutation } from "@apollo/client";
+
 import {
   CreateHabitDocument,
   CreateHabitInput,
   CreateHabitMutation,
   CreateHabitMutationVariables,
 } from "@/graphql/codegen/graphql";
-import { useMutation } from "@apollo/client";
 
 const useCreateHabit = () => {
   const [onCreateHabit, { data, loading, error }] = useMutation<

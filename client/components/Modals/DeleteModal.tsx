@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Button,
   Modal,
@@ -6,7 +8,6 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import React from "react";
 
 type Props = {
   isOpen: boolean;

@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { HabitTracking, Prisma } from '@prisma/client';
-import { PrismaService } from 'src/database/prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { HabitTracking, Prisma } from "@prisma/client";
+import { PrismaService } from "src/database/prisma/prisma.service";
 
 type GetHabitTrackingAgregateParams = {
   where?: Prisma.HabitTrackingWhereInput;

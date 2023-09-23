@@ -32,9 +32,14 @@ module.exports = {
             "pattern": "nest",
             "group": "external",
             "position": "before"
+          },
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
           }
         ],
-        "pathGroupsExcludedImportTypes": ["nest"],
+        "pathGroupsExcludedImportTypes": ["nest", "next", "react"],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",

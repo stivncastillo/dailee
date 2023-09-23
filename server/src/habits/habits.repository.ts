@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { Prisma, Habit } from '@prisma/client';
-import { PrismaService } from 'src/database/prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { Prisma, Habit } from "@prisma/client";
+import { PrismaService } from "src/database/prisma/prisma.service";
 
 @Injectable()
 export class HabitRepository {

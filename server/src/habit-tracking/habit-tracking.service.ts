@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 import {
   CreateHabitTrackingInput,
@@ -7,9 +7,9 @@ import {
   GetHabitTrackingsAggregateArgs,
   GetHabitTrackingsArgs,
   UpdateHabitTrackingInput,
-} from './dto';
-import { HabitTracking } from './entities/habit-tracking.entity';
-import { HabitTrackingRepository } from './habit-tracking.repository';
+} from "./dto";
+import { HabitTracking } from "./entities/habit-tracking.entity";
+import { HabitTrackingRepository } from "./habit-tracking.repository";
 
 @Injectable()
 export class HabitTrackingService {
@@ -35,19 +35,6 @@ export class HabitTrackingService {
   }
 
   public async getHabitTrackings(getHabitTrackingArgs: GetHabitTrackingsArgs) {
-    console.log(
-      await this.habitTrackingRepository.getHabitTrackingAgregate({
-        _sum: {
-          points: true,
-        },
-        where: {
-          date: {
-            gte: new Date('2023-09-21').toISOString(),
-            lte: new Date('2023-09-21').toISOString(),
-          },
-        },
-      }),
-    );
     return await this.habitTrackingRepository.getHabitTrackings({
       where: {
         date: {

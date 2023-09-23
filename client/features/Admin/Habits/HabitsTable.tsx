@@ -11,15 +11,16 @@ import {
   CircularProgress,
   useDisclosure,
 } from "@nextui-org/react";
-import { Habit } from "@/graphql/codegen/graphql";
-import { useHabitsContext } from "./HabitsContext";
-import HabitFormModal from "./components/HabitFormModal/HabitFormModal";
-import { ActionsCell } from "./components/Cells";
 import dayjs from "dayjs";
-import { DeleteModal } from "@/components/Modals";
-import { useDeleteHabit } from "./hooks";
+
 import BulkActions from "./components/BulkActions/BulkActions";
+import { ActionsCell } from "./components/Cells";
 import StatusCell from "./components/Cells/StatusCell";
+import HabitFormModal from "./components/HabitFormModal/HabitFormModal";
+import { useHabitsContext } from "./HabitsContext";
+import { useDeleteHabit } from "./hooks";
+import { DeleteModal } from "@/components/Modals";
+import { Habit } from "@/graphql/codegen/graphql";
 
 type HabitKey = keyof Habit;
 type ExtendedHabitKey = HabitKey | "actions";
@@ -69,7 +70,7 @@ export default function HabitsTable() {
         </div>
       </div>
     ),
-    [items.length, selectedKeys, onOpenHabitForm]
+    [items.length, selectedKeys, onOpenHabitForm],
   );
 
   const renderCell = React.useCallback(
@@ -77,7 +78,6 @@ export default function HabitsTable() {
       if (columnKey === "actions") {
         return (
           <ActionsCell
-            habit={habit}
             onDelete={() => {
               setHabitToDelete(habit);
               onOpenDeleteModal();
@@ -102,7 +102,7 @@ export default function HabitsTable() {
           return cellValue;
       }
     },
-    [onOpenHabitForm, setHabitToEdit, onOpenDeleteModal, setHabitToDelete]
+    [onOpenHabitForm, setHabitToEdit, onOpenDeleteModal, setHabitToDelete],
   );
 
   const handleDeleteHabit = React.useCallback(async () => {

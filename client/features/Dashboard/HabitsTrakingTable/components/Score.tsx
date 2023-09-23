@@ -1,5 +1,6 @@
-import { Rating } from "@/components/Rating";
 import React from "react";
+
+import { Rating } from "@/components/Rating";
 
 type Props = {
   value: number;

@@ -5,17 +5,19 @@ import React, {
   useMemo,
   useState,
 } from "react";
+
 import { useQuery } from "@apollo/client";
-import {
-  GetHabitTrackingsDocument,
-  GetHabitsDocument,
-} from "@/graphql/codegen/graphql";
+
 import {
   ColumnType,
   RowType,
   generateDataGrid,
   getCurrentWeek,
 } from "./utils/helpers";
+import {
+  GetHabitTrackingsDocument,
+  GetHabitsDocument,
+} from "@/graphql/codegen/graphql";
 
 export type HabitsTrackingContextType = {
   columns: ColumnType[];
@@ -48,7 +50,7 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
         dueDate: today,
       },
       fetchPolicy: "cache-and-network",
-    }
+    },
   );
 
   const { data: dataHabitTrackings, loading: loadingHabitTracking } = useQuery(
@@ -59,14 +61,14 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
         dateEnd: week[week.length - 1].date,
       },
       fetchPolicy: "cache-and-network",
-    }
+    },
   );
 
   useEffect(() => {
     if (dataHabits?.habits && dataHabits?.habits.length) {
       const { columns, rows } = generateDataGrid(
         dataHabits?.habits,
-        dataHabitTrackings?.habitTrackings ?? []
+        dataHabitTrackings?.habitTrackings ?? [],
       );
       setColumns(columns);
       setRows(rows);
@@ -90,7 +92,7 @@ const useHabitsTrackingContext = () => {
   const context = useContext(HabitsTrackingContext);
   if (context === undefined) {
     throw new Error(
-      "useHabitsTrackingContext must be used within a HabitsTrackingProvider"
+      "useHabitsTrackingContext must be used within a HabitsTrackingProvider",
     );
   }
   return context;

@@ -9,7 +9,7 @@ export const title = tv({
       success: "text-success-500",
       warning: "text-warning-500",
       danger: "text-danger-500",
-      foreground: "text-foreground"
+      foreground: "text-foreground",
     },
     size: {
       sm: "text-3xl lg:text-4xl",
@@ -22,7 +22,7 @@ export const title = tv({
   },
   defaultVariants: {
     size: "md",
-    color: "foreground"
+    color: "foreground",
   },
   compoundVariants: [
     {
@@ -32,7 +32,7 @@ export const title = tv({
         "success",
         "warning",
         "danger",
-        "foreground"
+        "foreground",
       ],
       class: "",
     },
@@ -46,7 +46,7 @@ export const subtitle = tv({
       true: "!w-full",
     },
   },
-  defaultVariants:{
-    fullWidth: true
-  }
+  defaultVariants: {
+    fullWidth: true,
+  },
 });

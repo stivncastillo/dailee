@@ -1,10 +1,9 @@
 import React from "react";
-import HabitsTrakingTable from "./HabitsTrakingTable";
+
 import { HabitsTrackingProvider } from "./HabitsTrackingContext";
+import HabitsTrakingTable from "./HabitsTrakingTable";
 
-type Props = {};
-
-const HabitsTrackingTableContainer = (props: Props) => {
+const HabitsTrackingTableContainer = () => {
   return (
     <HabitsTrackingProvider>
       <HabitsTrakingTable />

@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject } from "@nestjs/common";
 import {
   Resolver,
   Query,
@@ -6,9 +6,9 @@ import {
   Args,
   ResolveField,
   Parent,
-} from '@nestjs/graphql';
-import { HabitsService } from 'src/habits/habits.service';
-import { UserService } from 'src/user/user.service';
+} from "@nestjs/graphql";
+import { HabitsService } from "src/habits/habits.service";
+import { UserService } from "src/user/user.service";
 
 import {
   CreateHabitTrackingInput,
@@ -17,10 +17,10 @@ import {
   GetHabitTrackingsAggregateArgs,
   GetHabitTrackingsArgs,
   UpdateHabitTrackingInput,
-} from './dto';
-import { HabitTrackingAggregate } from './entities/habit-tracking-aggregate';
-import { HabitTracking } from './entities/habit-tracking.entity';
-import { HabitTrackingService } from './habit-tracking.service';
+} from "./dto";
+import { HabitTrackingAggregate } from "./entities/habit-tracking-aggregate";
+import { HabitTracking } from "./entities/habit-tracking.entity";
+import { HabitTrackingService } from "./habit-tracking.service";
 
 @Resolver(() => HabitTracking)
 export class HabitTrackingResolver {
@@ -33,12 +33,12 @@ export class HabitTrackingResolver {
   private readonly habitService: HabitsService;
 
   // Queries
-  @Query(() => [HabitTracking], { name: 'habitTrackings' })
+  @Query(() => [HabitTracking], { name: "habitTrackings" })
   getHabitTrackings(@Args() getHabitTrackingArgs: GetHabitTrackingsArgs) {
     return this.habitTrackingService.getHabitTrackings(getHabitTrackingArgs);
   }
 
-  @Query(() => HabitTracking, { name: 'habitTracking', nullable: false })
+  @Query(() => HabitTracking, { name: "habitTracking", nullable: false })
   getHabitTracking(
     @Args() getHabitTrackingArgs: GetHabitTrackingArgs,
   ): Promise<HabitTracking> {
@@ -46,8 +46,8 @@ export class HabitTrackingResolver {
   }
 
   @Query(() => HabitTrackingAggregate, {
-    name: 'habitTrackingsAggregate',
-    nullable: false,
+    name: "habitTrackingsAggregate",
+    nullable: true,
   })
   getHabitTrackingAggregate(
     @Args() getHabitTrackingsAggregateArgs: GetHabitTrackingsAggregateArgs,
@@ -60,7 +60,7 @@ export class HabitTrackingResolver {
   // Mutations
   @Mutation(() => HabitTracking)
   createHabitTracking(
-    @Args('createHabitTrackingInput')
+    @Args("createHabitTrackingInput")
     createHabitTrackingInput: CreateHabitTrackingInput,
   ) {
     return this.habitTrackingService.create(createHabitTrackingInput);
@@ -68,7 +68,7 @@ export class HabitTrackingResolver {
 
   @Mutation(() => HabitTracking)
   updateHabitTracking(
-    @Args('updateHabitTrackingInput')
+    @Args("updateHabitTrackingInput")
     updateHabitTrackingInput: UpdateHabitTrackingInput,
   ): Promise<HabitTracking> {
     return this.habitTrackingService.update(updateHabitTrackingInput);
@@ -76,7 +76,7 @@ export class HabitTrackingResolver {
 
   @Mutation(() => HabitTracking)
   removeHabitTracking(
-    @Args('deleteHabitTracking') deleteHabitTracking: DeleteHabitTrackingInput,
+    @Args("deleteHabitTracking") deleteHabitTracking: DeleteHabitTrackingInput,
   ): Promise<HabitTracking> {
     return this.habitTrackingService.deleteHabitTracking(deleteHabitTracking);
   }

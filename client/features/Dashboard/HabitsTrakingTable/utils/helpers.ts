@@ -1,31 +1,35 @@
-import { Habit, HabitTrackingFieldsFragment } from "@/graphql/codegen/graphql";
 import dayjs from "dayjs";
 
-const daysOfWeek = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+import { Habit, HabitTrackingFieldsFragment } from "@/graphql/codegen/graphql";
+
+const daysOfWeek = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 export type RowType = {
-  key: string,
-  habits: string,
-  mon: number,
-  tue: number,
-  wed: number,
-  thu: number,
-  fri: number,
-  sat: number,
-  sun: number,
-  habitItem: Habit
-}
+  key: string;
+  habits: string;
+  mon: number;
+  tue: number;
+  wed: number;
+  thu: number;
+  fri: number;
+  sat: number;
+  sun: number;
+  habitItem: Habit;
+};
 
-export type ColumnType = {key: string, label: string, date?: string}
+export type ColumnType = { key: string; label: string; date?: string };
 
-export function generateDataGrid(habits: Habit[], trackings: HabitTrackingFieldsFragment[]): {columns: ColumnType[], rows: RowType[]} {
+export function generateDataGrid(
+  habits: Habit[],
+  trackings: HabitTrackingFieldsFragment[],
+): { columns: ColumnType[]; rows: RowType[] } {
   const columns = getColumns();
   const rows: any[] = [];
   habits.forEach((habit, index) => {
     const row = {
       key: (index + 1).toString(),
       habits: habit.name,
-      habitItem: habit
+      habitItem: habit,
     };
     columns
       .filter((column) => column.key !== "habits")
@@ -49,10 +53,14 @@ export function generateDataGrid(habits: Habit[], trackings: HabitTrackingFields
 export const getColumns = (): ColumnType[] => {
   const weekDays = getCurrentWeek();
   return [
-    {key: 'habits', label: 'Habits'},
-    ...weekDays.map(day => ({key: day.day, label: day.day, date: day.date}))
-  ]
-}
+    { key: "habits", label: "Habits" },
+    ...weekDays.map((day) => ({
+      key: day.day,
+      label: day.day,
+      date: day.date,
+    })),
+  ];
+};
 
 export function getCurrentWeek(): { day: string; date: string }[] {
   const today = new Date();
@@ -64,10 +72,9 @@ export function getCurrentWeek(): { day: string; date: string }[] {
     date.setDate(today.getDate() + i - currentDayOfWeek + 1); // Start from Monday
 
     const dayOfWeek = daysOfWeek[i];
-    const formattedDate = date.toISOString().split('T')[0]; // Get the date in "YYYY-MM-DD" format
+    const formattedDate = date.toISOString().split("T")[0]; // Get the date in "YYYY-MM-DD" format
 
     currentWeek.push({ day: dayOfWeek, date: formattedDate });
-
   }
 
   return currentWeek;

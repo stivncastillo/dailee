@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { Injectable } from "@nestjs/common";
+import { v4 as uuidv4 } from "uuid";
 
-import { CreateUserInput } from './dto/create-user.input';
-import { GetUserArgs } from './dto/get-user.args';
-import { UpdateUserInput } from './dto/update-user.input';
-import { User } from './entities/user.entity';
-import { UserRepository } from './user.repository';
+import { CreateUserInput } from "./dto/create-user.input";
+import { GetUserArgs } from "./dto/get-user.args";
+import { User } from "./entities/user.entity";
+import { UserRepository } from "./user.repository";
 
 @Injectable()
 export class UserService {
@@ -36,7 +35,7 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
+  update(id: number) {
     return `This action updates a #${id} user`;
   }
 

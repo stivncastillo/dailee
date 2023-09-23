@@ -1,5 +1,5 @@
-import { VerticalDotsIcon } from "@/components/icons";
-import { Habit } from "@/graphql/codegen/graphql";
+import React from "react";
+
 import {
   Button,
   Dropdown,
@@ -7,15 +7,15 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import React from "react";
+
+import { VerticalDotsIcon } from "@/components/icons";
 
 type Props = {
-  habit: Habit;
   onEdit: () => void;
   onDelete: () => void;
 };
 
-const ActionsCell = ({ habit, onEdit, onDelete }: Props) => {
+const ActionsCell = ({ onEdit, onDelete }: Props) => {
   return (
     <div className="relative flex justify-center items-center gap-2">
       <Dropdown>

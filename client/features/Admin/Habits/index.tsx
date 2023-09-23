@@ -1,10 +1,9 @@
 import React from "react";
-import HabitsTable from "./HabitsTable";
+
 import { HabitsProvider } from "./HabitsContext";
+import HabitsTable from "./HabitsTable";
 
-type Props = {};
-
-const HabitsTableContainer = (props: Props) => {
+const HabitsTableContainer = () => {
   return (
     <HabitsProvider>
       <HabitsTable />

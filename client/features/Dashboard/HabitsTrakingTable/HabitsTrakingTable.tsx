@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+
 import { Tooltip } from "@nextui-org/react";
 import {
   Table,
@@ -9,11 +10,12 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
-import { useHabitsTrackingContext } from "./HabitsTrackingContext";
-import { RowType, getCurrentWeek } from "./utils/helpers";
-import Score from "./components/Score";
-import useCreateHabitTracking from "./hooks/useCreateHabitTracking";
 import dayjs from "dayjs";
+
+import Score from "./components/Score";
+import { useHabitsTrackingContext } from "./HabitsTrackingContext";
+import useCreateHabitTracking from "./hooks/useCreateHabitTracking";
+import { RowType, getCurrentWeek } from "./utils/helpers";
 
 type RowTypeKey = keyof RowType;
 
@@ -41,7 +43,7 @@ const HabitsTrakingTable = () => {
         />
       );
     },
-    [columns, createHabitTracking]
+    [columns, createHabitTracking],
   );
 
   const topContent = React.useMemo(
@@ -55,7 +57,7 @@ const HabitsTrakingTable = () => {
         </div>
       </div>
     ),
-    [week]
+    [week],
   );
 
   return (

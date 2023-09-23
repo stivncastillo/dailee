@@ -1,5 +1,5 @@
-import { InputType, Int, Field, GraphQLISODateTime } from '@nestjs/graphql';
-import { IsNotEmpty } from 'class-validator';
+import { InputType, Int, Field, GraphQLISODateTime } from "@nestjs/graphql";
+import { IsNotEmpty } from "class-validator";
 
 @InputType()
 export class CreateHabitTrackingInput {

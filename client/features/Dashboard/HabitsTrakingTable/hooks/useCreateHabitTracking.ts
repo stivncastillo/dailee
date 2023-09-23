@@ -1,10 +1,11 @@
+import { useMutation } from "@apollo/client";
+
 import {
   CreateHabitTrackingInput,
   UpsertHabitTrackingDocument,
   UpsertHabitTrackingMutation,
   UpsertHabitTrackingMutationVariables,
 } from "@/graphql/codegen/graphql";
-import { useMutation } from "@apollo/client";
 
 const useCreateHabitTracking = () => {
   const [onCreate, { data, loading, error }] = useMutation<
@@ -16,14 +17,17 @@ const useCreateHabitTracking = () => {
     points,
     date,
     habitId,
-  }: Pick<CreateHabitTrackingInput, 'habitId' | 'points' | 'date'>): Promise<void> => {
+  }: Pick<
+    CreateHabitTrackingInput,
+    "habitId" | "points" | "date"
+  >): Promise<void> => {
     await onCreate({
       variables: {
         createInput: {
           habitId,
           points,
           date,
-          userId: "2102d189-3591-4b3b-9bc4-d6f0cc72510c"
+          userId: "2102d189-3591-4b3b-9bc4-d6f0cc72510c",
         },
       },
     });

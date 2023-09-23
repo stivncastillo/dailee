@@ -1,10 +1,12 @@
+import React, { createContext, useContext, useMemo } from "react";
+
+import { useQuery } from "@apollo/client";
+
+import { getCurrentWeek } from "../HabitsTrakingTable/utils/helpers";
 import {
   GetHabitTrackingAggregateDocument,
   HabitTrackingAggregate,
 } from "@/graphql/codegen/graphql";
-import React, { createContext, useContext, useMemo } from "react";
-import { useQuery } from "@apollo/client";
-import { getCurrentWeek } from "../HabitsTrakingTable/utils/helpers";
 
 export type OverviewCardContextType = {
   dailyStats: HabitTrackingAggregate | null;
@@ -37,7 +39,7 @@ const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
         dateStart: today.toISOString().split("T")[0],
         dateEnd: today.toISOString().split("T")[0],
       },
-    }
+    },
   );
 
   const { data: weeklyStatsData, loading: weeklyStatsLoading } = useQuery(
@@ -48,7 +50,7 @@ const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
         dateStart: week[0].date,
         dateEnd: week[week.length - 1].date,
       },
-    }
+    },
   );
 
   return (
@@ -69,7 +71,7 @@ const useOverviewCardContext = () => {
   const context = useContext(OverviewCardContext);
   if (context === undefined) {
     throw new Error(
-      "useOverviewCardContext must be used within a OverviewCardProvider"
+      "useOverviewCardContext must be used within a OverviewCardProvider",
     );
   }
   return context;

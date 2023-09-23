@@ -1,7 +1,7 @@
-import { ObjectType, Field, Float } from '@nestjs/graphql';
+import { ObjectType, Field, Float } from "@nestjs/graphql";
 
 @ObjectType()
 export class HabitTrackingAvgAggregate {
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   points: number;
 }

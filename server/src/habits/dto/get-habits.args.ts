@@ -1,5 +1,5 @@
-import { ArgsType, Field, GraphQLISODateTime } from '@nestjs/graphql';
-import { IsBoolean } from 'class-validator';
+import { ArgsType, Field, GraphQLISODateTime } from "@nestjs/graphql";
+import { IsBoolean } from "class-validator";
 
 @ArgsType()
 export class GetHabitsArgs {

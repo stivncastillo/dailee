@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Button,
   Modal,
@@ -10,6 +11,7 @@ import {
   Switch,
 } from "@nextui-org/react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
 import { useHabitsContext } from "../../HabitsContext";
 import { useCreateHabit, useUpdateHabit } from "../../hooks/";
 
