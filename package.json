@@ -5,9 +5,15 @@
   "author": "Stiven Castillo",
   "license": "MIT",
   "private": true,
-  "workspaces": ["client", "server"],
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "server:dev": "yarn workspace server start:dev",
     "client:dev": "yarn workspace client dev"
-}
+  },
+  "prisma": {
+    "schema": "./server/prisma/schema.prisma"
+  }
 }

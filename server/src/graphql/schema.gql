@@ -42,6 +42,25 @@ type HabitTracking {
   userId: User!
 }
 
+type TasksComplexity {
+  id: String!
+  name: String!
+  points: Int
+}
+
+type Task {
+  id: String!
+  title: String!
+  status: String!
+  dueDate: DateTime
+  points: Int
+  userId: User!
+  complexId: TasksComplexity!
+  completedDate: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   habits(isPaused: Boolean, dueDate: DateTime): [Habit!]!
   habit(id: String!): Habit!
@@ -49,6 +68,8 @@ type Query {
   habitTracking(id: Float!): HabitTracking!
   habitTrackingsAggregate(dateStart: DateTime, dateEnd: DateTime): HabitTrackingAggregate
   user(id: Int!): User!
+  tasks: [Task!]!
+  task(id: Int!): Task!
 }
 
 type Mutation {
@@ -62,6 +83,9 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  removeTask(id: Int!): Task!
 }
 
 input CreateHabitInput {
@@ -115,5 +139,26 @@ input CreateUserInput {
 input UpdateUserInput {
   """Name of habit"""
   name: String
+  id: Int!
+}
+
+input CreateTaskInput {
+  title: String!
+  points: Int
+  status: String! = "todo"
+  dueDate: DateTime
+  userId: String!
+  complexId: Int!
+  completedDate: DateTime
+}
+
+input UpdateTaskInput {
+  title: String
+  points: Int
+  status: String = "todo"
+  dueDate: DateTime
+  userId: String
+  complexId: Int
+  completedDate: DateTime
   id: Int!
 }

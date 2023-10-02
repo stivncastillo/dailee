@@ -77,12 +77,12 @@ export type HabitTrackingAggregate = {
 
 export type HabitTrackingAvgAggregate = {
   __typename?: 'HabitTrackingAvgAggregate';
-  points: Scalars['Float']['output'];
+  points?: Maybe<Scalars['Float']['output']>;
 };
 
 export type HabitTrackingSumAggregate = {
   __typename?: 'HabitTrackingSumAggregate';
-  points: Scalars['Int']['output'];
+  points?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Mutation = {
@@ -154,7 +154,7 @@ export type Query = {
   habit: Habit;
   habitTracking: HabitTracking;
   habitTrackings: Array<HabitTracking>;
-  habitTrackingsAggregate: HabitTrackingAggregate;
+  habitTrackingsAggregate?: Maybe<HabitTrackingAggregate>;
   habits: Array<Habit>;
   user: User;
 };
@@ -280,7 +280,7 @@ export type GetHabitTrackingAggregateQueryVariables = Exact<{
 }>;
 
 
-export type GetHabitTrackingAggregateQuery = { __typename?: 'Query', habitTrackingsAggregate: { __typename?: 'HabitTrackingAggregate', _avg?: { __typename?: 'HabitTrackingAvgAggregate', points: number } | null, _sum?: { __typename?: 'HabitTrackingSumAggregate', points: number } | null } };
+export type GetHabitTrackingAggregateQuery = { __typename?: 'Query', habitTrackingsAggregate?: { __typename?: 'HabitTrackingAggregate', _avg?: { __typename?: 'HabitTrackingAvgAggregate', points?: number | null } | null, _sum?: { __typename?: 'HabitTrackingSumAggregate', points?: number | null } | null } | null };
 
 export const HabitFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"HabitFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Habit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"isPaused"}},{"kind":"Field","name":{"kind":"Name","value":"dueDate"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<HabitFieldsFragment, unknown>;
 export const HabitTrackingFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"HabitTrackingFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"HabitTracking"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"habitId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"HabitFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"HabitFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Habit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"isPaused"}},{"kind":"Field","name":{"kind":"Name","value":"dueDate"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<HabitTrackingFieldsFragment, unknown>;

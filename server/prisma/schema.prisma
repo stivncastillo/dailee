@@ -47,18 +47,20 @@ model Task {
   userId String
   user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   complexId Int?
-  complex Complexities? @relation(fields: [complexId], references: [id], onUpdate: SetNull, onDelete: SetNull)
+  points Int?
+  status String?
+  complexity TasksComplexities? @relation(fields: [complexId], references: [id], onUpdate: SetNull, onDelete: SetNull)
   completedDate DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("task")
-
 }
 
-model Complexities {
+model TasksComplexities {
   id Int @id @default(autoincrement())
   name String
+  points Int?
   tasks Task[]
-  @@map("complexities")
+  @@map("task_complexities")
 
 }
