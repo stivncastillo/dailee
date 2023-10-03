@@ -16,13 +16,13 @@ services:
       - '5432:5432'
     expose:
       - 5432
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-     - PGADMIN_DEFAULT_EMAIL=root@admin.com
-     - PGADMIN_DEFAULT_PASSWORD=root
-    ports:
-      - "5050:80"
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #    - PGADMIN_DEFAULT_EMAIL=root@admin.com
+  #    - PGADMIN_DEFAULT_PASSWORD=root
+  #   ports:
+  #     - "5050:80"
 volumes:
   postgres:
     driver: local

@@ -4,15 +4,15 @@ import {
   Query,
   Mutation,
   Args,
-  Int,
   ResolveField,
   Parent,
 } from "@nestjs/graphql";
 import { UserService } from "src/models/user/user.service";
 
-import { CreateTaskInput } from "./dto/create-task.input";
-import { GetTasksArgs } from "./dto/get-tasks.args";
-import { UpdateTaskInput } from "./dto/update-task.input";
+import { GetTaskArgs } from "./dto/args/get-task.args";
+import { GetTasksArgs } from "./dto/args/get-tasks.args";
+import { CreateTaskInput } from "./dto/input/create-task.input";
+import { UpdateTaskInput } from "./dto/input/update-task.input";
 import { Task } from "./entities/task.entity";
 import { TasksService } from "./tasks.service";
 
@@ -23,46 +23,40 @@ export class TasksResolver {
   @Inject(UserService)
   private readonly userService: UserService;
 
+  // Queries
   @Query(() => [Task], { name: "tasks", nullable: false })
   getTasks(@Args() getTaskArgs: GetTasksArgs): Promise<Task[]> {
-    console.log(
-      "👻 ~ file: tasks.resolver.ts:28 ~ TasksResolver ~ getTasks ~ getTaskArgs:",
-      getTaskArgs,
-    );
-    return this.tasksService.getTasks(getTaskArgs);
+    return this.tasksService.getMany(getTaskArgs);
   }
 
+  @Query(() => Task, { name: "task", nullable: false })
+  getTask(@Args() getTaskArgs: GetTaskArgs): Promise<Task> {
+    return this.tasksService.getOne(getTaskArgs);
+  }
+
+  // Mutations
   @Mutation(() => Task)
   createTask(@Args("createTaskInput") createTaskInput: CreateTaskInput) {
     return this.tasksService.create(createTaskInput);
   }
 
-  // @Query(() => [Task], { name: "tasks" })
-  // findAll() {
-  //   return this.tasksService.findAll();
-  // }
-
-  @Query(() => Task, { name: "task" })
-  findOne(@Args("id", { type: () => Int }) id: number) {
-    return this.tasksService.findOne(id);
-  }
-
   @Mutation(() => Task)
   updateTask(@Args("updateTaskInput") updateTaskInput: UpdateTaskInput) {
-    return this.tasksService.update(updateTaskInput.id, updateTaskInput);
+    return this.tasksService.update(updateTaskInput);
   }
 
   @Mutation(() => Task)
-  removeTask(@Args("id", { type: () => Int }) id: number) {
-    return this.tasksService.remove(id);
+  deleteTask(@Args() getTaskArgs: GetTaskArgs) {
+    return this.tasksService.delete(getTaskArgs);
   }
 
   // Resolvers
   @ResolveField()
   async userId(@Parent() task: Task) {
     const { userId } = task;
-    return this.userService.getUser({ id: userId });
+    return this.userService.getOne({ id: userId });
   }
+
   @ResolveField()
   async complexId(@Parent() task: Task) {
     const { complexId } = task;

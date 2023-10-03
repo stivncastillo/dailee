@@ -11,7 +11,7 @@ export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   public async create(createHabitData: CreateUserInput): Promise<User> {
-    const user = await this.userRepository.createUser({
+    const user = await this.userRepository.create({
       data: {
         id: uuidv4(),
         ...createHabitData,
@@ -21,8 +21,8 @@ export class UserService {
     return user;
   }
 
-  public async getUser(getUserArgs: GetUserArgs) {
-    return await this.userRepository.getUser({
+  public async getOne(getUserArgs: GetUserArgs) {
+    return await this.userRepository.getOne({
       where: { id: getUserArgs.id },
     });
   }

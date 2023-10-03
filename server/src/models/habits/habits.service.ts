@@ -14,8 +14,27 @@ import { HabitRepository } from "./habits.repository";
 export class HabitsService {
   constructor(private habitRepository: HabitRepository) {}
 
+  public async getMany(getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
+    const orDueDate = {
+      OR: [{ dueDate: null }, { dueDate: { gte: getHabitsArgs.dueDate } }],
+    };
+
+    return await this.habitRepository.getMany({
+      where: {
+        isPaused: getHabitsArgs.isPaused,
+        ...(getHabitsArgs.dueDate ? orDueDate : {}),
+      },
+    });
+  }
+
+  public async getOne(getHabitArgs: GetHabitArgs) {
+    return await this.habitRepository.getOne({
+      where: { id: getHabitArgs.id },
+    });
+  }
+
   public async create(createHabitData: CreateHabitInput): Promise<Habit> {
-    const habit = await this.habitRepository.createHabit({
+    const habit = await this.habitRepository.create({
       data: {
         id: uuidv4(),
         ...createHabitData,
@@ -25,27 +44,8 @@ export class HabitsService {
     return habit;
   }
 
-  public async getHabits(getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
-    const orDueDate = {
-      OR: [{ dueDate: null }, { dueDate: { gte: getHabitsArgs.dueDate } }],
-    };
-
-    return await this.habitRepository.getHabits({
-      where: {
-        isPaused: getHabitsArgs.isPaused,
-        ...(getHabitsArgs.dueDate ? orDueDate : {}),
-      },
-    });
-  }
-
-  public async getHabit(getHabitArgs: GetHabitArgs) {
-    return await this.habitRepository.getHabit({
-      where: { id: getHabitArgs.id },
-    });
-  }
-
   public async update(updateHabitData: UpdateHabitInput) {
-    const review = await this.habitRepository.updateReview({
+    const review = await this.habitRepository.update({
       where: { id: updateHabitData.id },
       data: updateHabitData,
     });
@@ -53,18 +53,16 @@ export class HabitsService {
     return review;
   }
 
-  public async deleteHabit(deleteHabitData: DeleteHabitInput): Promise<Habit> {
-    const review = await this.habitRepository.deleteHabit({
+  public async delete(deleteHabitData: DeleteHabitInput): Promise<Habit> {
+    const review = await this.habitRepository.delete({
       where: { id: deleteHabitData.id },
     });
 
     return review;
   }
 
-  public async deleteHabits(
-    deleteHabitData: DeleteHabitsInput,
-  ): Promise<number> {
-    const { count } = await this.habitRepository.deleteHabits({
+  public async deleteMany(deleteHabitData: DeleteHabitsInput): Promise<number> {
+    const { count } = await this.habitRepository.deleteMany({
       where: {
         id: {
           in: deleteHabitData.ids,

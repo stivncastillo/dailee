@@ -6,14 +6,14 @@ import { PrismaService } from "src/common/database/prisma/prisma.service";
 export class HabitRepository {
   constructor(private prisma: PrismaService) {}
 
-  async getHabit(params: {
+  async getOne(params: {
     where?: Prisma.HabitWhereUniqueInput;
   }): Promise<Habit> {
     const { where } = params;
     return this.prisma.habit.findUnique({ where });
   }
 
-  async getHabits(params: {
+  async getMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.HabitWhereUniqueInput;
@@ -24,12 +24,12 @@ export class HabitRepository {
     return this.prisma.habit.findMany({ skip, take, cursor, where, orderBy });
   }
 
-  async createHabit(params: { data: Prisma.HabitCreateInput }): Promise<Habit> {
+  async create(params: { data: Prisma.HabitCreateInput }): Promise<Habit> {
     const { data } = params;
     return this.prisma.habit.create({ data });
   }
 
-  async updateReview(params: {
+  async update(params: {
     where: Prisma.HabitWhereUniqueInput;
     data: Prisma.HabitUpdateInput;
   }): Promise<Habit> {
@@ -37,14 +37,14 @@ export class HabitRepository {
     return this.prisma.habit.update({ where, data });
   }
 
-  async deleteHabit(params: {
+  async delete(params: {
     where: Prisma.HabitWhereUniqueInput;
   }): Promise<Habit> {
     const { where } = params;
     return this.prisma.habit.delete({ where });
   }
 
-  async deleteHabits(params: {
+  async deleteMany(params: {
     where: Prisma.HabitWhereInput;
   }): Promise<Prisma.BatchPayload> {
     const { where } = params;

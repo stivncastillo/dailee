@@ -85,12 +85,12 @@ export class HabitTrackingResolver {
   @ResolveField()
   async userId(@Parent() habitTracking: HabitTracking) {
     const { userId } = habitTracking;
-    return this.userService.getUser({ id: userId });
+    return this.userService.getOne({ id: userId });
   }
 
   @ResolveField()
   async habitId(@Parent() habitTracking: HabitTracking) {
     const { habitId } = habitTracking;
-    return this.habitService.getHabit({ id: habitId });
+    return this.habitService.getOne({ id: habitId });
   }
 }

@@ -13,16 +13,18 @@ import { HabitsService } from "./habits.service";
 export class HabitsResolver {
   constructor(private readonly habitsService: HabitsService) {}
 
+  // Queries
   @Query(() => [Habit], { name: "habits", nullable: false })
   getHabits(@Args() getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
-    return this.habitsService.getHabits(getHabitsArgs);
+    return this.habitsService.getMany(getHabitsArgs);
   }
 
   @Query(() => Habit, { name: "habit", nullable: false })
   getHabit(@Args() getHabitArgs: GetHabitArgs): Promise<Habit> {
-    return this.habitsService.getHabit(getHabitArgs);
+    return this.habitsService.getOne(getHabitArgs);
   }
 
+  // Mutations
   @Mutation(() => Habit)
   createHabit(
     @Args("createHabitInput") createHabitInput: CreateHabitInput,
@@ -39,13 +41,13 @@ export class HabitsResolver {
   async deleteHabit(
     @Args("deleteHabitInput") deleteHabitInput: DeleteHabitInput,
   ): Promise<Habit> {
-    return this.habitsService.deleteHabit(deleteHabitInput);
+    return this.habitsService.delete(deleteHabitInput);
   }
 
   @Mutation(() => Number)
   async deleteHabits(
     @Args("deleteHabitsInput") deleteHabitsInput: DeleteHabitsInput,
   ): Promise<number> {
-    return await this.habitsService.deleteHabits(deleteHabitsInput);
+    return await this.habitsService.deleteMany(deleteHabitsInput);
   }
 }

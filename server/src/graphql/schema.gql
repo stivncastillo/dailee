@@ -67,9 +67,103 @@ type Query {
   habitTrackings(dateStart: DateTime, dateEnd: DateTime): [HabitTracking!]!
   habitTracking(id: Float!): HabitTracking!
   habitTrackingsAggregate(dateStart: DateTime, dateEnd: DateTime): HabitTrackingAggregate
-  user(id: Int!): User!
-  tasks(status: [String!], complexId: Int): [Task!]!
-  task(id: Int!): Task!
+  user(id: String!): User!
+  tasks(where: TaskWhereInput, orderBy: [TaskOrderByWithRelationInput!], cursor: TaskWhereUniqueInput, take: Float, skip: Float): [Task!]!
+  task(where: TaskWhereUniqueInput): Task!
+}
+
+input TaskWhereInput {
+  id: StringFilter
+  title: StringFilter
+  complexId: IntFilter
+  userId: StringFilter
+  status: StringFilter
+  points: IntFilter
+  dueDate: DateTimeFilter
+  completedDate: DateTimeFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  complexity: TasksComplexitiesRelationFilter
+  AND: [TaskWhereInput!]
+  OR: [TaskWhereInput!]
+  NOT: [TaskWhereInput!]
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+  mode: QueryMode
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input IntFilter {
+  equals: Float
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+}
+
+input DateTimeFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+}
+
+input TasksComplexitiesRelationFilter {
+  is: TasksComplexitiesWhereInput
+  isNot: TasksComplexitiesWhereInput
+}
+
+input TasksComplexitiesWhereInput {
+  id: IntFilter
+  points: IntFilter
+  name: StringFilter
+  AND: [TasksComplexitiesWhereInput!]
+  OR: [TasksComplexitiesWhereInput!]
+  NOT: [TasksComplexitiesWhereInput!]
+}
+
+input TaskOrderByWithRelationInput {
+  id: SortOrder
+  title: SortOrder
+  points: SortOrder
+  dueDate: SortOrder
+  status: SortOrder
+  completedDate: SortOrder
+  createdAt: SortOrder
+  complexity: TasksComplexitiesOrderByWithRelationInput
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input TasksComplexitiesOrderByWithRelationInput {
+  name: SortOrder
+  points: SortOrder
+}
+
+input TaskWhereUniqueInput {
+  id: String
 }
 
 type Mutation {
@@ -85,7 +179,7 @@ type Mutation {
   removeUser(id: Int!): User!
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
-  removeTask(id: Int!): Task!
+  deleteTask(where: TaskWhereUniqueInput): Task!
 }
 
 input CreateHabitInput {
@@ -160,5 +254,5 @@ input UpdateTaskInput {
   userId: String
   complexId: Int
   completedDate: DateTime
-  id: Int!
+  id: String!
 }

@@ -20,6 +20,7 @@ export class CreateTaskInput {
   @Field(() => Int, { nullable: true })
   @Max(5)
   @Min(0)
+  @IsOptional()
   points?: number;
 
   @Field(() => String, { defaultValue: todoStatus })
