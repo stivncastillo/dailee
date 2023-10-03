@@ -2,12 +2,15 @@ import { join } from "path";
 
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
 import { GraphQLError } from "graphql";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { PrismaModule } from "./common/database/prisma/prisma.module";
+import configuration from "./config/configuration";
+import { validate } from "./config/validation";
 import { HabitTrackingModule } from "./models/habit-tracking/habit-tracking.module";
 import { HabitsModule } from "./models/habits/habits.module";
 import { TasksModule } from "./models/tasks/tasks.module";
@@ -15,6 +18,12 @@ import { UserModule } from "./models/user/user.module";
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+      load: [configuration],
+      validate,
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), "src/graphql/schema.gql"),
