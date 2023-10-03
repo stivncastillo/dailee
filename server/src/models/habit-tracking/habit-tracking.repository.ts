@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { HabitTracking, Prisma } from "@prisma/client";
-import { PrismaService } from "src/database/prisma/prisma.service";
+import { PrismaService } from "src/common/database/prisma/prisma.service";
 
 type GetHabitTrackingAgregateParams = {
   where?: Prisma.HabitTrackingWhereInput;
@@ -11,14 +11,14 @@ type GetHabitTrackingAgregateParams = {
 export class HabitTrackingRepository {
   constructor(private prisma: PrismaService) {}
 
-  async getHabitTracking(params: {
+  async getOne(params: {
     where?: Prisma.HabitTrackingWhereUniqueInput;
   }): Promise<HabitTracking> {
     const { where } = params;
     return this.prisma.habitTracking.findUnique({ where });
   }
 
-  async getHabitTrackings(params: {
+  async getMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.HabitTrackingWhereUniqueInput;
@@ -35,7 +35,7 @@ export class HabitTrackingRepository {
     });
   }
 
-  async createHabitTracking(params: {
+  async create(params: {
     data: Prisma.HabitTrackingUncheckedCreateInput;
   }): Promise<HabitTracking> {
     const { data } = params;
@@ -47,12 +47,12 @@ export class HabitTrackingRepository {
     });
 
     if (ht) {
-      return this.updateHabitTracking({ where: { id: ht.id }, data });
+      return this.update({ where: { id: ht.id }, data });
     }
     return this.prisma.habitTracking.create({ data });
   }
 
-  async updateHabitTracking(params: {
+  async update(params: {
     where: Prisma.HabitTrackingWhereUniqueInput;
     data: Prisma.HabitTrackingUpdateInput;
   }): Promise<HabitTracking> {
@@ -60,14 +60,14 @@ export class HabitTrackingRepository {
     return this.prisma.habitTracking.update({ where, data });
   }
 
-  async deleteHabitTracking(params: {
+  async delete(params: {
     where: Prisma.HabitTrackingWhereUniqueInput;
   }): Promise<HabitTracking> {
     const { where } = params;
     return this.prisma.habitTracking.delete({ where });
   }
 
-  async getHabitTrackingAgregate(
+  async getManyAggregate(
     params: GetHabitTrackingAgregateParams,
   ): Promise<
     Prisma.GetHabitTrackingAggregateType<GetHabitTrackingAgregateParams>

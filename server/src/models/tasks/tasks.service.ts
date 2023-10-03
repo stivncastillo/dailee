@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { CreateTaskInput } from "./dto/create-task.input";
 import { GetTaskComplexityArgs } from "./dto/get-task-complexity.args";
+import { GetTasksArgs } from "./dto/get-tasks.args";
 import { UpdateTaskInput } from "./dto/update-task.input";
 import { TasksComplexity } from "./entities/task-complexity.entity";
 import { TaskRepository } from "./tasks.repository";
@@ -21,6 +22,29 @@ export class TasksService {
     });
 
     return habit;
+  }
+
+  public async getTasks(getTasksArgs: GetTasksArgs): Promise<Task[]> {
+    console.log(
+      "👻 ~ file: tasks.service.ts:28 ~ TasksService ~ getTasks ~ getTasksArgs:",
+      getTasksArgs,
+    );
+    return await this.taskRepository.getTasks({
+      where: {
+        ...(getTasksArgs.status
+          ? {
+              status: {
+                in: getTasksArgs.status,
+              },
+            }
+          : {}),
+      },
+      orderBy: {
+        complexity: {
+          name: "asc",
+        },
+      },
+    });
   }
 
   // Complex

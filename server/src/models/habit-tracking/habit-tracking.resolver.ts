@@ -7,8 +7,8 @@ import {
   ResolveField,
   Parent,
 } from "@nestjs/graphql";
-import { HabitsService } from "src/habits/habits.service";
-import { UserService } from "src/user/user.service";
+import { HabitsService } from "src/models/habits/habits.service";
+import { UserService } from "src/models/user/user.service";
 
 import {
   CreateHabitTrackingInput,
@@ -35,14 +35,14 @@ export class HabitTrackingResolver {
   // Queries
   @Query(() => [HabitTracking], { name: "habitTrackings" })
   getHabitTrackings(@Args() getHabitTrackingArgs: GetHabitTrackingsArgs) {
-    return this.habitTrackingService.getHabitTrackings(getHabitTrackingArgs);
+    return this.habitTrackingService.getMany(getHabitTrackingArgs);
   }
 
   @Query(() => HabitTracking, { name: "habitTracking", nullable: false })
   getHabitTracking(
     @Args() getHabitTrackingArgs: GetHabitTrackingArgs,
   ): Promise<HabitTracking> {
-    return this.habitTrackingService.getHabitTracking(getHabitTrackingArgs);
+    return this.habitTrackingService.getOne(getHabitTrackingArgs);
   }
 
   @Query(() => HabitTrackingAggregate, {
@@ -52,7 +52,7 @@ export class HabitTrackingResolver {
   getHabitTrackingAggregate(
     @Args() getHabitTrackingsAggregateArgs: GetHabitTrackingsAggregateArgs,
   ) {
-    return this.habitTrackingService.getSumPointsByDateRange(
+    return this.habitTrackingService.getManyAggregate(
       getHabitTrackingsAggregateArgs,
     );
   }
@@ -78,7 +78,7 @@ export class HabitTrackingResolver {
   removeHabitTracking(
     @Args("deleteHabitTracking") deleteHabitTracking: DeleteHabitTrackingInput,
   ): Promise<HabitTracking> {
-    return this.habitTrackingService.deleteHabitTracking(deleteHabitTracking);
+    return this.habitTrackingService.delete(deleteHabitTracking);
   }
 
   // Resolvers

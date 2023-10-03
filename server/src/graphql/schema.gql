@@ -68,7 +68,7 @@ type Query {
   habitTracking(id: Float!): HabitTracking!
   habitTrackingsAggregate(dateStart: DateTime, dateEnd: DateTime): HabitTrackingAggregate
   user(id: Int!): User!
-  tasks: [Task!]!
+  tasks(status: [String!], complexId: Int): [Task!]!
   task(id: Int!): Task!
 }
 

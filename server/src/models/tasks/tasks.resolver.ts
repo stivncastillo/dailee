@@ -8,9 +8,10 @@ import {
   ResolveField,
   Parent,
 } from "@nestjs/graphql";
-import { UserService } from "src/user/user.service";
+import { UserService } from "src/models/user/user.service";
 
 import { CreateTaskInput } from "./dto/create-task.input";
+import { GetTasksArgs } from "./dto/get-tasks.args";
 import { UpdateTaskInput } from "./dto/update-task.input";
 import { Task } from "./entities/task.entity";
 import { TasksService } from "./tasks.service";
@@ -22,15 +23,24 @@ export class TasksResolver {
   @Inject(UserService)
   private readonly userService: UserService;
 
+  @Query(() => [Task], { name: "tasks", nullable: false })
+  getTasks(@Args() getTaskArgs: GetTasksArgs): Promise<Task[]> {
+    console.log(
+      "👻 ~ file: tasks.resolver.ts:28 ~ TasksResolver ~ getTasks ~ getTaskArgs:",
+      getTaskArgs,
+    );
+    return this.tasksService.getTasks(getTaskArgs);
+  }
+
   @Mutation(() => Task)
   createTask(@Args("createTaskInput") createTaskInput: CreateTaskInput) {
     return this.tasksService.create(createTaskInput);
   }
 
-  @Query(() => [Task], { name: "tasks" })
-  findAll() {
-    return this.tasksService.findAll();
-  }
+  // @Query(() => [Task], { name: "tasks" })
+  // findAll() {
+  //   return this.tasksService.findAll();
+  // }
 
   @Query(() => Task, { name: "task" })
   findOne(@Args("id", { type: () => Int }) id: number) {

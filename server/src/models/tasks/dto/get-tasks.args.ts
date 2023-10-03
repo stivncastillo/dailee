@@ -1,12 +1,12 @@
 import { ArgsType, Field, Int } from "@nestjs/graphql";
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNumber, IsOptional } from "class-validator";
 
 @ArgsType()
 export class GetTasksArgs {
-  @Field(() => String, { nullable: true })
-  @IsString()
+  @Field(() => [String], { nullable: true })
+  @IsArray()
   @IsOptional()
-  status?: string;
+  status?: [string];
 
   @Field(() => Int, { nullable: true })
   @IsNumber()
