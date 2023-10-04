@@ -1,13 +1,15 @@
 import { ArgsType, Field, GraphQLISODateTime } from "@nestjs/graphql";
-import { IsBoolean } from "class-validator";
+import { IsBoolean, IsDate, IsOptional } from "class-validator";
 
 @ArgsType()
 export class GetHabitsArgs {
   @Field(() => Boolean, { nullable: true })
   @IsBoolean()
+  @IsOptional()
   isPaused?: boolean;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  @IsBoolean()
+  @IsDate()
+  @IsOptional()
   dueDate?: string;
 }

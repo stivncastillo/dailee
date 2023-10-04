@@ -20,6 +20,7 @@ query getHabits($isPaused: Boolean, $dueDate: DateTime) {
     ...HabitFields
   }
 }
+
 query getHabitTrackings($dateStart: DateTime, $dateEnd: DateTime) {
   habitTrackings(dateStart: $dateStart, dateEnd: $dateEnd) {
     ...HabitTrackingFields

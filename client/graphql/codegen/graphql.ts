@@ -33,9 +33,29 @@ export type CreateHabitTrackingInput = {
   userId: Scalars['String']['input'];
 };
 
+export type CreateTaskInput = {
+  completedDate?: InputMaybe<Scalars['DateTime']['input']>;
+  complexId: Scalars['Int']['input'];
+  dueDate?: InputMaybe<Scalars['DateTime']['input']>;
+  points?: InputMaybe<Scalars['Int']['input']>;
+  status?: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
 export type CreateUserInput = {
   /** Name of habit */
   name: Scalars['String']['input'];
+};
+
+export type DateTimeFilter = {
+  equals?: InputMaybe<Scalars['String']['input']>;
+  gt?: InputMaybe<Scalars['String']['input']>;
+  gte?: InputMaybe<Scalars['String']['input']>;
+  in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lt?: InputMaybe<Scalars['String']['input']>;
+  lte?: InputMaybe<Scalars['String']['input']>;
+  notIn?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type DeleteHabitInput = {
@@ -85,17 +105,28 @@ export type HabitTrackingSumAggregate = {
   points?: Maybe<Scalars['Int']['output']>;
 };
 
+export type IntFilter = {
+  equals?: InputMaybe<Scalars['Float']['input']>;
+  gt?: InputMaybe<Scalars['Float']['input']>;
+  gte?: InputMaybe<Scalars['Float']['input']>;
+  lt?: InputMaybe<Scalars['Float']['input']>;
+  lte?: InputMaybe<Scalars['Float']['input']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createHabit: Habit;
   createHabitTracking: HabitTracking;
+  createTask: Task;
   createUser: User;
   deleteHabit: Habit;
   deleteHabits: Scalars['Float']['output'];
+  deleteTask: Task;
   removeHabitTracking: HabitTracking;
   removeUser: User;
   updateHabit: Habit;
   updateHabitTracking: HabitTracking;
+  updateTask: Task;
   updateUser: User;
 };
 
@@ -107,6 +138,11 @@ export type MutationCreateHabitArgs = {
 
 export type MutationCreateHabitTrackingArgs = {
   createHabitTrackingInput: CreateHabitTrackingInput;
+};
+
+
+export type MutationCreateTaskArgs = {
+  createTaskInput: CreateTaskInput;
 };
 
 
@@ -122,6 +158,11 @@ export type MutationDeleteHabitArgs = {
 
 export type MutationDeleteHabitsArgs = {
   deleteHabitsInput: DeleteHabitsInput;
+};
+
+
+export type MutationDeleteTaskArgs = {
+  where?: InputMaybe<TaskWhereUniqueInput>;
 };
 
 
@@ -145,6 +186,11 @@ export type MutationUpdateHabitTrackingArgs = {
 };
 
 
+export type MutationUpdateTaskArgs = {
+  updateTaskInput: UpdateTaskInput;
+};
+
+
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
 };
@@ -156,6 +202,8 @@ export type Query = {
   habitTrackings: Array<HabitTracking>;
   habitTrackingsAggregate?: Maybe<HabitTrackingAggregate>;
   habits: Array<Habit>;
+  task: Task;
+  tasks: Array<Task>;
   user: User;
 };
 
@@ -188,8 +236,119 @@ export type QueryHabitsArgs = {
 };
 
 
+export type QueryTaskArgs = {
+  where?: InputMaybe<TaskWhereUniqueInput>;
+};
+
+
+export type QueryTasksArgs = {
+  cursor?: InputMaybe<TaskWhereUniqueInput>;
+  orderBy?: InputMaybe<Array<TaskOrderByWithRelationInput>>;
+  skip?: InputMaybe<Scalars['Float']['input']>;
+  take?: InputMaybe<Scalars['Float']['input']>;
+  where?: InputMaybe<TaskWhereInput>;
+};
+
+
 export type QueryUserArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
+};
+
+export enum QueryMode {
+  Default = 'default',
+  Insensitive = 'insensitive'
+}
+
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
+export type StringFilter = {
+  contains?: InputMaybe<Scalars['String']['input']>;
+  endsWith?: InputMaybe<Scalars['String']['input']>;
+  equals?: InputMaybe<Scalars['String']['input']>;
+  gt?: InputMaybe<Scalars['String']['input']>;
+  gte?: InputMaybe<Scalars['String']['input']>;
+  in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lt?: InputMaybe<Scalars['String']['input']>;
+  lte?: InputMaybe<Scalars['String']['input']>;
+  mode?: InputMaybe<QueryMode>;
+  not?: InputMaybe<Scalars['String']['input']>;
+  notIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type Task = {
+  __typename?: 'Task';
+  completedDate?: Maybe<Scalars['DateTime']['output']>;
+  complexId: TasksComplexity;
+  createdAt: Scalars['DateTime']['output'];
+  dueDate?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['String']['output'];
+  points?: Maybe<Scalars['Int']['output']>;
+  status: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  userId: User;
+};
+
+export type TaskOrderByWithRelationInput = {
+  completedDate?: InputMaybe<SortOrder>;
+  complexity?: InputMaybe<TasksComplexitiesOrderByWithRelationInput>;
+  createdAt?: InputMaybe<SortOrder>;
+  dueDate?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  points?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
+  title?: InputMaybe<SortOrder>;
+};
+
+export type TaskWhereInput = {
+  AND?: InputMaybe<Array<TaskWhereInput>>;
+  NOT?: InputMaybe<Array<TaskWhereInput>>;
+  OR?: InputMaybe<Array<TaskWhereInput>>;
+  completedDate?: InputMaybe<DateTimeFilter>;
+  complexId?: InputMaybe<IntFilter>;
+  complexity?: InputMaybe<TasksComplexitiesRelationFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  dueDate?: InputMaybe<DateTimeFilter>;
+  id?: InputMaybe<StringFilter>;
+  points?: InputMaybe<IntFilter>;
+  status?: InputMaybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  userId?: InputMaybe<StringFilter>;
+};
+
+export type TaskWhereUniqueInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TasksComplexitiesOrderByWithRelationInput = {
+  name?: InputMaybe<SortOrder>;
+  points?: InputMaybe<SortOrder>;
+};
+
+export type TasksComplexitiesRelationFilter = {
+  is?: InputMaybe<TasksComplexitiesWhereInput>;
+  isNot?: InputMaybe<TasksComplexitiesWhereInput>;
+};
+
+export type TasksComplexitiesWhereInput = {
+  AND?: InputMaybe<Array<TasksComplexitiesWhereInput>>;
+  NOT?: InputMaybe<Array<TasksComplexitiesWhereInput>>;
+  OR?: InputMaybe<Array<TasksComplexitiesWhereInput>>;
+  id?: InputMaybe<IntFilter>;
+  name?: InputMaybe<StringFilter>;
+  points?: InputMaybe<IntFilter>;
+};
+
+export type TasksComplexity = {
+  __typename?: 'TasksComplexity';
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  points?: Maybe<Scalars['Int']['output']>;
 };
 
 export type UpdateHabitInput = {
@@ -205,6 +364,17 @@ export type UpdateHabitTrackingInput = {
   id: Scalars['String']['input'];
   points?: InputMaybe<Scalars['Boolean']['input']>;
   userId?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type UpdateTaskInput = {
+  completedDate?: InputMaybe<Scalars['DateTime']['input']>;
+  complexId?: InputMaybe<Scalars['Int']['input']>;
+  dueDate?: InputMaybe<Scalars['DateTime']['input']>;
+  id: Scalars['String']['input'];
+  points?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateUserInput = {
