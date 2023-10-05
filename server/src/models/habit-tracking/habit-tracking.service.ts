@@ -49,16 +49,22 @@ export class HabitTrackingService {
     });
   }
 
-  public async create(
-    createHabitData: CreateHabitTrackingInput,
-  ): Promise<HabitTracking> {
-    const habitTracking = await this.habitTrackingRepository.create({
-      data: {
-        ...createHabitData,
-      },
+  public async create(data: CreateHabitTrackingInput): Promise<HabitTracking> {
+    const habitTrackingExist = await this.habitTrackingRepository.getFirst({
+      data,
     });
 
-    return habitTracking;
+    if (habitTrackingExist) {
+      return await this.habitTrackingRepository.update({
+        where: { id: habitTrackingExist.id },
+        data: data,
+      });
+    }
+    return await this.habitTrackingRepository.create({
+      data: {
+        ...data,
+      },
+    });
   }
 
   public async update(updateHabitData: UpdateHabitTrackingInput) {
@@ -70,13 +76,15 @@ export class HabitTrackingService {
     return habitTracking;
   }
 
-  public async delete(
-    deleteHabitData: DeleteHabitTrackingInput,
-  ): Promise<HabitTracking> {
-    const review = await this.habitTrackingRepository.delete({
-      where: { id: deleteHabitData.id },
+  public async delete(data: DeleteHabitTrackingInput): Promise<HabitTracking> {
+    const habitTrackingExist = await this.habitTrackingRepository.getFirst({
+      data,
     });
-
-    return review;
+    if (habitTrackingExist) {
+      return await this.habitTrackingRepository.delete({
+        where: { id: habitTrackingExist.id },
+      });
+    }
+    return null;
   }
 }

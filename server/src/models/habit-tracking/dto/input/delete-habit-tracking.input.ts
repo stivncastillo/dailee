@@ -1,9 +1,13 @@
-import { Field, InputType } from "@nestjs/graphql";
+import { Field, GraphQLISODateTime, InputType } from "@nestjs/graphql";
 import { IsNotEmpty } from "class-validator";
 
 @InputType()
 export class DeleteHabitTrackingInput {
-  @Field()
+  @Field(() => GraphQLISODateTime)
   @IsNotEmpty()
-  id: number;
+  date: Date;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  habitId: string;
 }

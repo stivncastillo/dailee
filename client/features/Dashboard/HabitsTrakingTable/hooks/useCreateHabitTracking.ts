@@ -1,17 +1,26 @@
 import { useMutation } from "@apollo/client";
 
 import {
+  GetHabitsDocument,
   CreateHabitTrackingInput,
   UpsertHabitTrackingDocument,
   UpsertHabitTrackingMutation,
   UpsertHabitTrackingMutationVariables,
+  GetHabitTrackingsDocument,
+  GetHabitTrackingAggregateDocument,
 } from "@/graphql/codegen/graphql";
 
 const useCreateHabitTracking = () => {
   const [onCreate, { data, loading, error }] = useMutation<
     UpsertHabitTrackingMutation,
     UpsertHabitTrackingMutationVariables
-  >(UpsertHabitTrackingDocument, { refetchQueries: "active" });
+  >(UpsertHabitTrackingDocument, {
+    refetchQueries: [
+      GetHabitsDocument,
+      GetHabitTrackingsDocument,
+      GetHabitTrackingAggregateDocument,
+    ],
+  });
 
   const createHabitTracking = async ({
     points,

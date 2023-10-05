@@ -22,8 +22,12 @@ mutation DeleteHabits($deleteHabitsInput: DeleteHabitsInput!) {
 
 mutation UpsertHabitTracking($createInput: CreateHabitTrackingInput!) {
   createHabitTracking(createHabitTrackingInput: $createInput) {
-    id
-    date
-    points
+    ...HabitTrackingFields
+  }
+}
+
+mutation DeleteHabitTracking($deleteHabitTracking: DeleteHabitTrackingInput!) {
+  deleteHabitTracking(deleteHabitTracking: $deleteHabitTracking){
+    ...HabitTrackingFields
   }
 }

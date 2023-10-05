@@ -65,7 +65,7 @@ type Query {
   habits(isPaused: Boolean, dueDate: DateTime): [Habit!]!
   habit(id: String!): Habit!
   habitTrackings(dateStart: DateTime, dateEnd: DateTime): [HabitTracking!]!
-  habitTracking(id: Float!): HabitTracking!
+  habitTracking(id: Float!): HabitTracking
   habitTrackingsAggregate(dateStart: DateTime, dateEnd: DateTime): HabitTrackingAggregate
   user(id: String!): User!
   tasks(where: TaskWhereInput, orderBy: [TaskOrderByWithRelationInput!], cursor: TaskWhereUniqueInput, take: Float, skip: Float): [Task!]!
@@ -173,7 +173,7 @@ type Mutation {
   deleteHabits(deleteHabitsInput: DeleteHabitsInput!): Float!
   createHabitTracking(createHabitTrackingInput: CreateHabitTrackingInput!): HabitTracking!
   updateHabitTracking(updateHabitTrackingInput: UpdateHabitTrackingInput!): HabitTracking!
-  removeHabitTracking(deleteHabitTracking: DeleteHabitTrackingInput!): HabitTracking!
+  deleteHabitTracking(deleteHabitTracking: DeleteHabitTrackingInput!): HabitTracking
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
@@ -222,7 +222,8 @@ input UpdateHabitTrackingInput {
 }
 
 input DeleteHabitTrackingInput {
-  id: Float!
+  date: DateTime!
+  habitId: String!
 }
 
 input CreateUserInput {

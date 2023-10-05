@@ -38,7 +38,7 @@ export class HabitTrackingResolver {
     return this.habitTrackingService.getMany(getHabitTrackingArgs);
   }
 
-  @Query(() => HabitTracking, { name: "habitTracking", nullable: false })
+  @Query(() => HabitTracking, { name: "habitTracking", nullable: true })
   getHabitTracking(
     @Args() getHabitTrackingArgs: GetHabitTrackingArgs,
   ): Promise<HabitTracking> {
@@ -74,8 +74,8 @@ export class HabitTrackingResolver {
     return this.habitTrackingService.update(updateHabitTrackingInput);
   }
 
-  @Mutation(() => HabitTracking)
-  removeHabitTracking(
+  @Mutation(() => HabitTracking, { nullable: true })
+  deleteHabitTracking(
     @Args("deleteHabitTracking") deleteHabitTracking: DeleteHabitTrackingInput,
   ): Promise<HabitTracking> {
     return this.habitTrackingService.delete(deleteHabitTracking);

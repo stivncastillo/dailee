@@ -35,20 +35,22 @@ export class HabitTrackingRepository {
     });
   }
 
+  async getFirst(params: {
+    data: Prisma.HabitTrackingWhereInput;
+  }): Promise<HabitTracking> {
+    const { data } = params;
+    return await this.prisma.habitTracking.findFirst({
+      where: {
+        habitId: { equals: data.habitId as string },
+        date: { equals: data.date as string },
+      },
+    });
+  }
+
   async create(params: {
     data: Prisma.HabitTrackingUncheckedCreateInput;
   }): Promise<HabitTracking> {
     const { data } = params;
-    const ht = await this.prisma.habitTracking.findFirst({
-      where: {
-        habitId: { equals: data.habitId },
-        date: { equals: data.date },
-      },
-    });
-
-    if (ht) {
-      return this.update({ where: { id: ht.id }, data });
-    }
     return this.prisma.habitTracking.create({ data });
   }
 

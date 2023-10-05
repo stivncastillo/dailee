@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 
-import { Tooltip } from "@nextui-org/react";
 import {
   Table,
   TableHeader,
@@ -9,12 +8,14 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Tooltip,
 } from "@nextui-org/react";
 import dayjs from "dayjs";
 
-import Score from "./components/Score";
+import CheckboxHabit from "./components/CheckboxHabit";
 import { useHabitsTrackingContext } from "./HabitsTrackingContext";
 import useCreateHabitTracking from "./hooks/useCreateHabitTracking";
+import useDeleteHabitTracking from "./hooks/useDeleteHabitTracking";
 import { RowType, getCurrentWeek } from "./utils/helpers";
 
 type RowTypeKey = keyof RowType;
@@ -22,6 +23,7 @@ type RowTypeKey = keyof RowType;
 const HabitsTrakingTable = () => {
   const { columns, rows } = useHabitsTrackingContext();
   const { createHabitTracking } = useCreateHabitTracking();
+  const { deleteHabitTracking } = useDeleteHabitTracking();
   const week = getCurrentWeek();
 
   const renderCell = React.useCallback(
@@ -31,9 +33,16 @@ const HabitsTrakingTable = () => {
       const columnInfo = columns.find((col) => col.key === columnKey);
 
       return (
-        <Score
+        <CheckboxHabit
+          isChecked={Boolean(item[columnKey])}
           value={(item[columnKey] as number) ?? 0}
-          onChange={async (value) => {
+          onDelete={async () => {
+            await deleteHabitTracking({
+              date: columnInfo?.date,
+              habitId: item.habitItem.id,
+            });
+          }}
+          onSave={async (value) => {
             await createHabitTracking({
               date: columnInfo?.date,
               habitId: item.habitItem.id,
@@ -43,7 +52,7 @@ const HabitsTrakingTable = () => {
         />
       );
     },
-    [columns, createHabitTracking],
+    [columns, createHabitTracking, deleteHabitTracking],
   );
 
   const topContent = React.useMemo(
@@ -68,6 +77,7 @@ const HabitsTrakingTable = () => {
           topContentPlacement="inside"
           shadow="sm"
           aria-label="Weekly habits table"
+          radius="sm"
         >
           <TableHeader columns={columns}>
             {(column) => (
@@ -77,7 +87,6 @@ const HabitsTrakingTable = () => {
                   textAlign: column.key !== "habits" ? "center" : "left",
                   textTransform: "uppercase",
                 }}
-                width={column.key !== "habits" ? "100" : "200"}
               >
                 <Tooltip content={column.date || "Habits"}>
                   <span>{column.label}</span>
