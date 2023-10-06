@@ -15,7 +15,11 @@ export class TasksComplexitiesOrderByWithRelationInput
     >
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
+  id: Prisma.SortOrder;
+
+  @Field(() => Prisma.SortOrder, { nullable: true })
   name: Prisma.SortOrder;
+
   @Field(() => Prisma.SortOrder, { nullable: true })
   points: Prisma.SortOrder;
   // @Field(() => PostOrderByRelationAggregateInput, { nullable: true })

@@ -10,13 +10,12 @@ import {
   TableCell,
   Tooltip,
 } from "@nextui-org/react";
-import dayjs from "dayjs";
 
 import CheckboxHabit from "./components/CheckboxHabit";
 import { useHabitsTrackingContext } from "./HabitsTrackingContext";
 import useCreateHabitTracking from "./hooks/useCreateHabitTracking";
 import useDeleteHabitTracking from "./hooks/useDeleteHabitTracking";
-import { RowType, getCurrentWeek } from "./utils/helpers";
+import { RowType } from "./utils/helpers";
 
 type RowTypeKey = keyof RowType;
 
@@ -24,7 +23,6 @@ const HabitsTrakingTable = () => {
   const { columns, rows } = useHabitsTrackingContext();
   const { createHabitTracking } = useCreateHabitTracking();
   const { deleteHabitTracking } = useDeleteHabitTracking();
-  const week = getCurrentWeek();
 
   const renderCell = React.useCallback(
     (item: RowType, columnKey: RowTypeKey) => {
@@ -55,29 +53,15 @@ const HabitsTrakingTable = () => {
     [columns, createHabitTracking, deleteHabitTracking],
   );
 
-  const topContent = React.useMemo(
-    () => (
-      <div className="flex flex-row gap-2">
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            {dayjs(week[0].date).format("MMM DD")} to{" "}
-            {dayjs(week[week.length - 1].date).format("MMM DD")}
-          </span>
-        </div>
-      </div>
-    ),
-    [week],
-  );
-
   return (
     <div>
       {columns.length ? (
         <Table
-          topContent={topContent}
           topContentPlacement="inside"
           shadow="sm"
           aria-label="Weekly habits table"
           radius="sm"
+          removeWrapper
         >
           <TableHeader columns={columns}>
             {(column) => (

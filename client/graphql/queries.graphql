@@ -6,6 +6,7 @@ fragment HabitFields on Habit {
   createdAt
   updatedAt
 }
+
 fragment HabitTrackingFields on HabitTracking {
   id
   points
@@ -14,6 +15,27 @@ fragment HabitTrackingFields on HabitTracking {
     ...HabitFields
   }
 }
+
+fragment TaskFields on Task {
+  id
+  title
+  status
+  points
+  dueDate
+  userId {
+    id
+    name
+  }
+  completedDate
+  createdAt
+  updatedAt
+  complexId {
+    id
+    name
+    points
+  }
+}
+
 
 query getHabits($isPaused: Boolean, $dueDate: DateTime) {
   habits(isPaused: $isPaused, dueDate: $dueDate) {
@@ -35,5 +57,11 @@ query getHabitTrackingAggregate($dateStart: DateTime, $dateEnd: DateTime) {
     _sum {
       points
     }
+  }
+}
+
+query getTasks($where: TaskWhereInput, $orderBy: [TaskOrderByWithRelationInput!]) {
+  tasks(where: $where, orderBy: $orderBy) {
+    ...TaskFields
   }
 }

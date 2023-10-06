@@ -158,6 +158,7 @@ enum SortOrder {
 }
 
 input TasksComplexitiesOrderByWithRelationInput {
+  id: SortOrder
   name: SortOrder
   points: SortOrder
 }
