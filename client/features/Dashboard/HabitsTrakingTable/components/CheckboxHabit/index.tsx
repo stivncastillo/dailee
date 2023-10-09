@@ -52,7 +52,8 @@ const CheckboxHabit = ({ onSave, onDelete, isChecked, value }: Props) => {
   return (
     <div className="flex flex-col justify-center items-center">
       <Checkbox
-        defaultSelected={isChecked}
+        isSelected={isChecked}
+        // value={isChecked ? "true" : "false"}
         classNames={{ wrapper: "mr-0" }}
         color={getColor(value)}
         icon={<HeartFilledIcon fill="#ffffff" />}

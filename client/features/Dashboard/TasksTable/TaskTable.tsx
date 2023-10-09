@@ -1,6 +1,11 @@
 import React from "react";
 
-import { CircularProgress } from "@nextui-org/react";
+import {
+  Button,
+  CircularProgress,
+  Tooltip,
+  useDisclosure,
+} from "@nextui-org/react";
 import {
   Table,
   TableBody,
@@ -9,8 +14,10 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/table";
+import { IoAddOutline } from "react-icons/io5";
 
 import { CheckboxCell, TaskCell } from "./components/Cells";
+import TaskFormModal from "./components/TaskFormModal";
 import { useTasksTableContext } from "./TasksTableContext";
 import { ComplexType, StatusType } from "./utils/@types";
 import DashboardCard from "@/components/Cards/DashboardCard";
@@ -18,6 +25,8 @@ import { Task } from "@/graphql/codegen/graphql";
 
 const TaskTable = () => {
   const { data, loading, columns } = useTasksTableContext();
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const renderCell = React.useCallback((task: Task, columnKey: any) => {
     if (columnKey === "checkbox") {
@@ -33,46 +42,76 @@ const TaskTable = () => {
       );
     }
 
-    return `${task.points} / ${columnKey}`;
+    return "--";
   }, []);
 
   return (
-    <DashboardCard title="Today Tasks" subtitle="There are 5 tasks to do">
-      <Table
-        removeWrapper
-        hideHeader
-        aria-label="Example static collection table"
+    <>
+      <DashboardCard
+        title="Today Tasks"
+        subtitle="There are 5 tasks to do"
+        rightHeaderContent={
+          <Tooltip content="Add Task">
+            <Button
+              color="primary"
+              radius="sm"
+              size="sm"
+              isIconOnly
+              aria-label="Add Task"
+              onPress={onOpen}
+            >
+              <IoAddOutline size={24} />
+            </Button>
+          </Tooltip>
+        }
       >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn key={column.uid}>{column.name}</TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          isLoading={loading}
-          emptyContent={"Hey, today you don't have any taks"}
-          loadingContent={<CircularProgress aria-label="Loading..." />}
-          items={data}
+        <Table
+          removeWrapper
+          hideHeader
+          aria-label="Example static collection table"
         >
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell
-                  width={columnKey === "checkbox" ? "16" : ""}
-                  className={
-                    columnKey === "checkbox"
-                      ? "px-0"
-                      : "flex flex-row items-center justify-between"
-                  }
-                >
-                  {renderCell(item, columnKey)}
-                </TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </DashboardCard>
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn key={column.uid}>{column.name}</TableColumn>
+            )}
+          </TableHeader>
+          <TableBody
+            isLoading={loading}
+            emptyContent={"Hey, today you don't have any taks"}
+            loadingContent={<CircularProgress aria-label="Loading..." />}
+            items={data}
+          >
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell
+                    width={columnKey === "checkbox" ? "16" : ""}
+                    className={
+                      columnKey === "checkbox"
+                        ? "px-0"
+                        : "flex flex-row items-center justify-between"
+                    }
+                  >
+                    {renderCell(item, columnKey)}
+                  </TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+
+        <button className="flex flex-row items-center h-12">
+          <div className=" flex flex-row items-center w-5 mr-3">
+            <span>
+              <IoAddOutline size={20} className="mr-4" />
+            </span>
+          </div>{" "}
+          <span>Add Task</span>
+        </button>
+      </DashboardCard>
+
+      <TaskFormModal isOpen={isOpen} onOpenChange={onOpenChange} />
+    </>
   );
 };
 

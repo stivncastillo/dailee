@@ -10,6 +10,7 @@ import {
   TableCell,
   Tooltip,
 } from "@nextui-org/react";
+import dayjs from "dayjs";
 
 import CheckboxHabit from "./components/CheckboxHabit";
 import { useHabitsTrackingContext } from "./HabitsTrackingContext";
@@ -72,7 +73,9 @@ const HabitsTrakingTable = () => {
                   textTransform: "uppercase",
                 }}
               >
-                <Tooltip content={column.date || "Habits"}>
+                <Tooltip
+                  content={dayjs(column.date).format("DD MMM") || "Habits"}
+                >
                   <span>{column.label}</span>
                 </Tooltip>
               </TableColumn>

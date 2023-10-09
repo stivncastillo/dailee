@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 
 import { HabitsTrackingProvider } from "./HabitsTrackingContext";
 import HabitsTrakingTable from "./HabitsTrakingTable";
-import { getCurrentWeek } from "./utils/helpers";
 import DashboardCard from "@/components/Cards/DashboardCard";
+import { getCurrentWeek } from "@/helpers/date";
 
 const HabitsTrackingTableContainer = () => {
   const week = getCurrentWeek();

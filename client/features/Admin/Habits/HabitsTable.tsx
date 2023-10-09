@@ -58,7 +58,7 @@ export default function HabitsTable() {
             items={Array.from(selectedKeys)}
           />
 
-          <Button color="primary" onPress={onOpenHabitForm}>
+          <Button color="primary" radius="sm" onPress={onOpenHabitForm}>
             Add Habit
           </Button>
         </div>

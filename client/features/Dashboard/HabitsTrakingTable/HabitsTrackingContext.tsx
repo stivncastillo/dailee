@@ -1,23 +1,14 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { useQuery } from "@apollo/client";
+import dayjs from "dayjs";
 
-import {
-  ColumnType,
-  RowType,
-  generateDataGrid,
-  getCurrentWeek,
-} from "./utils/helpers";
+import { ColumnType, RowType, generateDataGrid } from "./utils/helpers";
 import {
   GetHabitTrackingsDocument,
   GetHabitsDocument,
 } from "@/graphql/codegen/graphql";
+import { getCurrentWeek, getEndOfDay, getStartOfDay } from "@/helpers/date";
 
 export type HabitsTrackingContextType = {
   columns: ColumnType[];
@@ -39,7 +30,7 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [rows, setRows] = useState<RowType[]>([]);
   const [columns, setColumns] = useState<ColumnType[]>([]);
-  const today = useMemo(() => new Date(), []);
+  const today = dayjs();
   const week = getCurrentWeek();
 
   const { data: dataHabits, loading: loadingHabits } = useQuery(
@@ -47,7 +38,7 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
     {
       variables: {
         isPaused: false,
-        dueDate: today,
+        dueDate: getEndOfDay(today.toString()),
       },
       fetchPolicy: "cache-and-network",
     },
@@ -57,8 +48,8 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
     GetHabitTrackingsDocument,
     {
       variables: {
-        dateStart: week[0].date,
-        dateEnd: week[week.length - 1].date,
+        dateStart: getStartOfDay(week[0].date),
+        dateEnd: getEndOfDay(week[week.length - 1].date),
       },
       fetchPolicy: "cache-and-network",
     },

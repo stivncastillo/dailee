@@ -13,6 +13,13 @@ interface Props {
   complex?: ComplexType;
 }
 
+const getTooltipColor = (task: Task) => {
+  if (task.complexId.name === "High") return "danger";
+  if (task.complexId.name === "Medium") return "warning";
+
+  return "default";
+};
+
 const TaskCell = ({ status = "todo", complex = "low", task }: Props) => {
   const actions = useMemo(() => {
     const actionsLet: Array<ActionType> = [];
@@ -33,10 +40,12 @@ const TaskCell = ({ status = "todo", complex = "low", task }: Props) => {
     return actionsLet;
   }, [status]);
 
+  const tooltipColor = getTooltipColor(task);
+
   return (
     <>
       <div className=" flex flex-row items-center gap-2">
-        <Tooltip content="High" color="primary">
+        <Tooltip size="sm" content={task.complexId.name} color={tooltipColor}>
           <span className={dotComplex({ complex })}></span>
         </Tooltip>
         <span className={taskTitle({ status })}>{task.title}</span>

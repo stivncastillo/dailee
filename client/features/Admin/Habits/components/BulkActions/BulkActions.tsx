@@ -24,7 +24,12 @@ const BulkActions = ({ isDisabled = false, items }: Props) => {
     <>
       <Dropdown>
         <DropdownTrigger>
-          <Button color="primary" variant="bordered" isDisabled={isDisabled}>
+          <Button
+            radius="sm"
+            color="primary"
+            variant="bordered"
+            isDisabled={isDisabled}
+          >
             Actions
           </Button>
         </DropdownTrigger>

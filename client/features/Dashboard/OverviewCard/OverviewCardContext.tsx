@@ -1,12 +1,13 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext } from "react";
 
 import { useQuery } from "@apollo/client";
+import dayjs from "dayjs";
 
-import { getCurrentWeek } from "../HabitsTrakingTable/utils/helpers";
 import {
   GetHabitTrackingAggregateDocument,
   HabitTrackingAggregate,
 } from "@/graphql/codegen/graphql";
+import { getCurrentWeek, getEndOfDay, getStartOfDay } from "@/helpers/date";
 
 export type OverviewCardContextType = {
   dailyStats: HabitTrackingAggregate | null;
@@ -28,7 +29,7 @@ const OverviewCardContext =
 const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const today = useMemo(() => new Date(), []);
+  const today = dayjs();
   const week = getCurrentWeek();
 
   const { data: dailyStatsData, loading: dailyStatsLoading } = useQuery(
@@ -36,8 +37,8 @@ const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
     {
       fetchPolicy: "network-only",
       variables: {
-        dateStart: today.toISOString().split("T")[0],
-        dateEnd: today.toISOString().split("T")[0],
+        dateStart: getStartOfDay(today.toString()),
+        dateEnd: getEndOfDay(today.toString()),
       },
     },
   );
@@ -47,8 +48,8 @@ const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
     {
       fetchPolicy: "network-only",
       variables: {
-        dateStart: week[0].date,
-        dateEnd: week[week.length - 1].date,
+        dateStart: getStartOfDay(week[0].date),
+        dateEnd: getEndOfDay(week[week.length - 1].date),
       },
     },
   );

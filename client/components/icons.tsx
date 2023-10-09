@@ -238,3 +238,24 @@ export const VerticalDotsIcon: React.FC<IconSvgProps> = ({
     />
   </svg>
 );
+
+export const PlusIcon: React.FC<IconSvgProps> = ({
+  size = 24,
+  width,
+  height,
+  fill,
+  ...props
+}) => (
+  <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height={size || height}
+    role="presentation"
+    viewBox="0 0 24 24"
+    width={size || width}
+    {...props}
+  >
+    <path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill={fill} />
+  </svg>
+);

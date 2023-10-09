@@ -1,8 +1,5 @@
-import dayjs from "dayjs";
-
 import { Habit, HabitTrackingFieldsFragment } from "@/graphql/codegen/graphql";
-
-const daysOfWeek = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+import { getCurrentWeek, isSameDate } from "@/helpers/date";
 
 export type RowType = {
   key: string;
@@ -36,7 +33,7 @@ export function generateDataGrid(
       .forEach((column) => {
         const value = trackings.find((tracking) => {
           return (
-            dayjs(tracking.date.split("T")[0]).isSame(dayjs(column?.date)) &&
+            isSameDate(tracking.date.split("T")[0], column?.date) &&
             tracking.habitId.id === habit.id
           );
         });
@@ -61,21 +58,3 @@ export const getColumns = (): ColumnType[] => {
     })),
   ];
 };
-
-export function getCurrentWeek(): { day: string; date: string }[] {
-  const today = new Date();
-  const currentDayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
-  const currentWeek: { day: string; date: string }[] = [];
-
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() + i - currentDayOfWeek + 1); // Start from Monday
-
-    const dayOfWeek = daysOfWeek[i];
-    const formattedDate = date.toISOString().split("T")[0]; // Get the date in "YYYY-MM-DD" format
-
-    currentWeek.push({ day: dayOfWeek, date: formattedDate });
-  }
-
-  return currentWeek;
-}
