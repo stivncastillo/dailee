@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 
-import { Button, Input, Select, SelectItem } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { IoCloseOutline, IoSave } from "react-icons/io5";
 
 import { CreateTaskInputs } from "./@types";
 import useCreateTask from "../../hooks/useCreateTask";
 import { useTasksTableContext } from "../../TasksTableContext";
+import { ControlledInput } from "@/components/Form";
+import ControlledSelect from "@/components/Form/ControlledSelect";
 
 const INITIAL_VALUES = {
   id: "",
@@ -21,7 +23,7 @@ type Props = {
 };
 
 const TaskForm = ({ onClose }: Props) => {
-  const { complexData: complexities, defaultComplex } = useTasksTableContext();
+  const { complexData: complexities } = useTasksTableContext();
   const { createTask, loading, data, called } = useCreateTask();
 
   useEffect(() => {
@@ -31,13 +33,12 @@ const TaskForm = ({ onClose }: Props) => {
   }, [onClose, called, data?.createTask]);
 
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = useForm<CreateTaskInputs>({
     values: {
       ...INITIAL_VALUES,
-      complexId: defaultComplex?.id as string,
     },
     mode: "all",
   });
@@ -63,43 +64,40 @@ const TaskForm = ({ onClose }: Props) => {
         onSubmit={handleSubmit(handleCreateTask)}
         className="flex flex-row gap-2 w-full items-end"
       >
-        <Input
+        <ControlledInput
+          name="title"
+          control={control}
           autoFocus
           label="Title"
-          variant="underlined"
-          size="sm"
-          className="flex-grow"
-          disabled={loading}
-          {...register("title", { required: true })}
+          isDisabled={loading}
+          rules={{ required: true }}
         />
-        <Select
-          items={complexities}
+        <ControlledSelect
           label="Complexity"
-          size="sm"
-          disabled={loading}
-          variant="underlined"
-          {...register("complexId", { required: true })}
-        >
-          {(complex) => (
-            <SelectItem key={complex.id}>{complex.name}</SelectItem>
-          )}
-        </Select>
-        <Input
-          label="Due Date"
-          type="date"
-          variant="underlined"
-          disabled={loading}
-          size="sm"
-          {...register("dueDate")}
+          name="complexId"
+          items={complexities}
+          control={control}
+          isDisabled={loading}
+          rules={{ required: true }}
         />
-        <Input
-          label="Points"
+        <ControlledInput
+          name="dueDate"
+          control={control}
+          type="date"
+          label="Due Date"
+          isDisabled={loading}
+        />
+        <ControlledInput
+          name="points"
+          control={control}
           type="number"
-          variant="underlined"
-          className=" w-60"
-          disabled={loading}
-          size="sm"
-          {...register("points")}
+          className="w-60"
+          label="Points"
+          isDisabled={loading}
+          rules={{
+            min: 0,
+            max: 5,
+          }}
         />
         <Button
           variant="solid"
@@ -108,7 +106,7 @@ const TaskForm = ({ onClose }: Props) => {
           size="sm"
           radius="sm"
           type="submit"
-          disabled={loading}
+          isDisabled={loading || !isValid}
         >
           <IoSave />
         </Button>

@@ -60,11 +60,11 @@ const TasksTableProvider: React.FC<{ children: React.ReactNode }> = ({
       },
       orderBy: [
         { completedDate: SortOrder.Asc },
-        // {
-        //   complexity: {
-        //     id: SortOrder.Asc,
-        //   },
-        // },
+        {
+          complexity: {
+            id: SortOrder.Asc,
+          },
+        },
       ],
     },
     fetchPolicy: "cache-and-network",
