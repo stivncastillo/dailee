@@ -52,4 +52,14 @@ export class TasksService {
       },
     });
   }
+
+  public async getManyComplexities(): Promise<TasksComplexity[]> {
+    return await this.taskRepository.getManyComplexities({
+      where: {
+        points: {
+          not: null,
+        },
+      },
+    });
+  }
 }

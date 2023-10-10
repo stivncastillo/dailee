@@ -17,6 +17,7 @@ import {
 import { IoAddOutline } from "react-icons/io5";
 
 import { CheckboxCell, TaskCell } from "./components/Cells";
+import TaskFormRow from "./components/TaskForm";
 import TaskFormModal from "./components/TaskFormModal";
 import { useTasksTableContext } from "./TasksTableContext";
 import { ComplexType, StatusType } from "./utils/@types";
@@ -100,14 +101,7 @@ const TaskTable = () => {
           </TableBody>
         </Table>
 
-        <button className="flex flex-row items-center h-12">
-          <div className=" flex flex-row items-center w-5 mr-3">
-            <span>
-              <IoAddOutline size={20} className="mr-4" />
-            </span>
-          </div>{" "}
-          <span>Add Task</span>
-        </button>
+        <TaskFormRow />
       </DashboardCard>
 
       <TaskFormModal isOpen={isOpen} onOpenChange={onOpenChange} />

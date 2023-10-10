@@ -7,11 +7,6 @@ dayjs.extend(weekday);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-// const currentTZ = new Intl.DateTimeFormat("en-GB", {
-//   timeZone: "America/Bogota",
-// });
-// const ukDate = currentTZ.format(new Date());
-
 export const daysOfWeek = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 export const startOfDayISO = () => {
@@ -25,25 +20,6 @@ export const endOfDayISO = () => {
   endOfDay.setUTCHours(23, 59, 59, 999);
   return endOfDay.toISOString();
 };
-
-// const today = new Date(dayjs().format("YYYY-MM-DD"));
-export function getCurrentWeek2() {
-  const today = new Date("2023-10-08");
-  const currentDay = today.getDay();
-  const currentWeek = [];
-
-  for (let i = 1; i <= 7; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDay() - currentDay + i);
-
-    const dayOfWeek = daysOfWeek[i - 1];
-    const formattedDate = date.toISOString().split("T")[0];
-
-    currentWeek.push({ day: dayOfWeek, date: formattedDate });
-  }
-
-  return currentWeek;
-}
 
 export function getCurrentWeek() {
   const today = dayjs();

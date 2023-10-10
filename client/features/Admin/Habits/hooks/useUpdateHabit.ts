@@ -1,6 +1,8 @@
 import { useMutation } from "@apollo/client";
 
 import {
+  GetHabitTrackingsDocument,
+  GetHabitsDocument,
   UpdateHabitDocument,
   UpdateHabitInput,
   UpdateHabitMutation,
@@ -11,7 +13,9 @@ const useUpdatehabit = () => {
   const [onUpdateHabit, { data, loading, error }] = useMutation<
     UpdateHabitMutation,
     UpdateHabitMutationVariables
-  >(UpdateHabitDocument, { refetchQueries: "active" });
+  >(UpdateHabitDocument, {
+    refetchQueries: [GetHabitsDocument, GetHabitTrackingsDocument],
+  });
 
   const updateHabit = async ({
     id,

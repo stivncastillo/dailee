@@ -70,6 +70,7 @@ type Query {
   user(id: String!): User!
   tasks(where: TaskWhereInput, orderBy: [TaskOrderByWithRelationInput!], cursor: TaskWhereUniqueInput, take: Float, skip: Float): [Task!]!
   task(where: TaskWhereUniqueInput): Task!
+  taskComplexities: [TasksComplexity!]!
 }
 
 input TaskWhereInput {

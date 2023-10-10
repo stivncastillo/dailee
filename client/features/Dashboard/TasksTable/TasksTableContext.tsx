@@ -1,21 +1,33 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 
 import { useQuery } from "@apollo/client";
 
 import { COLUMNS } from "./utils/constants";
-import { GetTasksDocument, SortOrder, Task } from "@/graphql/codegen/graphql";
+import {
+  GetTasksDocument,
+  SortOrder,
+  Task,
+  TasksComplexity,
+} from "@/graphql/codegen/graphql";
 import { endOfDayISO, startOfDayISO } from "@/helpers/date";
+import useGetTaskComplexities from "@/hooks/useGetTaskComplexities";
 
 export type TasksTableContextType = {
   loading: boolean;
   data: Array<Task>;
   columns: typeof COLUMNS;
+  complexData: Array<TasksComplexity>;
+  complexLoading: boolean;
+  defaultComplex?: TasksComplexity | null;
 };
 
 const DEFAULT_VALUES = {
   data: [],
   loading: false,
   columns: COLUMNS,
+  complexData: [],
+  complexLoading: false,
+  defaultComplex: null,
 };
 
 const TasksTableContext = createContext<TasksTableContextType>(DEFAULT_VALUES);
@@ -25,6 +37,9 @@ const TasksTableProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const todayStart = startOfDayISO();
   const todayEnd = endOfDayISO();
+
+  const { data: complexData, loading: complexLoading } =
+    useGetTaskComplexities();
 
   const { data, loading } = useQuery(GetTasksDocument, {
     variables: {
@@ -44,15 +59,21 @@ const TasksTableProvider: React.FC<{ children: React.ReactNode }> = ({
         ],
       },
       orderBy: [
-        {
-          complexity: {
-            id: SortOrder.Asc,
-          },
-        },
+        { completedDate: SortOrder.Asc },
+        // {
+        //   complexity: {
+        //     id: SortOrder.Asc,
+        //   },
+        // },
       ],
     },
     fetchPolicy: "cache-and-network",
   });
+
+  const defaultComplex = useMemo(
+    () => complexData?.taskComplexities.find((c) => c.name === "Low"),
+    [complexData],
+  );
 
   return (
     <TasksTableContext.Provider
@@ -60,6 +81,9 @@ const TasksTableProvider: React.FC<{ children: React.ReactNode }> = ({
         data: data?.tasks ?? [],
         loading,
         columns: COLUMNS,
+        complexData: complexData?.taskComplexities ?? [],
+        complexLoading,
+        defaultComplex,
       }}
     >
       {children}

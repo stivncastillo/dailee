@@ -5,13 +5,17 @@ import {
   CreateHabitInput,
   CreateHabitMutation,
   CreateHabitMutationVariables,
+  GetHabitTrackingsDocument,
+  GetHabitsDocument,
 } from "@/graphql/codegen/graphql";
 
 const useCreateHabit = () => {
   const [onCreateHabit, { data, loading, error }] = useMutation<
     CreateHabitMutation,
     CreateHabitMutationVariables
-  >(CreateHabitDocument, { refetchQueries: "active" });
+  >(CreateHabitDocument, {
+    refetchQueries: [GetHabitsDocument, GetHabitTrackingsDocument],
+  });
 
   const createHabit = async ({
     name,

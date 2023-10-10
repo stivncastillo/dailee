@@ -16,6 +16,12 @@ fragment HabitTrackingFields on HabitTracking {
   }
 }
 
+fragment TasksComplexityFields on TasksComplexity {
+  id
+  name
+  points
+}
+
 fragment TaskFields on Task {
   id
   title
@@ -30,9 +36,7 @@ fragment TaskFields on Task {
   createdAt
   updatedAt
   complexId {
-    id
-    name
-    points
+    ...TasksComplexityFields
   }
 }
 
@@ -63,5 +67,11 @@ query getHabitTrackingAggregate($dateStart: DateTime, $dateEnd: DateTime) {
 query getTasks($where: TaskWhereInput, $orderBy: [TaskOrderByWithRelationInput!]) {
   tasks(where: $where, orderBy: $orderBy) {
     ...TaskFields
+  }
+}
+
+query getTaskComplexities {
+	taskComplexities {
+    ...TasksComplexityFields
   }
 }

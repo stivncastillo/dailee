@@ -10,5 +10,5 @@ export class TasksComplexity {
   name: ComplexityDB["name"];
 
   @Field(() => Int, { nullable: true })
-  points?: ComplexityDB["points"];
+  points: ComplexityDB["points"];
 }

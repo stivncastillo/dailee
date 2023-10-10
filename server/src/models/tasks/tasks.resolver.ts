@@ -7,12 +7,14 @@ import {
   ResolveField,
   Parent,
 } from "@nestjs/graphql";
+import { TasksComplexities } from "@prisma/client";
 import { UserService } from "src/models/user/user.service";
 
 import { GetTaskArgs } from "./dto/args/get-task.args";
 import { GetTasksArgs } from "./dto/args/get-tasks.args";
 import { CreateTaskInput } from "./dto/input/create-task.input";
 import { UpdateTaskInput } from "./dto/input/update-task.input";
+import { TasksComplexity } from "./entities/task-complexity.entity";
 import { Task } from "./entities/task.entity";
 import { TasksService } from "./tasks.service";
 
@@ -32,6 +34,11 @@ export class TasksResolver {
   @Query(() => Task, { name: "task", nullable: false })
   getTask(@Args() getTaskArgs: GetTaskArgs): Promise<Task> {
     return this.tasksService.getOne(getTaskArgs);
+  }
+
+  @Query(() => [TasksComplexity], { name: "taskComplexities", nullable: false })
+  getTaskComplexities(): Promise<TasksComplexities[]> {
+    return this.tasksService.getManyComplexities();
   }
 
   // Mutations

@@ -31,3 +31,9 @@ mutation DeleteHabitTracking($deleteHabitTracking: DeleteHabitTrackingInput!) {
     ...HabitTrackingFields
   }
 }
+
+mutation CreateTask($createTaskInput: CreateTaskInput!) {
+  createTask(createTaskInput: $createTaskInput) {
+    ...TaskFields
+  }
+}

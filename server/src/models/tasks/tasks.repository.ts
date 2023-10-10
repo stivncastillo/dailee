@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma, Task, TasksComplexities } from "@prisma/client";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 import { PrismaService } from "src/common/database/prisma/prisma.service";
 
 import { GetTasksArgs } from "./dto/args/get-tasks.args";
@@ -43,5 +44,11 @@ export class TaskRepository {
   }): Promise<TasksComplexities> {
     const { where } = params;
     return this.prisma.tasksComplexities.findUnique({ where });
+  }
+
+  async getManyComplexities(
+    params: Prisma.TasksComplexitiesFindManyArgs<DefaultArgs>,
+  ): Promise<TasksComplexities[]> {
+    return this.prisma.tasksComplexities.findMany(params);
   }
 }
