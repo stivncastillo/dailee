@@ -37,3 +37,9 @@ mutation CreateTask($createTaskInput: CreateTaskInput!) {
     ...TaskFields
   }
 }
+
+mutation UpdateTask($updateTaskInput: UpdateTaskInput!) {
+  updateTask(updateTaskInput: $updateTaskInput) {
+    ...TaskFields
+  }
+}

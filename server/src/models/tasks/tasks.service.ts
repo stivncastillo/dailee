@@ -32,9 +32,14 @@ export class TasksService {
   }
 
   public async update(updateData: UpdateTaskInput) {
+    const data = { ...updateData, completedDate: null };
+    if (updateData.status === "done") {
+      data.completedDate = new Date();
+    }
+
     return await this.taskRepository.update({
       where: { id: updateData.id },
-      data: updateData,
+      data,
     });
   }
 

@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  Button,
-  CircularProgress,
-  Tooltip,
-  useDisclosure,
-} from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/react";
 import {
   Table,
   TableBody,
@@ -14,11 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/table";
-import { IoAddOutline } from "react-icons/io5";
 
 import { CheckboxCell, TaskCell } from "./components/Cells";
 import TaskFormRow from "./components/TaskForm";
-import TaskFormModal from "./components/TaskFormModal";
 import { useTasksTableContext } from "./TasksTableContext";
 import { ComplexType, StatusType } from "./utils/@types";
 import DashboardCard from "@/components/Cards/DashboardCard";
@@ -26,8 +19,6 @@ import { Task } from "@/graphql/codegen/graphql";
 
 const TaskTable = () => {
   const { data, loading, columns } = useTasksTableContext();
-
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const renderCell = React.useCallback((task: Task, columnKey: any) => {
     if (columnKey === "checkbox") {
@@ -48,24 +39,7 @@ const TaskTable = () => {
 
   return (
     <>
-      <DashboardCard
-        title="Today Tasks"
-        subtitle="There are 5 tasks to do"
-        rightHeaderContent={
-          <Tooltip content="Add Task">
-            <Button
-              color="primary"
-              radius="sm"
-              size="sm"
-              isIconOnly
-              aria-label="Add Task"
-              onPress={onOpen}
-            >
-              <IoAddOutline size={24} />
-            </Button>
-          </Tooltip>
-        }
-      >
+      <DashboardCard title="Today Tasks" subtitle="There are 5 tasks to do">
         <Table
           removeWrapper
           hideHeader
@@ -103,8 +77,6 @@ const TaskTable = () => {
 
         <TaskFormRow />
       </DashboardCard>
-
-      <TaskFormModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
