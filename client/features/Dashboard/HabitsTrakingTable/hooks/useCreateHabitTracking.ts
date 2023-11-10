@@ -7,7 +7,7 @@ import {
   UpsertHabitTrackingMutation,
   UpsertHabitTrackingMutationVariables,
   GetHabitTrackingsDocument,
-  GetHabitTrackingAggregateDocument,
+  GetWeeklyPointsDocument,
 } from "@/graphql/codegen/graphql";
 
 const useCreateHabitTracking = () => {
@@ -18,7 +18,7 @@ const useCreateHabitTracking = () => {
     refetchQueries: [
       GetHabitsDocument,
       GetHabitTrackingsDocument,
-      GetHabitTrackingAggregateDocument,
+      GetWeeklyPointsDocument,
     ],
   });
 

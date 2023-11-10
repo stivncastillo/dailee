@@ -6,13 +6,16 @@ import {
   UpdateTaskMutation,
   UpdateTaskMutationVariables,
   GetTasksDocument,
+  GetWeeklyPointsDocument,
 } from "@/graphql/codegen/graphql";
 
 const useUpdateTask = () => {
   const [onUpdateTask, { data, loading, error, called }] = useMutation<
     UpdateTaskMutation,
     UpdateTaskMutationVariables
-  >(UpdateTaskDocument, { refetchQueries: [GetTasksDocument] });
+  >(UpdateTaskDocument, {
+    refetchQueries: [GetTasksDocument, GetWeeklyPointsDocument],
+  });
 
   const updateTask = async (
     data: UpdateTaskInput,

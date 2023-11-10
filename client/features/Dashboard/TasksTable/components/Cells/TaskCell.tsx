@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { Tooltip } from "@nextui-org/react";
 
 import { dotComplex, pointsText, taskTitle } from "./variants";
+import useUpdateTask from "../../hooks/useUpdateTask";
 import { ComplexType, StatusType } from "../../utils/@types";
 import ActionDropdown, { ActionType } from "@/components/ActionDropdown";
 import { Task } from "@/graphql/codegen/graphql";
@@ -21,24 +22,33 @@ const getTooltipColor = (task: Task) => {
 };
 
 const TaskCell = ({ status = "todo", complex = "low", task }: Props) => {
+  const { updateTask } = useUpdateTask();
+
+  const handleCancelOrActivate = React.useCallback(async () => {
+    await updateTask({
+      id: task.id,
+      status: task.status === "cancel" ? "todo" : "cancel",
+    });
+  }, [task, updateTask]);
+
   const actions = useMemo(() => {
     const actionsLet: Array<ActionType> = [];
 
-    if (status !== "canceled")
+    if (status !== "cancel")
       actionsLet.push({
         name: "Cancel",
-        trigger: () => console.log("calceling"),
+        trigger: () => handleCancelOrActivate(),
         color: "danger",
         className: "text-danger",
       });
-    if (status === "canceled")
+    if (status === "cancel")
       actionsLet.push({
         name: "Activate",
-        trigger: () => console.log("activating"),
+        trigger: () => handleCancelOrActivate(),
       });
 
     return actionsLet;
-  }, [status]);
+  }, [status, handleCancelOrActivate]);
 
   const tooltipColor = getTooltipColor(task);
 
@@ -55,7 +65,7 @@ const TaskCell = ({ status = "todo", complex = "low", task }: Props) => {
       </div>
       <div className="flex flex-row items-center gap-2">
         <span className={pointsText({ status, class: "text-sm" })}>
-          {status !== "canceled" ? task.dueDate ?? "" : "canceled"}
+          {status !== "cancel" ? task.dueDate ?? "" : "canceled"}
         </span>
         <ActionDropdown actions={actions}></ActionDropdown>
       </div>

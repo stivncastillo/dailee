@@ -5,7 +5,7 @@ import {
   DeleteHabitTrackingInput,
   DeleteHabitTrackingMutation,
   DeleteHabitTrackingMutationVariables,
-  GetHabitTrackingAggregateDocument,
+  GetWeeklyPointsDocument,
   GetHabitTrackingsDocument,
   GetHabitsDocument,
 } from "@/graphql/codegen/graphql";
@@ -18,7 +18,7 @@ const useDeleteHabitTracking = () => {
     refetchQueries: [
       GetHabitsDocument,
       GetHabitTrackingsDocument,
-      GetHabitTrackingAggregateDocument,
+      GetWeeklyPointsDocument,
     ],
   });
 

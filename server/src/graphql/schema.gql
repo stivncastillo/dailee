@@ -61,6 +61,11 @@ type Task {
   updatedAt: DateTime!
 }
 
+type WeeklyPoints {
+  points: Int!
+  pointsAverage: Float!
+}
+
 type Query {
   habits(isPaused: Boolean, dueDate: DateTime): [Habit!]!
   habit(id: String!): Habit!
@@ -71,6 +76,7 @@ type Query {
   tasks(where: TaskWhereInput, orderBy: [TaskOrderByWithRelationInput!], cursor: TaskWhereUniqueInput, take: Float, skip: Float): [Task!]!
   task(where: TaskWhereUniqueInput): Task!
   taskComplexities: [TasksComplexity!]!
+  getWeeklyPoints(dateStart: DateTime!, dateEnd: DateTime!): WeeklyPoints!
 }
 
 input TaskWhereInput {

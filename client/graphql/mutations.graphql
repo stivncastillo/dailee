@@ -43,3 +43,9 @@ mutation UpdateTask($updateTaskInput: UpdateTaskInput!) {
     ...TaskFields
   }
 }
+
+mutation DeleteTask($where: TaskWhereUniqueInput) {
+  deleteTask(where: $where){
+    id
+  }
+}

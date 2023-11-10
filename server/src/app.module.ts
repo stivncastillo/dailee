@@ -15,6 +15,7 @@ import { HabitTrackingModule } from "./models/habit-tracking/habit-tracking.modu
 import { HabitsModule } from "./models/habits/habits.module";
 import { TasksModule } from "./models/tasks/tasks.module";
 import { UserModule } from "./models/user/user.module";
+import { DashboardModule } from './models/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { UserModule } from "./models/user/user.module";
     PrismaModule,
     UserModule,
     TasksModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -16,7 +16,7 @@ const CheckboxCell = ({ task }: Props) => {
     async (value: boolean) => {
       await updateTask({
         id: task.id,
-        status: value ? "done" : "pending",
+        status: value ? "done" : "todo",
       });
     },
     [task, updateTask],
@@ -27,6 +27,7 @@ const CheckboxCell = ({ task }: Props) => {
       onValueChange={handleCheckboxChange}
       classNames={{ wrapper: "mr-0" }}
       color="success"
+      isDisabled={task.status === "cancel"}
     ></Checkbox>
   );
 };

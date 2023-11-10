@@ -6,7 +6,7 @@ export const taskTitle = tv({
     status: {
       done: "text-default-400 line-through",
       todo: "text-default-500",
-      canceled: "text-red-400 line-through",
+      cancel: "text-red-400 line-through",
     },
   },
   defaultVariants: {
@@ -14,7 +14,7 @@ export const taskTitle = tv({
   },
   compoundVariants: [
     {
-      status: ["done", "todo", "canceled"],
+      status: ["done", "todo", "cancel"],
       class: "",
     },
   ],
@@ -26,7 +26,7 @@ export const pointsText = tv({
     status: {
       done: "line-through",
       todo: "",
-      canceled: "text-red-400 line-through",
+      cancel: "text-red-400 line-through",
     },
   },
   defaultVariants: {
@@ -34,7 +34,7 @@ export const pointsText = tv({
   },
   compoundVariants: [
     {
-      status: ["done", "todo", "canceled"],
+      status: ["done", "todo", "cancel"],
       class: "",
     },
   ],

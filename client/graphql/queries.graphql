@@ -75,3 +75,10 @@ query getTaskComplexities {
     ...TasksComplexityFields
   }
 }
+
+query getWeeklyPoints($dateStart: DateTime!, $dateEnd: DateTime!) {
+  getWeeklyPoints(dateStart: $dateStart, dateEnd: $dateEnd) {
+    points
+    pointsAverage
+  }
+}

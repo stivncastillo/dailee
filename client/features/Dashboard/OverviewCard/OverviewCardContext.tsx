@@ -3,16 +3,13 @@ import React, { createContext, useContext } from "react";
 import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 
-import {
-  GetHabitTrackingAggregateDocument,
-  HabitTrackingAggregate,
-} from "@/graphql/codegen/graphql";
+import { GetWeeklyPointsDocument } from "@/graphql/codegen/graphql";
 import { getCurrentWeek, getEndOfDay, getStartOfDay } from "@/helpers/date";
 
 export type OverviewCardContextType = {
-  dailyStats: HabitTrackingAggregate | null;
+  dailyStats: { points: number; pointsAverage: number } | null;
   dailyStatsLoading: boolean;
-  weeklyStats: HabitTrackingAggregate | null;
+  weeklyStats: { points: number; pointsAverage: number } | null;
   weeklyStatsLoading: boolean;
 };
 
@@ -33,7 +30,7 @@ const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
   const week = getCurrentWeek();
 
   const { data: dailyStatsData, loading: dailyStatsLoading } = useQuery(
-    GetHabitTrackingAggregateDocument,
+    GetWeeklyPointsDocument,
     {
       fetchPolicy: "network-only",
       variables: {
@@ -44,7 +41,7 @@ const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const { data: weeklyStatsData, loading: weeklyStatsLoading } = useQuery(
-    GetHabitTrackingAggregateDocument,
+    GetWeeklyPointsDocument,
     {
       fetchPolicy: "network-only",
       variables: {
@@ -57,9 +54,9 @@ const OverviewCardProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <OverviewCardContext.Provider
       value={{
-        dailyStats: dailyStatsData?.habitTrackingsAggregate ?? null,
+        dailyStats: dailyStatsData?.getWeeklyPoints ?? null,
         dailyStatsLoading: dailyStatsLoading,
-        weeklyStats: weeklyStatsData?.habitTrackingsAggregate ?? null,
+        weeklyStats: weeklyStatsData?.getWeeklyPoints ?? null,
         weeklyStatsLoading: weeklyStatsLoading,
       }}
     >
