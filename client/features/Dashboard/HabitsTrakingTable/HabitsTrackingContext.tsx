@@ -29,7 +29,9 @@ const HabitsTrackingProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [rows, setRows] = useState<RowType[]>([]);
-  const [columns, setColumns] = useState<ColumnType[]>([]);
+  const [columns, setColumns] = useState<ColumnType[]>([
+    { key: "habits", label: "Habits" },
+  ]);
   const today = dayjs();
   const week = getCurrentWeek();
 

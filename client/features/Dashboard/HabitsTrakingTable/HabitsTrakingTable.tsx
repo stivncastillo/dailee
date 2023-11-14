@@ -56,47 +56,45 @@ const HabitsTrakingTable = () => {
 
   return (
     <div>
-      {columns.length ? (
-        <Table
-          topContentPlacement="inside"
-          shadow="sm"
-          aria-label="Weekly habits table"
-          radius="sm"
-          removeWrapper
-        >
-          <TableHeader columns={columns}>
-            {(column) => (
-              <TableColumn
-                key={column.key}
-                style={{
-                  textAlign: column.key !== "habits" ? "center" : "left",
-                  textTransform: "uppercase",
-                }}
+      <Table
+        topContentPlacement="inside"
+        shadow="sm"
+        aria-label="Weekly habits table"
+        radius="sm"
+        removeWrapper
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              key={column.key}
+              style={{
+                textAlign: column.key !== "habits" ? "center" : "left",
+                textTransform: "uppercase",
+              }}
+            >
+              <Tooltip
+                content={dayjs(column.date).format("DD MMM") || "Habits"}
               >
-                <Tooltip
-                  content={dayjs(column.date).format("DD MMM") || "Habits"}
-                >
-                  <span>{column.label}</span>
-                </Tooltip>
-              </TableColumn>
-            )}
-          </TableHeader>
-          <TableBody
-            items={rows}
-            emptyContent={"No habits found, please create one"}
-          >
-            {(item) => (
-              <TableRow key={item.habitItem.id}>
-                {(columnKey) => (
-                  <TableCell>
-                    {renderCell(item, columnKey as RowTypeKey)}
-                  </TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      ) : null}
+                <span>{column.label}</span>
+              </Tooltip>
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          items={rows}
+          emptyContent={"No habits found, please create one"}
+        >
+          {(item) => (
+            <TableRow key={item.habitItem.id}>
+              {(columnKey) => (
+                <TableCell>
+                  {renderCell(item, columnKey as RowTypeKey)}
+                </TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 };

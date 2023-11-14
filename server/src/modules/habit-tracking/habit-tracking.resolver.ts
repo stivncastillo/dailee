@@ -7,8 +7,8 @@ import {
   ResolveField,
   Parent,
 } from "@nestjs/graphql";
-import { HabitsService } from "src/models/habits/habits.service";
-import { UserService } from "src/models/user/user.service";
+import { HabitsService } from "src/modules/habits/habits.service";
+import { UserService } from "src/modules/user/user.service";
 
 import {
   CreateHabitTrackingInput,

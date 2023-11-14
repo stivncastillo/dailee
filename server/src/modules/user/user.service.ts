@@ -10,11 +10,11 @@ import { UserRepository } from "./user.repository";
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  public async create(createHabitData: CreateUserInput): Promise<User> {
+  public async create(createUserData: CreateUserInput): Promise<User> {
     const user = await this.userRepository.create({
       data: {
         id: uuidv4(),
-        ...createHabitData,
+        ...createUserData,
       },
     });
 
@@ -25,21 +25,5 @@ export class UserService {
     return await this.userRepository.getOne({
       where: { id: getUserArgs.id },
     });
-  }
-
-  findAll() {
-    return `This action returns all user`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

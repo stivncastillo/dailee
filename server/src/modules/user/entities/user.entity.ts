@@ -8,4 +8,10 @@ export class User {
 
   @Field(() => String)
   name: UserDB["name"];
+
+  @Field(() => String)
+  email: UserDB["email"];
+
+  @Field(() => String)
+  password: UserDB["password"];
 }

@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int, GraphQLISODateTime } from "@nestjs/graphql";
 import { Task as TaskDB } from "@prisma/client";
-import { User } from "src/models/user/entities/user.entity";
+import { User } from "src/modules/user/entities/user.entity";
 
 import { TasksComplexity } from "./task-complexity.entity";
 

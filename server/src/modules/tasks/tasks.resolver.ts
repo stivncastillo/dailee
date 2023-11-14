@@ -8,7 +8,7 @@ import {
   Parent,
 } from "@nestjs/graphql";
 import { TasksComplexities } from "@prisma/client";
-import { UserService } from "src/models/user/user.service";
+import { UserService } from "src/modules/user/user.service";
 
 import { GetTaskArgs } from "./dto/args/get-task.args";
 import { GetTasksArgs } from "./dto/args/get-tasks.args";

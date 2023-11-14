@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int, GraphQLISODateTime } from "@nestjs/graphql";
 import { HabitTracking as HabitTrackingDB } from "@prisma/client";
-import { Habit } from "src/models/habits/entities/habit.entity";
-import { User } from "src/models/user/entities/user.entity";
+import { Habit } from "src/modules/habits/entities/habit.entity";
+import { User } from "src/modules/user/entities/user.entity";
 
 @ObjectType()
 export class HabitTracking {

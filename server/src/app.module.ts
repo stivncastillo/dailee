@@ -11,11 +11,13 @@ import { AppService } from "./app.service";
 import { PrismaModule } from "./common/database/prisma/prisma.module";
 import configuration from "./config/configuration";
 import { validate } from "./config/validation";
-import { HabitTrackingModule } from "./models/habit-tracking/habit-tracking.module";
-import { HabitsModule } from "./models/habits/habits.module";
-import { TasksModule } from "./models/tasks/tasks.module";
-import { UserModule } from "./models/user/user.module";
-import { DashboardModule } from './models/dashboard/dashboard.module';
+import { DashboardModule } from "./modules/dashboard/dashboard.module";
+import { HabitTrackingModule } from "./modules/habit-tracking/habit-tracking.module";
+import { HabitsModule } from "./modules/habits/habits.module";
+import { TasksModule } from "./modules/tasks/tasks.module";
+import { UserModule } from "./modules/user/user.module";
+import { AuthResolver } from './modules/auth/auth.resolver';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -52,8 +54,9 @@ import { DashboardModule } from './models/dashboard/dashboard.module';
     UserModule,
     TasksModule,
     DashboardModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthResolver],
 })
 export class AppModule {}
