@@ -23,7 +23,7 @@ export class HabitTrackingRepository {
     take?: number;
     cursor?: Prisma.HabitTrackingWhereUniqueInput;
     where?: Prisma.HabitTrackingWhereInput;
-    orderBy?: Prisma.HabitOrderByWithRelationInput;
+    orderBy?: Prisma.HabitTrackingOrderByWithRelationInput;
   }): Promise<HabitTracking[]> {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.habitTracking.findMany({

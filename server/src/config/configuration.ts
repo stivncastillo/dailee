@@ -4,6 +4,10 @@ export interface ConfigurationType {
     url: string;
     port: number;
   };
+  auth: {
+    accessTokenSecret: string;
+    refreshTokenSecret: string;
+  };
 }
 
 const config = (): ConfigurationType => ({
@@ -11,6 +15,10 @@ const config = (): ConfigurationType => ({
   database: {
     url: process.env.DATABASE_URL,
     port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
+  },
+  auth: {
+    accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
+    refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   },
 });
 

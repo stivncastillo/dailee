@@ -29,6 +29,7 @@ model User {
   name String
   email String @unique
   password String
+  hashedRefreshToken String?
   habitTracking HabitTracking[]
   tasks Task[]
   habits Habit[]

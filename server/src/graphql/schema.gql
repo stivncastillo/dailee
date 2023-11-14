@@ -2,6 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: String!
+  name: String!
+  email: String!
+  password: String!
+}
+
+type SignResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type WeeklyPoints {
+  points: Int!
+  pointsAverage: Float!
+}
+
 type Habit {
   id: String!
   name: String!
@@ -15,11 +33,6 @@ type Habit {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type User {
-  id: String!
-  name: String!
-}
 
 type HabitTrackingAvgAggregate {
   points: Float
@@ -61,22 +74,21 @@ type Task {
   updatedAt: DateTime!
 }
 
-type WeeklyPoints {
-  points: Int!
-  pointsAverage: Float!
-}
-
 type Query {
   habits(isPaused: Boolean, dueDate: DateTime): [Habit!]!
   habit(id: String!): Habit!
   habitTrackings(dateStart: DateTime, dateEnd: DateTime): [HabitTracking!]!
   habitTracking(id: Float!): HabitTracking
   habitTrackingsAggregate(dateStart: DateTime, dateEnd: DateTime): HabitTrackingAggregate
-  user(id: String!): User!
+  user(where: UserWhereUniqueInput): User!
   tasks(where: TaskWhereInput, orderBy: [TaskOrderByWithRelationInput!], cursor: TaskWhereUniqueInput, take: Float, skip: Float): [Task!]!
   task(where: TaskWhereUniqueInput): Task!
   taskComplexities: [TasksComplexity!]!
   getWeeklyPoints(dateStart: DateTime!, dateEnd: DateTime!): WeeklyPoints!
+}
+
+input UserWhereUniqueInput {
+  id: String
 }
 
 input TaskWhereInput {
@@ -183,11 +195,10 @@ type Mutation {
   updateHabitTracking(updateHabitTrackingInput: UpdateHabitTrackingInput!): HabitTracking!
   deleteHabitTracking(deleteHabitTracking: DeleteHabitTrackingInput!): HabitTracking
   createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
   deleteTask(where: TaskWhereUniqueInput): Task!
+  signup(signupInput: SignupInput!): SignResponse!
 }
 
 input CreateHabitInput {
@@ -235,14 +246,9 @@ input DeleteHabitTrackingInput {
 }
 
 input CreateUserInput {
-  """Name of habit"""
   name: String!
-}
-
-input UpdateUserInput {
-  """Name of habit"""
-  name: String
-  id: Int!
+  email: String!
+  password: String!
 }
 
 input CreateTaskInput {
@@ -264,4 +270,10 @@ input UpdateTaskInput {
   complexId: Int
   completedDate: DateTime
   id: String!
+}
+
+input SignupInput {
+  name: String!
+  email: String!
+  password: String!
 }

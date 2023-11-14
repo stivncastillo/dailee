@@ -6,18 +6,15 @@ import { ConfigModule } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
 import { GraphQLError } from "graphql";
 
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { PrismaModule } from "./common/database/prisma/prisma.module";
 import configuration from "./config/configuration";
 import { validate } from "./config/validation";
+import { AuthModule } from "./modules/auth/auth.module";
 import { DashboardModule } from "./modules/dashboard/dashboard.module";
 import { HabitTrackingModule } from "./modules/habit-tracking/habit-tracking.module";
 import { HabitsModule } from "./modules/habits/habits.module";
 import { TasksModule } from "./modules/tasks/tasks.module";
 import { UserModule } from "./modules/user/user.module";
-import { AuthResolver } from './modules/auth/auth.resolver';
-import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -56,7 +53,7 @@ import { AuthModule } from './modules/auth/auth.module';
     DashboardModule,
     AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AuthResolver],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

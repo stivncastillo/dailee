@@ -1,9 +1,9 @@
 import { ArgsType, Field } from "@nestjs/graphql";
-import { IsNotEmpty } from "class-validator";
+
+import { UserWhereUniqueInput } from "./where/user-where.args";
 
 @ArgsType()
 export class GetUserArgs {
-  @Field()
-  @IsNotEmpty()
-  id: string;
+  @Field({ nullable: true })
+  where: UserWhereUniqueInput;
 }

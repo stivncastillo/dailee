@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { CreateUserInput } from "./dto/create-user.input";
 import { GetUserArgs } from "./dto/get-user.args";
+import { UpdateUserInput } from "./dto/update-user.input";
 import { User } from "./entities/user.entity";
 import { UserRepository } from "./user.repository";
 
@@ -21,9 +22,16 @@ export class UserService {
     return user;
   }
 
-  public async getOne(getUserArgs: GetUserArgs) {
-    return await this.userRepository.getOne({
-      where: { id: getUserArgs.id },
+  public async update(updateUserData: UpdateUserInput) {
+    const review = await this.userRepository.update({
+      where: { id: updateUserData.id },
+      data: updateUserData,
     });
+
+    return review;
+  }
+
+  public async getOne(getUserArgs: GetUserArgs) {
+    return await this.userRepository.getOne(getUserArgs);
   }
 }

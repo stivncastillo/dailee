@@ -85,7 +85,11 @@ export class HabitTrackingResolver {
   @ResolveField()
   async userId(@Parent() habitTracking: HabitTracking) {
     const { userId } = habitTracking;
-    return this.userService.getOne({ id: userId });
+    return this.userService.getOne({
+      where: {
+        id: userId,
+      },
+    });
   }
 
   @ResolveField()

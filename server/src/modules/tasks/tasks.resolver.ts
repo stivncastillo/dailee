@@ -61,7 +61,11 @@ export class TasksResolver {
   @ResolveField()
   async userId(@Parent() task: Task) {
     const { userId } = task;
-    return this.userService.getOne({ id: userId });
+    return this.userService.getOne({
+      where: {
+        id: userId,
+      },
+    });
   }
 
   @ResolveField()
