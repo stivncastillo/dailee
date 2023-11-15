@@ -23,9 +23,10 @@ export class UserService {
   }
 
   public async update(updateUserData: UpdateUserInput) {
+    const { id, ...data } = updateUserData;
     const review = await this.userRepository.update({
-      where: { id: updateUserData.id },
-      data: updateUserData,
+      where: { id },
+      data,
     });
 
     return review;

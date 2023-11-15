@@ -2,11 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LogoutResponse {
+  loggedOut: Boolean!
+}
+
 type User {
   id: String!
   name: String!
   email: String!
   password: String!
+}
+
+type NewTokensResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
 }
 
 type SignResponse {
@@ -200,6 +210,8 @@ type Mutation {
   deleteTask(where: TaskWhereUniqueInput): Task!
   signup(signupInput: SignupInput!): SignResponse!
   signin(signinInput: SigninInput!): SignResponse!
+  logout(id: String!): LogoutResponse!
+  newTokens: NewTokensResponse!
 }
 
 input CreateHabitInput {

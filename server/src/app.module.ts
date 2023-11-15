@@ -3,6 +3,7 @@ import { join } from "path";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { APP_GUARD } from "@nestjs/core";
 import { GraphQLModule } from "@nestjs/graphql";
 import { GraphQLError } from "graphql";
 
@@ -10,6 +11,7 @@ import { PrismaModule } from "./common/database/prisma/prisma.module";
 import configuration from "./config/configuration";
 import { validate } from "./config/validation";
 import { AuthModule } from "./modules/auth/auth.module";
+import { AccessTokenGuard } from "./modules/auth/guards/accessToken.guard";
 import { DashboardModule } from "./modules/dashboard/dashboard.module";
 import { HabitTrackingModule } from "./modules/habit-tracking/habit-tracking.module";
 import { HabitsModule } from "./modules/habits/habits.module";
@@ -54,6 +56,6 @@ import { UserModule } from "./modules/user/user.module";
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })
 export class AppModule {}
