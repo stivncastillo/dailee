@@ -9,6 +9,12 @@ export class UserWhereUniqueInput {
 }
 
 @InputType()
+export class UserWhereUniqueInputByEmail {
+  @Field(() => String, { nullable: true })
+  email: string;
+}
+
+@InputType()
 export class UserWhereInput
   implements
     Omit<

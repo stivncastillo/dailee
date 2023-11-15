@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { v4 as uuidv4 } from "uuid";
 
 import { CreateUserInput } from "./dto/create-user.input";
-import { GetUserArgs } from "./dto/get-user.args";
+import { GetUserArgs, GetUserByEmailArgs } from "./dto/get-user.args";
 import { UpdateUserInput } from "./dto/update-user.input";
 import { User } from "./entities/user.entity";
 import { UserRepository } from "./user.repository";
@@ -32,6 +32,10 @@ export class UserService {
   }
 
   public async getOne(getUserArgs: GetUserArgs) {
+    return await this.userRepository.getOne(getUserArgs);
+  }
+
+  public async getOneByEmail(getUserArgs: GetUserByEmailArgs) {
     return await this.userRepository.getOne(getUserArgs);
   }
 }

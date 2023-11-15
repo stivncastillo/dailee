@@ -199,6 +199,7 @@ type Mutation {
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
   deleteTask(where: TaskWhereUniqueInput): Task!
   signup(signupInput: SignupInput!): SignResponse!
+  signin(signinInput: SigninInput!): SignResponse!
 }
 
 input CreateHabitInput {
@@ -274,6 +275,11 @@ input UpdateTaskInput {
 
 input SignupInput {
   name: String!
+  email: String!
+  password: String!
+}
+
+input SigninInput {
   email: String!
   password: String!
 }

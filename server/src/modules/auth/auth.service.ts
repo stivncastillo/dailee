@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import * as argon from "argon2";
 
+import { SigninInput } from "./dto/signin.input";
 import { SignupInput } from "./dto/signup.input";
 import { UserService } from "../user/user.service";
 
@@ -20,6 +21,34 @@ export class AuthService {
       ...signupInput,
       password: hashedPassword,
     });
+
+    const { accessToken, refreshToken } = await this.createTokens(
+      user.id,
+      user.email,
+    );
+
+    await this.updateRefreshToken(user.id, refreshToken);
+
+    return { accessToken, refreshToken, user };
+  }
+
+  async signin(signinInput: SigninInput) {
+    const user = await this.userService.getOneByEmail({
+      where: { email: signinInput.email },
+    });
+
+    if (!user) {
+      throw new ForbiddenException("No user found with this email");
+    }
+
+    const isPasswordValid = await argon.verify(
+      user.password,
+      signinInput.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new ForbiddenException("Invalid password");
+    }
 
     const { accessToken, refreshToken } = await this.createTokens(
       user.id,
