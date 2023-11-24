@@ -3,13 +3,13 @@ import React from "react";
 import { Input, InputProps } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-interface Props extends InputProps {
+export interface ControlledInputProps extends InputProps {
   control: any;
   rules?: any;
   name: string;
 }
 
-const ControlledInput: React.FC<Props> = ({
+const ControlledInput: React.FC<ControlledInputProps> = ({
   control,
   rules,
   name,

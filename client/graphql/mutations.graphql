@@ -49,3 +49,15 @@ mutation DeleteTask($where: TaskWhereUniqueInput) {
     id
   }
 }
+
+mutation SignIn($signInInput: SigninInput!) {
+  signin(signinInput: $signInInput) {
+    accessToken
+    refreshToken
+    user {
+      id
+      name
+      email
+    }
+  }
+}

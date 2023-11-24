@@ -1,4 +1,4 @@
-import { Link } from "@nextui-org/link";
+import { Link } from "@nextui-org/react";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -6,11 +6,12 @@ import {
   NavbarBrand,
   NavbarItem,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
-import { link as linkStyles } from "@nextui-org/theme";
+  link as linkStyles,
+} from "@nextui-org/react";
 import clsx from "clsx";
 import NextLink from "next/link";
 
+import UserDropdown from "./UserDropdown";
 import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { siteConfig } from "@/config/site";
@@ -47,8 +48,9 @@ export const Navbar = () => {
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="hidden sm:flex gap-2">
+        <NavbarItem className="hidden sm:flex gap-4">
           <ThemeSwitch />
+          <UserDropdown />
         </NavbarItem>
       </NavbarContent>
 

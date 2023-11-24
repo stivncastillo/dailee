@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "Dailee",
-  description: "My Fucking Application.",
+  description: "A habit tracker",
   navItems: [
     {
       label: "Dashboard",
@@ -17,6 +17,6 @@ export const siteConfig = {
     {
       label: "Dashboard",
       href: "/dashboard",
-    }
+    },
   ],
 };

@@ -8,7 +8,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/table";
+} from "@nextui-org/react";
 
 import { CheckboxCell, TaskCell } from "./components/Cells";
 import TaskFormRow from "./components/TaskForm";

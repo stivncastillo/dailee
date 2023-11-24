@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { Divider } from "@nextui-org/react";
 
 type Props = {
