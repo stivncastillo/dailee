@@ -12,6 +12,7 @@ import { signOut, useSession } from "next-auth/react";
 
 const UserDropdown = () => {
   const { data } = useSession();
+  const nameSlice = data?.user?.name.slice(0, 2) || "User";
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -20,7 +21,7 @@ const UserDropdown = () => {
           as="button"
           isBordered
           radius="full"
-          name={data?.user?.name.slice(0, 2) || "User"}
+          name={nameSlice}
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions" variant="light">
@@ -34,7 +35,7 @@ const UserDropdown = () => {
             }}
             avatarProps={{
               size: "sm",
-              name: data?.user?.name.slice(0, 2) || "User",
+              name: nameSlice,
             }}
           />
         </DropdownItem>

@@ -61,3 +61,15 @@ mutation SignIn($signInInput: SigninInput!) {
     }
   }
 }
+
+mutation RefreshToken {
+  newTokens {
+    accessToken,
+    refreshToken,
+    user {
+      id
+      name
+      email
+    }
+  }
+}

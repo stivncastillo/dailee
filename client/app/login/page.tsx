@@ -9,7 +9,3 @@ export default function Login() {
     </AuthLayout>
   );
 }
-
-Login.getLayout = function getLayout(page: any) {
-  return <AuthLayout>{page}</AuthLayout>;
-};

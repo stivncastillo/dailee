@@ -10,7 +10,7 @@ export const siteConfig = {
     },
     {
       label: "Habits",
-      href: "/admin/habits",
+      href: "/dashboard/admin/habits",
     },
   ],
   navMenuItems: [

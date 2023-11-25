@@ -1,19 +1,19 @@
-import { HttpLink } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+// import { HttpLink } from "@apollo/client";
+// import { setContext } from "@apollo/client/link/context";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import createApolloClient from "@/apollo-client";
 import {
+  RefreshTokenDocument,
+  RefreshTokenMutation,
+  RefreshTokenMutationVariables,
   SignInDocument,
   SignInMutation,
   SignInMutationVariables,
 } from "@/graphql/codegen/graphql";
 
 const client = createApolloClient();
-const httpLink: HttpLink = new HttpLink({
-  uri: "http://localhost:3001/graphql",
-});
 
 const handler = NextAuth({
   providers: [
@@ -40,32 +40,54 @@ const handler = NextAuth({
           },
         });
 
-        // if (user.error) throw user;
-
         if (!data?.signin?.user) return null;
 
-        const link = setContext(async (operation, prevContext) => {
-          return {
-            ...prevContext,
-            headers: {
-              ...prevContext.headers,
-              Authorization: `Bearer ${data.signin.accessToken}`,
-            },
-          };
-        });
-
-        client.setLink(link.concat(httpLink));
-
         return {
-          id: data.signin.user.id,
+          id: data.signin?.user.id,
           name: data.signin?.user?.name,
           email: data.signin?.user?.email,
+          token: data.signin?.accessToken,
+          refreshToken: data.signin?.refreshToken,
         };
       },
     }),
   ],
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async jwt({ user, token }) {
+      // @ts-ignore
+      if (token?.exp * 1000 > Date.now()) {
+        const { data } = await client.mutate<
+          RefreshTokenMutation,
+          RefreshTokenMutationVariables
+        >({
+          mutation: RefreshTokenDocument,
+          context: {
+            headers: {
+              authorization: `Bearer ${token?.refreshToken}`,
+            },
+          },
+        });
+
+        const result = {
+          id: data?.newTokens?.user.id,
+          name: data?.newTokens?.user?.name,
+          email: data?.newTokens?.user?.email,
+          token: data?.newTokens?.accessToken,
+          refreshToken: data?.newTokens?.refreshToken,
+        };
+
+        return { ...token, ...result };
+      }
+
+      return { ...token, ...user };
+    },
+    async session({ session, token }) {
+      session.user = token as any;
+      return session;
+    },
   },
 });
 
