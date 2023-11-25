@@ -1,12 +1,5 @@
 import { InputType, Int, Field, GraphQLISODateTime } from "@nestjs/graphql";
-import {
-  IsNotEmpty,
-  MaxLength,
-  Max,
-  Min,
-  IsEnum,
-  IsOptional,
-} from "class-validator";
+import { MaxLength, Max, Min, IsEnum, IsOptional } from "class-validator";
 import { TaskStatus } from "src/common/constants";
 
 const todoStatus: TaskStatus = TaskStatus.Todo;
@@ -30,10 +23,6 @@ export class CreateTaskInput {
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   dueDate?: Date;
-
-  @Field(() => String)
-  @IsNotEmpty()
-  userId: string;
 
   @Field(() => Int)
   complexId: number;

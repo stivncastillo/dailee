@@ -14,7 +14,9 @@ import { HabitRepository } from "./habits.repository";
 export class HabitsService {
   constructor(private habitRepository: HabitRepository) {}
 
-  public async getMany(getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
+  public async getMany(
+    getHabitsArgs: GetHabitsArgs & { userId: string },
+  ): Promise<Habit[]> {
     const orDueDate = {
       OR: [{ dueDate: null }, { dueDate: { gte: getHabitsArgs.dueDate } }],
     };
@@ -22,6 +24,7 @@ export class HabitsService {
     return await this.habitRepository.getMany({
       where: {
         isPaused: getHabitsArgs.isPaused,
+        userId: getHabitsArgs.userId,
         ...(getHabitsArgs.dueDate ? orDueDate : {}),
       },
     });
@@ -33,10 +36,13 @@ export class HabitsService {
     });
   }
 
-  public async create(createHabitData: CreateHabitInput): Promise<Habit> {
+  public async create(
+    createHabitData: CreateHabitInput & { userId: string },
+  ): Promise<Habit> {
     const habit = await this.habitRepository.create({
       data: {
         id: uuidv4(),
+        userId: createHabitData.userId,
         ...createHabitData,
       },
     });

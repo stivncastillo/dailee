@@ -50,7 +50,6 @@ const TaskForm = ({ onClose }: Props) => {
       ...(data.dueDate ? { dueDate: data.dueDate } : {}),
       complexId: parseInt(data.complexId ?? "0", 10),
       completedDate: null,
-      userId: "2102d189-3591-4b3b-9bc4-d6f0cc72510c",
     });
   };
 

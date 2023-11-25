@@ -8,6 +8,7 @@ import { GetHabitsArgs } from "./dto/get-habits.args";
 import { UpdateHabitInput } from "./dto/update-habit.input";
 import { Habit } from "./entities/habit.entity";
 import { HabitsService } from "./habits.service";
+import { CurrentUserId } from "../auth/decorators/currentUserId.decorator";
 
 @Resolver(() => Habit)
 export class HabitsResolver {
@@ -15,8 +16,11 @@ export class HabitsResolver {
 
   // Queries
   @Query(() => [Habit], { name: "habits", nullable: false })
-  getHabits(@Args() getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
-    return this.habitsService.getMany(getHabitsArgs);
+  getHabits(
+    @CurrentUserId() userId: string,
+    @Args() getHabitsArgs: GetHabitsArgs,
+  ): Promise<Habit[]> {
+    return this.habitsService.getMany({ ...getHabitsArgs, userId });
   }
 
   @Query(() => Habit, { name: "habit", nullable: false })
@@ -27,9 +31,10 @@ export class HabitsResolver {
   // Mutations
   @Mutation(() => Habit)
   createHabit(
+    @CurrentUserId() userId: string,
     @Args("createHabitInput") createHabitInput: CreateHabitInput,
   ): Promise<Habit> {
-    return this.habitsService.create(createHabitInput);
+    return this.habitsService.create({ userId, ...createHabitInput });
   }
 
   @Mutation(() => Habit)

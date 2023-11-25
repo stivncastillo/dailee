@@ -30,7 +30,6 @@ export type CreateHabitTrackingInput = {
   date?: InputMaybe<Scalars['DateTime']['input']>;
   habitId: Scalars['String']['input'];
   points: Scalars['Int']['input'];
-  userId: Scalars['String']['input'];
 };
 
 export type CreateTaskInput = {
@@ -40,7 +39,6 @@ export type CreateTaskInput = {
   points?: InputMaybe<Scalars['Int']['input']>;
   status?: Scalars['String']['input'];
   title: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
 };
 
 export type CreateUserInput = {
@@ -422,7 +420,6 @@ export type UpdateTaskInput = {
   points?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = {

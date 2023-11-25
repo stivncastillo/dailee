@@ -12,8 +12,4 @@ export class CreateHabitTrackingInput {
   @Field(() => String)
   @IsNotEmpty()
   habitId: string;
-
-  @Field(() => String)
-  @IsNotEmpty()
-  userId: string;
 }

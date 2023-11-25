@@ -22,7 +22,9 @@ export class TasksService {
     return await this.taskRepository.getMany(getTasksArgs);
   }
 
-  public async create(createData: CreateTaskInput): Promise<Task> {
+  public async create(
+    createData: CreateTaskInput & { userId: string },
+  ): Promise<Task> {
     return await this.taskRepository.create({
       data: {
         id: uuidv4(),

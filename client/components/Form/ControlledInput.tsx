@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Input, InputProps } from "@nextui-org/react";
+import { Input, InputProps } from "@nextui-org/input";
 import { Controller } from "react-hook-form";
 
 export interface ControlledInputProps extends InputProps {

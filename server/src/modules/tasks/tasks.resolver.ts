@@ -17,6 +17,7 @@ import { UpdateTaskInput } from "./dto/input/update-task.input";
 import { TasksComplexity } from "./entities/task-complexity.entity";
 import { Task } from "./entities/task.entity";
 import { TasksService } from "./tasks.service";
+import { CurrentUserId } from "../auth/decorators/currentUserId.decorator";
 
 @Resolver(() => Task)
 export class TasksResolver {
@@ -27,8 +28,12 @@ export class TasksResolver {
 
   // Queries
   @Query(() => [Task], { name: "tasks", nullable: false })
-  getTasks(@Args() getTaskArgs: GetTasksArgs): Promise<Task[]> {
-    return this.tasksService.getMany(getTaskArgs);
+  getTasks(
+    @CurrentUserId() userId: string,
+    @Args() getTaskArgs: GetTasksArgs,
+  ): Promise<Task[]> {
+    const where = { ...getTaskArgs.where, userId: { equals: userId } };
+    return this.tasksService.getMany({ ...getTaskArgs, where });
   }
 
   @Query(() => Task, { name: "task", nullable: false })
@@ -43,8 +48,11 @@ export class TasksResolver {
 
   // Mutations
   @Mutation(() => Task)
-  createTask(@Args("createTaskInput") createTaskInput: CreateTaskInput) {
-    return this.tasksService.create(createTaskInput);
+  createTask(
+    @CurrentUserId() userId: string,
+    @Args("createTaskInput") createTaskInput: CreateTaskInput,
+  ) {
+    return this.tasksService.create({ userId, ...createTaskInput });
   }
 
   @Mutation(() => Task)

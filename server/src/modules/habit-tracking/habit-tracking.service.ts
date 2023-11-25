@@ -21,9 +21,12 @@ export class HabitTrackingService {
     });
   }
 
-  public async getMany(getHabitTrackingArgs: GetHabitTrackingsArgs) {
+  public async getMany(
+    getHabitTrackingArgs: GetHabitTrackingsArgs & { userId: string },
+  ) {
     return await this.habitTrackingRepository.getMany({
       where: {
+        userId: getHabitTrackingArgs.userId,
         date: {
           gte: getHabitTrackingArgs.dateStart,
           lte: getHabitTrackingArgs.dateEnd,
@@ -49,7 +52,9 @@ export class HabitTrackingService {
     });
   }
 
-  public async create(data: CreateHabitTrackingInput): Promise<HabitTracking> {
+  public async create(
+    data: CreateHabitTrackingInput & { userId: string },
+  ): Promise<HabitTracking> {
     const habitTrackingExist = await this.habitTrackingRepository.getFirst({
       data,
     });

@@ -242,15 +242,14 @@ input CreateHabitTrackingInput {
   date: DateTime
   points: Int!
   habitId: String!
-  userId: String!
 }
 
 input UpdateHabitTrackingInput {
   date: DateTime
   points: Boolean
   habitId: String
-  userId: DateTime
   id: String!
+  userId: DateTime
 }
 
 input DeleteHabitTrackingInput {
@@ -269,7 +268,6 @@ input CreateTaskInput {
   points: Int
   status: String! = "todo"
   dueDate: DateTime
-  userId: String!
   complexId: Int!
   completedDate: DateTime
 }
@@ -279,7 +277,6 @@ input UpdateTaskInput {
   points: Int
   status: String = "todo"
   dueDate: DateTime
-  userId: String
   complexId: Int
   completedDate: DateTime
   id: String!

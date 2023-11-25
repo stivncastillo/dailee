@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
+import { Input } from "@nextui-org/input";
 import { Button, Checkbox } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -68,6 +69,7 @@ const LoginForm = () => {
 
       <form className="mt-8 space-y-6">
         <input type="hidden" name="remember" value="true" />
+        <Input type="yo" label="Email" />
         <ControlledInput
           control={control}
           label="Email"

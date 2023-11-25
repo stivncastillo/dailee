@@ -21,6 +21,7 @@ import {
 import { HabitTrackingAggregate } from "./entities/habit-tracking-aggregate";
 import { HabitTracking } from "./entities/habit-tracking.entity";
 import { HabitTrackingService } from "./habit-tracking.service";
+import { CurrentUserId } from "../auth/decorators/currentUserId.decorator";
 
 @Resolver(() => HabitTracking)
 export class HabitTrackingResolver {
@@ -34,8 +35,14 @@ export class HabitTrackingResolver {
 
   // Queries
   @Query(() => [HabitTracking], { name: "habitTrackings" })
-  getHabitTrackings(@Args() getHabitTrackingArgs: GetHabitTrackingsArgs) {
-    return this.habitTrackingService.getMany(getHabitTrackingArgs);
+  getHabitTrackings(
+    @CurrentUserId() userId: string,
+    @Args() getHabitTrackingArgs: GetHabitTrackingsArgs,
+  ) {
+    return this.habitTrackingService.getMany({
+      userId,
+      ...getHabitTrackingArgs,
+    });
   }
 
   @Query(() => HabitTracking, { name: "habitTracking", nullable: true })
@@ -60,10 +67,14 @@ export class HabitTrackingResolver {
   // Mutations
   @Mutation(() => HabitTracking)
   createHabitTracking(
+    @CurrentUserId() userId: string,
     @Args("createHabitTrackingInput")
     createHabitTrackingInput: CreateHabitTrackingInput,
   ) {
-    return this.habitTrackingService.create(createHabitTrackingInput);
+    return this.habitTrackingService.create({
+      userId,
+      ...createHabitTrackingInput,
+    });
   }
 
   @Mutation(() => HabitTracking)
