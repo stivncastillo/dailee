@@ -14,7 +14,7 @@ const INITIAL_VALUES = {
   id: "",
   title: "",
   dueDate: "",
-  points: null,
+  points: "",
   complexId: null,
 };
 

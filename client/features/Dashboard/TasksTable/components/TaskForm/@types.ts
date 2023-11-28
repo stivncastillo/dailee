@@ -1,6 +1,6 @@
 export type CreateTaskInputs = {
   title: string;
   dueDate: string;
-  points: number | null;
+  points: number | string | null;
   complexId: string | null;
 };

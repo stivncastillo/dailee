@@ -21,13 +21,14 @@ export const ApolloProviderWrapper = ({
   children: React.ReactNode;
 }) => {
   const { data: session } = useSession();
+  const token = useMemo(() => session?.user.token, [session]);
 
   const client = useMemo(() => {
     const authMiddleware = setContext((operation, { headers }) => {
       return {
         headers: {
           ...headers,
-          authorization: `Bearer ${session?.user.token}`,
+          authorization: `Bearer ${token}`,
         },
       };
     });
@@ -36,7 +37,8 @@ export const ApolloProviderWrapper = ({
       link: from([authMiddleware, httpLink]),
       cache: new InMemoryCache(),
     });
-  }, [session?.user.token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

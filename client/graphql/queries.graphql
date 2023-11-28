@@ -22,6 +22,12 @@ fragment TasksComplexityFields on TasksComplexity {
   points
 }
 
+fragment UserFields on User {
+  id
+  name
+  email
+}
+
 fragment TaskFields on Task {
   id
   title
@@ -29,8 +35,7 @@ fragment TaskFields on Task {
   points
   dueDate
   userId {
-    id
-    name
+    ...UserFields
   }
   completedDate
   createdAt
