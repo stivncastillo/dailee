@@ -7,14 +7,12 @@ import {
   ResolveField,
   Parent,
 } from "@nestjs/graphql";
-import { TasksComplexities } from "@prisma/client";
 import { UserService } from "src/modules/user/user.service";
 
 import { GetTaskArgs } from "./dto/args/get-task.args";
 import { GetTasksArgs } from "./dto/args/get-tasks.args";
 import { CreateTaskInput } from "./dto/input/create-task.input";
 import { UpdateTaskInput } from "./dto/input/update-task.input";
-import { TasksComplexity } from "./entities/task-complexity.entity";
 import { Task } from "./entities/task.entity";
 import { TasksService } from "./tasks.service";
 import { CurrentUserId } from "../auth/decorators/currentUserId.decorator";
@@ -41,11 +39,6 @@ export class TasksResolver {
     return this.tasksService.getOne(getTaskArgs);
   }
 
-  @Query(() => [TasksComplexity], { name: "taskComplexities", nullable: false })
-  getTaskComplexities(): Promise<TasksComplexities[]> {
-    return this.tasksService.getManyComplexities();
-  }
-
   // Mutations
   @Mutation(() => Task)
   createTask(
@@ -67,18 +60,12 @@ export class TasksResolver {
 
   // Resolvers
   @ResolveField()
-  async userId(@Parent() task: Task) {
-    const { userId } = task;
+  async user_id(@Parent() task: Task) {
+    const { user_id } = task;
     return this.userService.getOne({
       where: {
-        id: userId,
+        id: user_id,
       },
     });
-  }
-
-  @ResolveField()
-  async complexId(@Parent() task: Task) {
-    const { complexId } = task;
-    return this.tasksService.getTaskComplexity({ id: complexId });
   }
 }

@@ -76,7 +76,7 @@ export class AuthService {
     }
 
     const isRefreshTokenValid = await argon.verify(
-      user.hashedRefreshToken,
+      user.hashed_refresh_token,
       refreshToken,
     );
 
@@ -112,11 +112,11 @@ export class AuthService {
   }
 
   async updateRefreshToken(userId: string, refreshToken: string) {
-    const hashedRefreshToken = await argon.hash(refreshToken);
+    const hashed_refresh_token = await argon.hash(refreshToken);
 
     await this.userService.update({
       id: userId,
-      hashedRefreshToken,
+      hashed_refresh_token,
     });
   }
 }

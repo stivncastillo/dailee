@@ -2,12 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { Task } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
-import { GetTaskComplexityArgs } from "./dto/args/get-task-complexity.args";
 import { GetTaskArgs } from "./dto/args/get-task.args";
 import { GetTasksArgs } from "./dto/args/get-tasks.args";
 import { CreateTaskInput } from "./dto/input/create-task.input";
 import { UpdateTaskInput } from "./dto/input/update-task.input";
-import { TasksComplexity } from "./entities/task-complexity.entity";
 import { TaskRepository } from "./tasks.repository";
 
 @Injectable()
@@ -28,15 +26,20 @@ export class TasksService {
     return await this.taskRepository.create({
       data: {
         id: uuidv4(),
+        user: {
+          connect: {
+            id: createData.userId,
+          },
+        },
         ...createData,
       },
     });
   }
 
   public async update(updateData: UpdateTaskInput) {
-    const data = { ...updateData, completedDate: null };
+    const data = { ...updateData, completed_date: null };
     if (updateData.status === "done") {
-      data.completedDate = new Date();
+      data.completed_date = new Date();
     }
 
     return await this.taskRepository.update({
@@ -47,26 +50,5 @@ export class TasksService {
 
   public async delete(deleteData: GetTaskArgs): Promise<Task> {
     return await this.taskRepository.delete(deleteData);
-  }
-
-  // Complex
-  public async getTaskComplexity(
-    getTaskComplexityArgs: GetTaskComplexityArgs,
-  ): Promise<TasksComplexity> {
-    return await this.taskRepository.getComplexity({
-      where: {
-        id: getTaskComplexityArgs.id,
-      },
-    });
-  }
-
-  public async getManyComplexities(): Promise<TasksComplexity[]> {
-    return await this.taskRepository.getManyComplexities({
-      where: {
-        points: {
-          not: null,
-        },
-      },
-    });
   }
 }

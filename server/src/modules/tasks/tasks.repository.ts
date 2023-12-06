@@ -17,9 +17,7 @@ export class TaskRepository {
     return this.prisma.task.findMany(params);
   }
 
-  async create(params: {
-    data: Prisma.TaskUncheckedCreateInput;
-  }): Promise<Task> {
+  async create(params: { data: Prisma.TaskCreateInput }): Promise<Task> {
     const { data } = params;
     return this.prisma.task.create({ data });
   }

@@ -19,14 +19,14 @@ export class CreateTaskInput {
   @Field(() => String, { defaultValue: todoStatus })
   @IsOptional()
   @IsEnum(TaskStatus)
-  status?: string;
+  status: string;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  dueDate?: Date;
+  due_date?: Date;
 
-  @Field(() => Int)
-  complexId: number;
+  @Field(() => String)
+  difficulty: string;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  completedDate?: Date;
+  completed_date?: Date;
 }

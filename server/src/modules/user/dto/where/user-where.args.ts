@@ -19,7 +19,7 @@ export class UserWhereInput
   implements
     Omit<
       RestrictProperties<UserWhereInput, Prisma.UserWhereInput>,
-      "password" | "habits" | "habitTracking" | "tasks" | "hashedRefreshToken"
+      "password" | "habits" | "habitTracking" | "tasks" | "hashed_refresh_token"
     >
 {
   @Field(() => StringFilter, { nullable: true })

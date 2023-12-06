@@ -18,5 +18,5 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   password?: UserDB["password"];
 
   @Field(() => String, { nullable: true })
-  hashedRefreshToken?: UserDB["hashedRefreshToken"];
+  hashed_refresh_token?: UserDB["hashed_refresh_token"];
 }

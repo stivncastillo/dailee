@@ -23,17 +23,18 @@ export class HabitsService {
   }
 
   public async create(
-    createHabitData: CreateHabitInput & { userId: string },
+    data: CreateHabitInput & { userId: string },
   ): Promise<Habit> {
+    const { userId, ...rest } = data;
     const habit = await this.habitRepository.create({
       data: {
         id: uuidv4(),
         user: {
           connect: {
-            id: createHabitData.userId,
+            id: userId,
           },
         },
-        ...createHabitData,
+        ...rest,
       },
     });
 

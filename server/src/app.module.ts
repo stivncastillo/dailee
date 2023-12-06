@@ -13,7 +13,6 @@ import { validate } from "./config/validation";
 import { AuthModule } from "./modules/auth/auth.module";
 import { AccessTokenGuard } from "./modules/auth/guards/accessToken.guard";
 import { DashboardModule } from "./modules/dashboard/dashboard.module";
-import { HabitTrackingModule } from "./modules/habit-tracking/habit-tracking.module";
 import { HabitsModule } from "./modules/habits/habits.module";
 import { TasksModule } from "./modules/tasks/tasks.module";
 import { UserModule } from "./modules/user/user.module";
@@ -48,7 +47,6 @@ import { UserModule } from "./modules/user/user.module";
       },
     }),
     HabitsModule,
-    HabitTrackingModule,
     PrismaModule,
     UserModule,
     TasksModule,

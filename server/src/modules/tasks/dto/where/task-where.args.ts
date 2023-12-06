@@ -7,8 +7,6 @@ import {
   StringFilter,
 } from "src/common/dtos/common.input";
 
-import { TasksComplexitiesRelationFilter } from "./complex-where.args";
-
 @InputType()
 export class TaskWhereUniqueInput {
   @Field(() => String, { nullable: true })
@@ -26,32 +24,29 @@ export class TaskWhereInput
   @Field(() => StringFilter, { nullable: true })
   title: StringFilter;
 
-  @Field(() => IntFilter, { nullable: true })
-  complexId: IntFilter;
-
   @Field(() => StringFilter, { nullable: true })
-  userId: StringFilter;
+  user_id: StringFilter;
 
   @Field(() => StringFilter, { nullable: true })
   status: StringFilter;
+
+  @Field(() => StringFilter, { nullable: true })
+  difficulty: StringFilter;
 
   @Field(() => IntFilter, { nullable: true })
   points: IntFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })
-  dueDate: DateTimeFilter;
+  due_date: DateTimeFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })
-  completedDate: DateTimeFilter;
+  completed_date: DateTimeFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })
-  createdAt: DateTimeFilter;
+  created_at: DateTimeFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })
-  updatedAt: DateTimeFilter;
-
-  @Field(() => TasksComplexitiesRelationFilter, { nullable: true })
-  complexity: TasksComplexitiesRelationFilter;
+  updated_at: DateTimeFilter;
 
   @Field(() => [TaskWhereInput], { nullable: true })
   AND: TaskWhereInput[];

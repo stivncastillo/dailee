@@ -32,10 +32,16 @@ type WeeklyPoints {
 type Habit {
   id: String!
   name: String!
-  dueDate: DateTime
-  isPaused: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  difficulty: String!
+  due_date: DateTime
+  start_date: DateTime
+  target_frequency: Int
+  current_frequency: Int
+  points: Int
+  is_paused: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user_id: User!
 }
 
 """
@@ -43,78 +49,44 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type HabitTrackingAvgAggregate {
-  points: Float
-}
-
-type HabitTrackingSumAggregate {
-  points: Int
-}
-
-type HabitTrackingAggregate {
-  _sum: HabitTrackingSumAggregate
-  _avg: HabitTrackingAvgAggregate
-}
-
-type HabitTracking {
-  id: String!
-  date: DateTime!
-  points: Int!
-  habitId: Habit!
-  userId: User!
-}
-
-type TasksComplexity {
-  id: String!
-  name: String!
-  points: Int
-}
-
 type Task {
   id: String!
   title: String!
   status: String!
-  dueDate: DateTime
+  due_date: DateTime
   points: Int
-  userId: User!
-  complexId: TasksComplexity!
-  completedDate: DateTime
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  user_id: User!
+  difficulty: String!
+  completed_date: DateTime
+  created_at: DateTime!
+  updated_at: DateTime!
 }
 
 type Query {
-  habits(isPaused: Boolean, dueDate: DateTime): [Habit!]!
-  habit(id: String!): Habit!
-  habitTrackings(dateStart: DateTime, dateEnd: DateTime): [HabitTracking!]!
-  habitTracking(id: Float!): HabitTracking
-  habitTrackingsAggregate(dateStart: DateTime, dateEnd: DateTime): HabitTrackingAggregate
+  habits(where: HabitWhereInput, orderBy: [HabitOrderByWithRelationInput!], cursor: HabitWhereUniqueInput, take: Float, skip: Float): [Habit!]!
+  habit(where: HabitWhereUniqueInput): Habit!
   user(where: UserWhereUniqueInput): User!
   tasks(where: TaskWhereInput, orderBy: [TaskOrderByWithRelationInput!], cursor: TaskWhereUniqueInput, take: Float, skip: Float): [Task!]!
   task(where: TaskWhereUniqueInput): Task!
-  taskComplexities: [TasksComplexity!]!
   getWeeklyPoints(dateStart: DateTime!, dateEnd: DateTime!): WeeklyPoints!
 }
 
-input UserWhereUniqueInput {
-  id: String
-}
-
-input TaskWhereInput {
+input HabitWhereInput {
   id: StringFilter
-  title: StringFilter
-  complexId: IntFilter
-  userId: StringFilter
-  status: StringFilter
+  name: StringFilter
+  difficulty: StringFilter
+  user_id: StringFilter
+  target_frequency: IntFilter
+  current_frequency: IntFilter
   points: IntFilter
-  dueDate: DateTimeFilter
-  completedDate: DateTimeFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  complexity: TasksComplexitiesRelationFilter
-  AND: [TaskWhereInput!]
-  OR: [TaskWhereInput!]
-  NOT: [TaskWhereInput!]
+  due_date: DateTimeFilter
+  start_date: DateTimeFilter
+  is_paused: BoolFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+  AND: [HabitWhereInput!]
+  OR: [HabitWhereInput!]
+  NOT: [HabitWhereInput!]
 }
 
 input StringFilter {
@@ -155,29 +127,22 @@ input DateTimeFilter {
   gte: String
 }
 
-input TasksComplexitiesRelationFilter {
-  is: TasksComplexitiesWhereInput
-  isNot: TasksComplexitiesWhereInput
+input BoolFilter {
+  equals: Boolean
+  not: Boolean
 }
 
-input TasksComplexitiesWhereInput {
-  id: IntFilter
-  points: IntFilter
-  name: StringFilter
-  AND: [TasksComplexitiesWhereInput!]
-  OR: [TasksComplexitiesWhereInput!]
-  NOT: [TasksComplexitiesWhereInput!]
-}
-
-input TaskOrderByWithRelationInput {
+input HabitOrderByWithRelationInput {
   id: SortOrder
-  title: SortOrder
+  name: SortOrder
   points: SortOrder
-  dueDate: SortOrder
-  status: SortOrder
-  completedDate: SortOrder
-  createdAt: SortOrder
-  complexity: TasksComplexitiesOrderByWithRelationInput
+  due_date: SortOrder
+  start_date: SortOrder
+  difficulty: SortOrder
+  target_frequency: SortOrder
+  current_frequency: SortOrder
+  is_paused: SortOrder
+  created_at: SortOrder
 }
 
 enum SortOrder {
@@ -185,10 +150,39 @@ enum SortOrder {
   desc
 }
 
-input TasksComplexitiesOrderByWithRelationInput {
+input HabitWhereUniqueInput {
+  id: String
+}
+
+input UserWhereUniqueInput {
+  id: String
+}
+
+input TaskWhereInput {
+  id: StringFilter
+  title: StringFilter
+  user_id: StringFilter
+  status: StringFilter
+  difficulty: StringFilter
+  points: IntFilter
+  due_date: DateTimeFilter
+  completed_date: DateTimeFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+  AND: [TaskWhereInput!]
+  OR: [TaskWhereInput!]
+  NOT: [TaskWhereInput!]
+}
+
+input TaskOrderByWithRelationInput {
   id: SortOrder
-  name: SortOrder
+  title: SortOrder
+  difficulty: SortOrder
   points: SortOrder
+  due_date: SortOrder
+  status: SortOrder
+  completed_date: SortOrder
+  created_at: SortOrder
 }
 
 input TaskWhereUniqueInput {
@@ -198,11 +192,8 @@ input TaskWhereUniqueInput {
 type Mutation {
   createHabit(createHabitInput: CreateHabitInput!): Habit!
   updateHabit(updateHabitInput: UpdateHabitInput!): Habit!
-  deleteHabit(deleteHabitInput: DeleteHabitInput!): Habit!
-  deleteHabits(deleteHabitsInput: DeleteHabitsInput!): Float!
-  createHabitTracking(createHabitTrackingInput: CreateHabitTrackingInput!): HabitTracking!
-  updateHabitTracking(updateHabitTrackingInput: UpdateHabitTrackingInput!): HabitTracking!
-  deleteHabitTracking(deleteHabitTracking: DeleteHabitTrackingInput!): HabitTracking
+  deleteHabit(deleteHabitInput: DeleteInput!): Habit!
+  deleteHabits(deleteHabitsInput: DeleteManyInput!): Float!
   createUser(createUserInput: CreateUserInput!): User!
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
@@ -214,46 +205,38 @@ type Mutation {
 }
 
 input CreateHabitInput {
-  """Name of habit"""
   name: String!
-  dueDate: DateTime
+  difficulty: String!
+  due_date: DateTime
+  start_date: DateTime
+  target_frequency: Int
+  current_frequency: Int
+  points: Int
 
   """If habit is paused it doesnt list as active habit"""
-  isPaused: Boolean!
+  is_paused: Boolean!
 }
 
 input UpdateHabitInput {
-  name: String
-  dueDate: DateTime
-  isPaused: Boolean
+  name: String!
+  difficulty: String!
+  due_date: DateTime
+  start_date: DateTime
+  target_frequency: Int
+  current_frequency: Int
+  points: Int
+
+  """If habit is paused it doesnt list as active habit"""
+  is_paused: Boolean!
   id: String!
 }
 
-input DeleteHabitInput {
+input DeleteInput {
   id: String!
 }
 
-input DeleteHabitsInput {
+input DeleteManyInput {
   ids: [String!]!
-}
-
-input CreateHabitTrackingInput {
-  date: DateTime
-  points: Int!
-  habitId: String!
-}
-
-input UpdateHabitTrackingInput {
-  date: DateTime
-  points: Boolean
-  habitId: String
-  id: String!
-  userId: DateTime
-}
-
-input DeleteHabitTrackingInput {
-  date: DateTime!
-  habitId: String!
 }
 
 input CreateUserInput {
@@ -266,18 +249,18 @@ input CreateTaskInput {
   title: String!
   points: Int
   status: String! = "todo"
-  dueDate: DateTime
-  complexId: Int!
-  completedDate: DateTime
+  due_date: DateTime
+  difficulty: String!
+  completed_date: DateTime
 }
 
 input UpdateTaskInput {
   title: String
   points: Int
   status: String = "todo"
-  dueDate: DateTime
-  complexId: Int
-  completedDate: DateTime
+  due_date: DateTime
+  difficulty: String
+  completed_date: DateTime
   id: String!
 }
 
