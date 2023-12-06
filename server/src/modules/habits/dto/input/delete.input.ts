@@ -2,7 +2,7 @@ import { Field, InputType } from "@nestjs/graphql";
 import { IsNotEmpty } from "class-validator";
 
 @InputType()
-export class DeleteHabitInput {
+export class DeleteInput {
   @Field()
   @IsNotEmpty()
   id: string;

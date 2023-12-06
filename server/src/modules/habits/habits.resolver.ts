@@ -1,11 +1,11 @@
 import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
 
-import { CreateHabitInput } from "./dto/create-habit.input";
-import { DeleteHabitInput } from "./dto/delete-habit.input";
-import { DeleteHabitsInput } from "./dto/delete-habits.input";
-import { GetHabitArgs } from "./dto/get-habit.args";
-import { GetHabitsArgs } from "./dto/get-habits.args";
-import { UpdateHabitInput } from "./dto/update-habit.input";
+import { GetHabitArgs } from "./dto/args/get-habit.args";
+import { GetHabitsArgs } from "./dto/args/get-habits.args";
+import { CreateHabitInput } from "./dto/input/create-habit.input";
+import { DeleteManyInput } from "./dto/input/delete-many.input";
+import { DeleteInput } from "./dto/input/delete.input";
+import { UpdateHabitInput } from "./dto/input/update-habit.input";
 import { Habit } from "./entities/habit.entity";
 import { HabitsService } from "./habits.service";
 import { CurrentUserId } from "../auth/decorators/currentUserId.decorator";
@@ -20,7 +20,9 @@ export class HabitsResolver {
     @CurrentUserId() userId: string,
     @Args() getHabitsArgs: GetHabitsArgs,
   ): Promise<Habit[]> {
-    return this.habitsService.getMany({ ...getHabitsArgs, userId });
+    const { where, ...rest } = getHabitsArgs;
+    const whereUser = { ...where, user_id: { equals: userId } };
+    return this.habitsService.getMany({ where: whereUser, ...rest });
   }
 
   @Query(() => Habit, { name: "habit", nullable: false })
@@ -44,14 +46,14 @@ export class HabitsResolver {
 
   @Mutation(() => Habit)
   async deleteHabit(
-    @Args("deleteHabitInput") deleteHabitInput: DeleteHabitInput,
+    @Args("deleteHabitInput") deleteHabitInput: DeleteInput,
   ): Promise<Habit> {
     return this.habitsService.delete(deleteHabitInput);
   }
 
   @Mutation(() => Number)
   async deleteHabits(
-    @Args("deleteHabitsInput") deleteHabitsInput: DeleteHabitsInput,
+    @Args("deleteHabitsInput") deleteHabitsInput: DeleteManyInput,
   ): Promise<number> {
     return await this.habitsService.deleteMany(deleteHabitsInput);
   }

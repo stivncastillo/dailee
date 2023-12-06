@@ -1,5 +1,6 @@
-import { ObjectType, Field, GraphQLISODateTime } from "@nestjs/graphql";
+import { ObjectType, Field, GraphQLISODateTime, Int } from "@nestjs/graphql";
 import { Habit as HabitDB } from "@prisma/client";
+import { User } from "src/modules/user/entities/user.entity";
 
 @ObjectType()
 export class Habit {
@@ -9,15 +10,33 @@ export class Habit {
   @Field(() => String)
   name: HabitDB["name"];
 
+  @Field(() => String)
+  difficulty: HabitDB["difficulty"];
+
   @Field(() => GraphQLISODateTime, { nullable: true })
-  dueDate?: HabitDB["dueDate"];
+  due_date?: HabitDB["due_date"];
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  start_date?: HabitDB["start_date"];
+
+  @Field(() => Int, { nullable: true })
+  target_frequency?: HabitDB["target_frequency"];
+
+  @Field(() => Int, { nullable: true })
+  current_frequency?: HabitDB["current_frequency"];
+
+  @Field(() => Int, { nullable: true })
+  points?: HabitDB["points"];
 
   @Field(() => Boolean)
-  isPaused: HabitDB["isPaused"];
+  is_paused: HabitDB["is_paused"];
 
   @Field(() => GraphQLISODateTime)
-  createdAt: HabitDB["createdAt"];
+  created_at: HabitDB["created_at"];
 
   @Field(() => GraphQLISODateTime)
-  updatedAt: HabitDB["updatedAt"];
+  updated_at: HabitDB["updated_at"];
+
+  @Field(() => User)
+  user_id: HabitDB["user_id"];
 }

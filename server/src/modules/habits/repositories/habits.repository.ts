@@ -2,6 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { Prisma, Habit } from "@prisma/client";
 import { PrismaService } from "src/common/database/prisma/prisma.service";
 
+import { GetHabitsArgs } from "../dto/args/get-habits.args";
+
 @Injectable()
 export class HabitRepository {
   constructor(private prisma: PrismaService) {}
@@ -13,15 +15,8 @@ export class HabitRepository {
     return this.prisma.habit.findUnique({ where });
   }
 
-  async getMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.HabitWhereUniqueInput;
-    where?: Prisma.HabitWhereInput;
-    orderBy?: Prisma.HabitOrderByWithRelationInput;
-  }): Promise<Habit[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.habit.findMany({ skip, take, cursor, where, orderBy });
+  async getMany(params: GetHabitsArgs): Promise<Habit[]> {
+    return this.prisma.habit.findMany(params);
   }
 
   async create(params: { data: Prisma.HabitCreateInput }): Promise<Habit> {

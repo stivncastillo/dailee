@@ -10,64 +10,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Habit {
-  id String @id @default(uuid())
-  name String
-  dueDate DateTime?
-  isPaused Boolean @default(false)
-  habitTracking HabitTracking[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  userId String?
-  user User? @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  @@map("habit")
-}
-
-// Model user with password
 model User {
   id String @id @default(uuid())
   name String
   email String @unique
   password String
-  hashedRefreshToken String?
-  habitTracking HabitTracking[]
+  hashed_refresh_token String?
   tasks Task[]
   habits Habit[]
   @@map("user")
 }
 
-model HabitTracking {
-  id Int @id @default(autoincrement())
-  userId String
-  user User? @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  habitId String
-  habit Habit? @relation(fields: [habitId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+model Habit {
+  id String @id @default(uuid())
+  name String
+  difficulty String
+  start_date DateTime?
+  due_date DateTime?
+  target_frequency Int? @default(1)
+  current_frequency Int? @default(0)
+  is_paused Boolean @default(false)
+  points Int? @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  habit_logs HabitLog[]
+  user_id String?
+  user User? @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  @@map("habit")
+}
+
+model HabitLog {
+  id String @id @default(uuid())
+  habit_id String
+  habit Habit? @relation(fields: [habit_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   date DateTime
-  points Int
-  @@map("habit_tracking")
+  is_completed Boolean @default(false)
+  points Int? @default(0)
+  notes String?
+  @@map("habit_log")
 }
 
 model Task {
   id String @id @default(uuid())
   title String
-  dueDate DateTime?
-  userId String
-  user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  complexId Int?
+  status String
+  due_date DateTime?
+  difficulty String
   points Int?
-  status String?
-  complexity TasksComplexities? @relation(fields: [complexId], references: [id], onUpdate: SetNull, onDelete: SetNull)
-  completedDate DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  completed_date DateTime?
+  user_id String
+  user User @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("task")
-}
-
-model TasksComplexities {
-  id Int @id @default(autoincrement())
-  name String
-  points Int?
-  tasks Task[]
-  @@map("task_complexities")
-
 }
