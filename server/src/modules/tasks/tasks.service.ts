@@ -21,17 +21,18 @@ export class TasksService {
   }
 
   public async create(
-    createData: CreateTaskInput & { userId: string },
+    data: CreateTaskInput & { userId: string },
   ): Promise<Task> {
+    const { userId, ...rest } = data;
     return await this.taskRepository.create({
       data: {
         id: uuidv4(),
         user: {
           connect: {
-            id: createData.userId,
+            id: userId,
           },
         },
-        ...createData,
+        ...rest,
       },
     });
   }

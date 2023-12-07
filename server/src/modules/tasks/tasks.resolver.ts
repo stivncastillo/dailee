@@ -30,7 +30,7 @@ export class TasksResolver {
     @CurrentUserId() userId: string,
     @Args() getTaskArgs: GetTasksArgs,
   ): Promise<Task[]> {
-    const where = { ...getTaskArgs.where, userId: { equals: userId } };
+    const where = { ...getTaskArgs.where, user_id: { equals: userId } };
     return this.tasksService.getMany({ ...getTaskArgs, where });
   }
 
