@@ -21,6 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const DashboardPage: React.FC = () => {
+  console.log("DashboardPage");
   return (
     <>
       <div className="hidden flex-col md:flex">

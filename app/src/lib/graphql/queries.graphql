@@ -1,0 +1,21 @@
+fragment UserFields on User {
+  id
+  name
+  email
+}
+
+fragment TaskFields on Task {
+  id
+  title
+  status
+  completed_date
+  difficulty
+  created_at
+  updated_at
+}
+
+query getTasks($where: TaskWhereInput, $orderBy: [TaskOrderByWithRelationInput!]) {
+  tasks(where: $where, orderBy: $orderBy) {
+    ...TaskFields
+  }
+}

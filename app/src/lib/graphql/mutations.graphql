@@ -1,0 +1,19 @@
+mutation SignIn($signInInput: SigninInput!) {
+  signin(signinInput: $signInInput) {
+    accessToken
+    refreshToken
+    user {
+      ...UserFields
+    }
+  }
+}
+
+mutation RefreshToken {
+  newTokens {
+    accessToken,
+    refreshToken,
+    user {
+      ...UserFields
+    }
+  }
+}

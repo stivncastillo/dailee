@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
+
+import { LoginForm } from "@/features/Auth/LoginForm";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/providers/UserProvider";
 
 const LoginPage: React.FC = () => {
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   return (
     <>
       <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -46,38 +56,7 @@ const LoginPage: React.FC = () => {
               </p>
             </div>
             <div className={cn("grid gap-6")}>
-              <form>
-                <div className="grid gap-2">
-                  <div className="grid gap-1">
-                    <Label className="sr-only" htmlFor="email">
-                      Email
-                    </Label>
-                    <Input
-                      id="email"
-                      placeholder="name@example.com"
-                      type="email"
-                      autoCapitalize="none"
-                      autoComplete="email"
-                      autoCorrect="off"
-                    />
-                  </div>
-                  <div className="grid gap-1">
-                    <Label className="sr-only" htmlFor="password">
-                      Password
-                    </Label>
-                    <Input
-                      id="password"
-                      placeholder="Type your password"
-                      type="password"
-                      autoCapitalize="none"
-                      autoComplete="password"
-                      autoCorrect="off"
-                      // disabled={isLoading}
-                    />
-                  </div>
-                  <Button>Sign In</Button>
-                </div>
-              </form>
+              <LoginForm />
             </div>
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
