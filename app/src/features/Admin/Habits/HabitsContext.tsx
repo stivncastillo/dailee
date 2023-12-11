@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 import { ApolloError } from "@apollo/client";
 
@@ -9,11 +9,16 @@ export type HabitsContextType = {
   items: Habit[];
   loading: boolean;
   error?: ApolloError;
+  habitToEdit: Habit | null;
+  setHabitToEdit: (habit: Habit | null) => void;
 };
 
 const DEFAULT_VALUES = {
   items: [],
   loading: false,
+  error: undefined,
+  habitToEdit: null,
+  setHabitToEdit: () => {},
 };
 
 const HabitsContext = createContext<HabitsContextType>(DEFAULT_VALUES);
@@ -22,12 +27,15 @@ const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { data, loading, error } = useGetHabits();
+  const [habitToEdit, setHabitToEdit] = useState<Habit | null>(null);
   return (
     <HabitsContext.Provider
       value={{
         items: data?.habits ?? [],
         loading,
         error,
+        habitToEdit,
+        setHabitToEdit,
       }}
     >
       {children}

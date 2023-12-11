@@ -26,10 +26,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import useCreateHabit from "@/hooks-api/useCreateHabit";
+import useUpdateHabit from "@/hooks-api/useUpdateHabit";
+import { Habit } from "@/lib/graphql/codegen/graphql";
 
 type FormValues = {
   name: string;
@@ -42,30 +42,46 @@ type FormValues = {
   is_paused: boolean;
 };
 
-const CreateHabitDialog = () => {
+interface EditHabitDialogProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  habit: Habit;
+}
+
+const EditHabitDialog: React.FC<EditHabitDialogProps> = ({
+  habit,
+  open,
+  setOpen,
+}) => {
   const { toast } = useToast();
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { createHabit } = useCreateHabit();
+  const { updateHabit } = useUpdateHabit();
   const {
     control,
     handleSubmit,
     reset,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = useForm<FormValues>({
     mode: "all",
     defaultValues: {
-      start_date: new Date(),
-      is_paused: false,
+      start_date: new Date(habit?.start_date) ?? new Date(),
+      is_paused: habit?.is_paused ?? false,
+      name: habit.name,
+      difficulty: habit.difficulty,
+      target_frequency: habit?.target_frequency ?? 0,
+      current_frequency: habit?.current_frequency ?? 0,
+      points: habit?.points ?? 0,
+      due_date: habit?.due_date ? new Date(habit?.due_date) : new Date(),
     },
   });
 
   const onSubmit = async (data: FormValues) => {
     try {
       setLoading(true);
-      await createHabit({
+      await updateHabit({
         ...data,
+        id: habit.id,
         target_frequency: Number(data.target_frequency),
         current_frequency: Number(data.current_frequency),
         points: Number(data?.points) ?? 0,
@@ -74,7 +90,7 @@ const CreateHabitDialog = () => {
       setOpen(false);
       setLoading(false);
       toast({
-        title: `${data.name} created`,
+        title: `${data.name} updated`,
         variant: "success",
       });
     } catch (error) {
@@ -87,15 +103,9 @@ const CreateHabitDialog = () => {
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
-      <DialogTrigger asChild>
-        <Button>
-          <Icon name="plus" className="mr-2 h-5 w-5" />
-          Create
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create new habit</DialogTitle>
+          <DialogTitle>Edit {habit.name}</DialogTitle>
           <DialogDescription>
             Habits are a powerful way to track your progress over time.
           </DialogDescription>
@@ -147,7 +157,7 @@ const CreateHabitDialog = () => {
             type="button"
             isLoading={loading}
             onClick={handleSubmit(onSubmit)}
-            disabled={!isValid}
+            disabled={!isValid || !isDirty}
           >
             Save
           </Button>
@@ -157,4 +167,4 @@ const CreateHabitDialog = () => {
   );
 };
 
-export default CreateHabitDialog;
+export default EditHabitDialog;

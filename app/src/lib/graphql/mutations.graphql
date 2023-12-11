@@ -23,3 +23,13 @@ mutation CreateHabit($createHabitInput: CreateHabitInput!) {
     ...HabitFields
   }
 }
+
+mutation DeleteHabits($deleteHabitsInput: DeleteManyInput!) {
+  deleteHabits(deleteHabitsInput: $deleteHabitsInput)
+}
+
+mutation UpdateHabit($updateHabitInput: UpdateHabitInput!) {
+  updateHabit(updateHabitInput: $updateHabitInput) {
+    ...HabitFields
+  }
+}

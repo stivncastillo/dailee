@@ -1,6 +1,4 @@
-"use client";
-
-import React from "react";
+import { useEffect, useState } from "react";
 
 import {
   flexRender,
@@ -13,6 +11,8 @@ import {
 } from "@tanstack/react-table";
 
 import CreateHabitDialog from "./components/CreateHabitDialog";
+import DeleteHabitsButton from "./components/DeleteHabitsButton";
+import EditHabitDialog from "./components/EditHabitDialog";
 import { columns } from "./config/columns";
 import { useHabitsContext } from "./HabitsContext";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -27,12 +27,11 @@ import {
 } from "@/components/ui/table";
 
 const HabitsTable = () => {
-  const { items } = useHabitsContext();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [rowSelection, setRowSelection] = React.useState({});
+  const { items, habitToEdit, setHabitToEdit } = useHabitsContext();
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data: items,
     columns,
@@ -49,6 +48,20 @@ const HabitsTable = () => {
     },
   });
 
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
+
+  useEffect(() => {
+    if (habitToEdit) {
+      setOpenEditModal(true);
+    }
+  }, [habitToEdit]);
+
+  useEffect(() => {
+    if (!openEditModal) {
+      setHabitToEdit(null);
+    }
+  }, [setHabitToEdit, openEditModal]);
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -61,8 +74,15 @@ const HabitsTable = () => {
           classNameWrapper="mb-0"
           className="max-w-sm"
         />
-
-        <CreateHabitDialog />
+        <div className="flex justify-end gap-2">
+          {selectedRows.length > 0 && (
+            <DeleteHabitsButton
+              ids={selectedRows}
+              onDelete={() => setRowSelection([])}
+            />
+          )}
+          <CreateHabitDialog />
+        </div>
       </div>
 
       <Card className="rounded-sm">
@@ -118,11 +138,19 @@ const HabitsTable = () => {
         </CardContent>
         <CardFooter className="flex justify-between p-3">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {selectedRows.length} of {table.getFilteredRowModel().rows.length}{" "}
+            row(s) selected.
           </div>
         </CardFooter>
       </Card>
+
+      {habitToEdit && (
+        <EditHabitDialog
+          setOpen={setOpenEditModal}
+          open={openEditModal}
+          habit={habitToEdit}
+        />
+      )}
     </>
   );
 };
