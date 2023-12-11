@@ -37,7 +37,7 @@ const LoginForm = () => {
     try {
       setLoading(true);
       await signIn(data.email, data.password);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       if (error instanceof ApolloError) {
         setError(error.message);

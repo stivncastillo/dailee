@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { UserFieldsFragment } from "@/lib/graphql/codegen/graphql";
 
 export interface IUser {
@@ -22,6 +23,13 @@ const UserProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null);
+  const [value] = useLocalStorage<IUser | null>("user", null);
+
+  useEffect(() => {
+    if (value) {
+      setUser(value);
+    }
+  }, [value, setUser]);
 
   return (
     <UserContext.Provider

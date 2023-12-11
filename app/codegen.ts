@@ -8,9 +8,10 @@ const config: CodegenConfig = {
   generates: {
     "src/lib/graphql/codegen/": {
       preset: "client",
-      plugins: ['typescript', 'typescript-operations'],
+      plugins: [],
       config: {
         flattenGeneratedTypes: true,
+        futureProofEnums: true,
         scalars: {
           Date: "String",
         },

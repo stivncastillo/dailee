@@ -1,12 +1,11 @@
 import React from "react";
 
-import { ApolloProvider } from "@apollo/client";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
+import { ApolloProviderWrapper } from "./ApolloProviderWrapper";
 import { AuthProvider } from "./AuthProvider";
 import ErrorBoundary from "./ErrorBoundary";
 import { UserProvider } from "./UserProvider";
-import client from "@/lib/apollo";
 
 loadDevMessages();
 loadErrorMessages();
@@ -20,9 +19,9 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
     <ErrorBoundary>
       <UserProvider>
         {/* @ts-ignore */}
-        <ApolloProvider client={client}>
+        <ApolloProviderWrapper>
           <AuthProvider>{children}</AuthProvider>
-        </ApolloProvider>
+        </ApolloProviderWrapper>
       </UserProvider>
     </ErrorBoundary>
   );

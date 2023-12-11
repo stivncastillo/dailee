@@ -10,12 +10,25 @@ export interface InputProps
   isInvalid?: boolean;
   label?: string;
   endContent?: React.ReactNode;
+  classNameWrapper?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, error, isInvalid, label, endContent, ...props }, ref) => {
+  (
+    {
+      className,
+      classNameWrapper,
+      type,
+      error,
+      isInvalid,
+      label,
+      endContent,
+      ...props
+    },
+    ref,
+  ) => {
     return (
-      <div className="mb-2">
+      <div className={cn("mb-0", classNameWrapper)}>
         <Label className={cn(!label && "sr-only")} htmlFor={props.name}>
           {label ?? props.name}
         </Label>

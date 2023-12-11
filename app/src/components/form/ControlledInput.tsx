@@ -29,12 +29,11 @@ const ControlledInput: React.FC<ControlledInputProps> = ({
           id={name}
           name={name}
           ref={ref}
-          value={value as string}
+          value={value}
           isInvalid={invalid}
           error={error?.message}
           onChange={onChange}
           onBlur={onBlur}
-          label="Marica"
           {...rest}
         />
       )}

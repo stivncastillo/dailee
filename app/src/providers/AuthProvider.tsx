@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext } from "react";
 
 import { ApolloError } from "@apollo/client";
 
@@ -21,13 +21,8 @@ const AuthProvider: React.FC<{
 }> = ({ children }) => {
   const { setUser } = useUser();
   const { onSignIn } = useSignIn();
-  const [value, setValue] = useLocalStorage<IUser | null>("user", null);
-
-  useEffect(() => {
-    if (value) {
-      setUser(value);
-    }
-  }, [value, setUser]);
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  const [_, setValue] = useLocalStorage<IUser | null>("user", null);
 
   const signIn = async (email: string, password: string) => {
     try {

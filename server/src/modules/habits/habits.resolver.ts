@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
+import { Inject } from "@nestjs/common";
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from "@nestjs/graphql";
 
 import { GetHabitArgs } from "./dto/args/get-habit.args";
 import { GetHabitsArgs } from "./dto/args/get-habits.args";
@@ -9,10 +17,14 @@ import { UpdateHabitInput } from "./dto/input/update-habit.input";
 import { Habit } from "./entities/habit.entity";
 import { HabitsService } from "./habits.service";
 import { CurrentUserId } from "../auth/decorators/currentUserId.decorator";
+import { UserService } from "../user/user.service";
 
 @Resolver(() => Habit)
 export class HabitsResolver {
   constructor(private readonly habitsService: HabitsService) {}
+
+  @Inject(UserService)
+  private readonly userService: UserService;
 
   // Queries
   @Query(() => [Habit], { name: "habits", nullable: false })
@@ -56,5 +68,16 @@ export class HabitsResolver {
     @Args("deleteHabitsInput") deleteHabitsInput: DeleteManyInput,
   ): Promise<number> {
     return await this.habitsService.deleteMany(deleteHabitsInput);
+  }
+
+  // Resolvers
+  @ResolveField()
+  async user_id(@Parent() habit: Habit) {
+    const { user_id } = habit;
+    return this.userService.getOne({
+      where: {
+        id: user_id,
+      },
+    });
   }
 }
