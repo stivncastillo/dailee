@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { HabitLog } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,11 +8,15 @@ import { CreateHabitLogInput } from "./dto/input/create-habit-log.input";
 import { DeleteManyInput } from "./dto/input/delete-many.input";
 import { DeleteInput } from "./dto/input/delete.input";
 import { UpdateHabitLogInput } from "./dto/input/update-habit-log.input";
+import { HabitsService } from "./habits.service";
 import { HabitLogRepository } from "./repositories/habit-logs.repository";
 
 @Injectable()
 export class HabitLogsService {
   constructor(private habitLogRepository: HabitLogRepository) {}
+
+  @Inject(HabitsService)
+  private readonly habitService: HabitsService;
 
   public async getMany(data: GetHabitLogsArgs): Promise<HabitLog[]> {
     return await this.habitLogRepository.getMany(data);
@@ -23,31 +27,51 @@ export class HabitLogsService {
   }
 
   public async create(data: CreateHabitLogInput): Promise<HabitLog> {
-    const habit = await this.habitLogRepository.create({
+    const habitLog = await this.habitLogRepository.create({
       data: {
         id: uuidv4(),
         ...data,
+        date: new Date(),
+        notes: data.notes || "",
       },
     });
 
-    return habit;
+    const habit = await this.habitService.getOne({
+      where: { id: data.habit_id },
+    });
+
+    const habitLogs = await this.getCountByHabitId(data.habit_id);
+
+    let isCompleted = false;
+    if (habitLogs === habit.current_frequency) {
+      isCompleted = true;
+    }
+
+    let isTargetCompleted = false;
+    if (habitLogs === habit.target_frequency) {
+      isTargetCompleted = true;
+    }
+
+    return await this.update({
+      id: habitLog.id,
+      is_completed: isCompleted,
+      is_target_completed: isTargetCompleted,
+      points: habit.points,
+    });
   }
 
   public async update(data: UpdateHabitLogInput) {
-    const review = await this.habitLogRepository.update({
-      where: { id: data.id },
-      data: data,
+    const { id, ...rest } = data;
+    return await this.habitLogRepository.update({
+      where: { id },
+      data: rest,
     });
-
-    return review;
   }
 
   public async delete(deleteHabitData: DeleteInput): Promise<HabitLog> {
-    const review = await this.habitLogRepository.delete({
+    return await this.habitLogRepository.delete({
       where: { id: deleteHabitData.id },
     });
-
-    return review;
   }
 
   public async deleteMany(deleteHabitData: DeleteManyInput): Promise<number> {
@@ -60,5 +84,15 @@ export class HabitLogsService {
     });
 
     return count;
+  }
+
+  public async getCountByHabitId(habit_id: string): Promise<number> {
+    return await this.habitLogRepository.getCount({
+      where: {
+        habit_id: {
+          equals: habit_id,
+        },
+      },
+    });
   }
 }

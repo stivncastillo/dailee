@@ -8,15 +8,17 @@ export class CreateHabitLogInput {
   habit_id: string;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  date: Date;
+  date?: Date;
 
   @Field(() => Int, { nullable: true })
   points?: number;
 
   @Field(() => Boolean, { defaultValue: false })
-  is_completed: boolean;
+  is_completed?: boolean;
 
-  @Field(() => String)
-  @MaxLength(240)
-  notes: string;
+  @Field(() => Boolean, { defaultValue: false })
+  is_target_completed?: boolean;
+
+  @Field(() => String, { nullable: true })
+  notes?: string;
 }

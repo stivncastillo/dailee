@@ -11,10 +11,13 @@ import { Habit } from "@/lib/graphql/codegen/graphql";
 
 interface HabitCardProps {
   habit: Habit;
+  onPlusClick?: (habitId: string) => void;
+  onMinusClick?: (habitId: string) => void;
 }
 
 const HabitCard: React.FC<HabitCardProps> = ({
   habit: {
+    id,
     name,
     points,
     difficulty,
@@ -23,6 +26,8 @@ const HabitCard: React.FC<HabitCardProps> = ({
     is_paused,
     due_date,
   },
+  onPlusClick,
+  onMinusClick,
 }) => {
   const daysRemaining = getDaysRemaining(new Date(due_date));
   return (
@@ -60,10 +65,18 @@ const HabitCard: React.FC<HabitCardProps> = ({
         </div>
 
         <div className="flex flex-col bg-red-300 shrink-0">
-          <Button size="icon" className="grow aspect-square rounded-none">
+          <Button
+            size="icon"
+            className="grow aspect-square rounded-none"
+            onClick={() => onMinusClick?.(id)}
+          >
             <Icon name="minus" />
           </Button>
-          <Button size="icon" className="grow aspect-square rounded-none">
+          <Button
+            size="icon"
+            className="grow aspect-square rounded-none"
+            onClick={() => onPlusClick?.(id)}
+          >
             <Icon name="plus" />
           </Button>
         </div>

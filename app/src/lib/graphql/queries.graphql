@@ -21,6 +21,17 @@ fragment HabitFields on Habit {
   }
 }
 
+fragment HabitLogFields on HabitLog {
+  id
+  habit_id {
+    id
+  }
+  is_completed
+  is_target_completed
+  points
+  date
+}
+
 fragment TaskFields on Task {
   id
   title

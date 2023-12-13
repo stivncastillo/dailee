@@ -30,4 +30,7 @@ export class HabitLogOrderByWithRelationInput
 
   @Field(() => Prisma.SortOrder, { nullable: true })
   is_completed: Prisma.SortOrder;
+
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  is_target_completed: Prisma.SortOrder;
 }

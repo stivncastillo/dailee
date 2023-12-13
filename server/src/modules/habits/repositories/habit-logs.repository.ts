@@ -2,8 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { Prisma, HabitLog } from "@prisma/client";
 import { PrismaService } from "src/common/database/prisma/prisma.service";
 
-import { GetHabitLogsArgs } from "../dto/args/get-habits-logs";
-
 @Injectable()
 export class HabitLogRepository {
   constructor(private prisma: PrismaService) {}
@@ -15,7 +13,13 @@ export class HabitLogRepository {
     return this.prisma.habitLog.findUnique({ where });
   }
 
-  async getMany(params: GetHabitLogsArgs): Promise<HabitLog[]> {
+  async getMany(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.HabitLogWhereUniqueInput;
+    where?: Prisma.HabitLogWhereInput;
+    orderBy?: Prisma.HabitLogOrderByWithRelationInput;
+  }): Promise<HabitLog[]> {
     return this.prisma.habitLog.findMany(params);
   }
 
@@ -46,5 +50,12 @@ export class HabitLogRepository {
   }): Promise<Prisma.BatchPayload> {
     const { where } = params;
     return this.prisma.habitLog.deleteMany({ where });
+  }
+
+  async getCount(params: {
+    where: Prisma.HabitLogWhereInput;
+  }): Promise<number> {
+    const { where } = params;
+    return this.prisma.habitLog.count({ where });
   }
 }

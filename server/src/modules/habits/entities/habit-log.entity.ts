@@ -16,6 +16,9 @@ export class HabitLog {
   @Field(() => Boolean)
   is_completed: HabitLogDB["is_completed"];
 
+  @Field(() => Boolean)
+  is_target_completed: HabitLogDB["is_target_completed"];
+
   @Field(() => Int, { nullable: true })
   points?: HabitLogDB["points"];
 

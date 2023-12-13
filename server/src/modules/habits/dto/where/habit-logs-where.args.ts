@@ -4,7 +4,6 @@ import {
   BoolFilter,
   DateTimeFilter,
   IntFilter,
-  RestrictProperties,
   StringFilter,
 } from "src/common/dtos/common.input";
 
@@ -15,39 +14,33 @@ export class HabitLogWhereUniqueInput {
 }
 
 @InputType()
-export class HabitLogWhereInput
-  implements
-    Omit<
-      RestrictProperties<HabitLogWhereInput, Prisma.HabitLogWhereInput>,
-      "habit"
-    >
-{
+export class HabitLogWhereInput implements Prisma.HabitLogWhereInput {
   @Field(() => StringFilter, { nullable: true })
-  id: StringFilter;
+  id?: StringFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })
-  date: DateTimeFilter;
+  date?: DateTimeFilter;
 
   @Field(() => IntFilter, { nullable: true })
-  points: IntFilter;
+  points?: IntFilter;
 
   @Field(() => BoolFilter, { nullable: true })
-  is_completed: BoolFilter;
+  is_completed?: BoolFilter;
 
   @Field(() => StringFilter, { nullable: true })
-  notes: StringFilter;
+  notes?: StringFilter;
 
   @Field(() => StringFilter, { nullable: true })
-  habit_id: StringFilter;
+  habit_id?: StringFilter;
 
   @Field(() => [HabitLogWhereInput], { nullable: true })
-  AND: HabitLogWhereInput[];
+  AND?: HabitLogWhereInput[];
 
   @Field(() => [HabitLogWhereInput], { nullable: true })
-  OR: HabitLogWhereInput[];
+  OR?: HabitLogWhereInput[];
 
   @Field(() => [HabitLogWhereInput], { nullable: true })
-  NOT: HabitLogWhereInput[];
+  NOT?: HabitLogWhereInput[];
 }
 
 @InputType()

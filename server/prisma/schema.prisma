@@ -45,6 +45,7 @@ model HabitLog {
   habit Habit? @relation(fields: [habit_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   date DateTime
   is_completed Boolean @default(false)
+  is_target_completed Boolean @default(false)
   points Int? @default(0)
   notes String?
   @@map("habit_log")
