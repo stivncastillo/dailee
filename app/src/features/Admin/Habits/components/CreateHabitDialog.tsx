@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import useCreateHabit from "@/hooks-api/useCreateHabit";
+import { DIFFICULTIES } from "@/lib/config";
 
 type FormValues = {
   name: string;
@@ -68,7 +69,9 @@ const CreateHabitDialog = () => {
         ...data,
         target_frequency: Number(data.target_frequency),
         current_frequency: Number(data.current_frequency),
-        points: Number(data?.points) ?? 0,
+        points: data?.points
+          ? Number(data?.points)
+          : DIFFICULTIES[data.difficulty].points,
       });
       reset();
       setOpen(false);

@@ -1,4 +1,4 @@
-import { isSameDay, isBefore, startOfDay } from 'date-fns';
+import { isSameDay, isBefore, startOfDay, differenceInDays } from 'date-fns';
 
 /**
  * Compares two dates without considering the time
@@ -17,4 +17,14 @@ export function compareDates(date1: Date, date2: Date): number {
   } else {
     return 1;
   }
+}
+
+/**
+ * Calculates the number of days remaining until a certain date
+ * @param {Date} date - The date to calculate the remaining days until
+ * @returns {number} The number of days remaining
+ */
+export function getDaysRemaining(date: Date): number {
+  const today = new Date();
+  return differenceInDays(date, today);
 }

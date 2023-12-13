@@ -5,13 +5,13 @@ import { ApolloError } from "@apollo/client";
 import useGetHabits from "@/hooks-api/useGetHabits";
 import { Habit } from "@/lib/graphql/codegen/graphql";
 
-export type HabitsContextType = {
+export interface HabitsContextType {
   items: Habit[];
   loading: boolean;
   error?: ApolloError;
   habitToEdit: Habit | null;
   setHabitToEdit: (habit: Habit | null) => void;
-};
+}
 
 const DEFAULT_VALUES = {
   items: [],

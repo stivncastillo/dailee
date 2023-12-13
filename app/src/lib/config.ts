@@ -21,25 +21,30 @@ export const MAIN_NAVIGATION: Array<MainNavigationItem> = [
 export type Difficulty = {
   name: string;
   color: "slate" | "blue" | "amber" | "rose";
+  points?: number;
 
 }
 
 export const DIFFICULTIES: { [key: string]: Difficulty } = {
   very_easy: {
     name: 'Very Easy',
-    color: 'slate'
+    color: 'slate',
+    points: 1,
   },
   easy: {
     name: 'Easy',
-    color: 'blue'
-  },
+    color: 'blue',
+    points: 2
+   },
   medium: {
     name: 'Medium',
-    color: 'amber'
+    color: 'amber',
+    points: 3
   },
   hard: {
     name: 'Hard',
-    color: 'rose'
+    color: 'rose',
+    points: 5
   },
 };
 

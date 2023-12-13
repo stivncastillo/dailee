@@ -33,6 +33,9 @@ const config = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
         },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+        },
       },
       keyframes: {
         'accordion-down': {

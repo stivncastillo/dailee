@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import DashboardPage from "@/features/Admin/Dashboard/page";
 import HabitsPage from "@/features/Admin/Habits/page";
-import DashboardPage from "@/pages/DashboardPage";
 import ErrorPage from "@/pages/ErrorPage";
 import LoginPage from "@/pages/LoginPage";
 import ProtectedRoute from "@/pages/ProtectedRoute";
