@@ -45,6 +45,19 @@ export class HabitLogRepository {
     return this.prisma.habitLog.delete({ where });
   }
 
+  async deleteLastByHabitId(habit_id: string): Promise<HabitLog> {
+    const lastRecord = await this.prisma.habitLog.findFirst({
+      where: { habit_id },
+      orderBy: { date: "desc" },
+    });
+
+    if (!lastRecord) {
+      throw new Error("No record found for the given habit_id");
+    }
+
+    return this.prisma.habitLog.delete({ where: { id: lastRecord.id } });
+  }
+
   async deleteMany(params: {
     where: Prisma.HabitLogWhereInput;
   }): Promise<Prisma.BatchPayload> {

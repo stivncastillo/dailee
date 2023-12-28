@@ -39,4 +39,7 @@ export class Habit {
 
   @Field(() => User)
   user_id: HabitDB["user_id"];
+
+  @Field(() => Int, { nullable: true })
+  completions?: number;
 }

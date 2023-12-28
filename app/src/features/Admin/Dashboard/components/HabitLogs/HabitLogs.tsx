@@ -10,13 +10,8 @@ import {
 } from "@/components/ui/card";
 
 const HabitLogs = () => {
-  const { habits, loadingHabits, onCreateHabitLog } = useHabitLogsContext();
-  const handlePlusClick = async (habitId: string) => {
-    await onCreateHabitLog(habitId);
-  };
-  const handleMinusClick = (habitId: string) => {
-    console.log("minus", habitId);
-  };
+  const { habits, loadingHabits } = useHabitLogsContext();
+
   return (
     <Card className="col-span-3">
       <CardHeader>
@@ -31,12 +26,7 @@ const HabitLogs = () => {
         )}
         <div className="flex flex-col gap-4">
           {habits.map((habit) => (
-            <HabitCard
-              key={habit.id}
-              habit={habit}
-              onPlusClick={handlePlusClick}
-              onMinusClick={handleMinusClick}
-            />
+            <HabitCard key={habit.id} habit={habit} />
           ))}
         </div>
       </CardContent>

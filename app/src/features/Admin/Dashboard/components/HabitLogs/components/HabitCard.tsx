@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useHabitLogsContext } from "../HabitLogsContext";
 import Tooltip from "@/components/feedback/Tooltip";
 import { Icon } from "@/components/icon";
 import { Badge } from "@/components/ui/badge";
@@ -11,8 +12,6 @@ import { Habit } from "@/lib/graphql/codegen/graphql";
 
 interface HabitCardProps {
   habit: Habit;
-  onPlusClick?: (habitId: string) => void;
-  onMinusClick?: (habitId: string) => void;
 }
 
 const HabitCard: React.FC<HabitCardProps> = ({
@@ -26,10 +25,10 @@ const HabitCard: React.FC<HabitCardProps> = ({
     is_paused,
     due_date,
   },
-  onPlusClick,
-  onMinusClick,
 }) => {
   const daysRemaining = getDaysRemaining(new Date(due_date));
+  const { onAction } = useHabitLogsContext();
+
   return (
     <div className="relative flex flex-col gap-4 border">
       <div className="flex flex-row justify-between">
@@ -68,14 +67,14 @@ const HabitCard: React.FC<HabitCardProps> = ({
           <Button
             size="icon"
             className="grow aspect-square rounded-none"
-            onClick={() => onMinusClick?.(id)}
+            onClick={() => onAction?.(id, "delete")}
           >
             <Icon name="minus" />
           </Button>
           <Button
             size="icon"
             className="grow aspect-square rounded-none"
-            onClick={() => onPlusClick?.(id)}
+            onClick={() => onAction?.(id, "create")}
           >
             <Icon name="plus" />
           </Button>

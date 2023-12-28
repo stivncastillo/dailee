@@ -4,6 +4,7 @@ import { ApolloError } from "@apollo/client";
 
 import { useToast } from "@/components/ui/use-toast";
 import useCreateHabitLog from "@/hooks-api/useCreateHabitLog";
+import useDeleteHabitLog from "@/hooks-api/useDeleteHabitLog";
 import useGetHabits from "@/hooks-api/useGetHabits";
 import { Habit } from "@/lib/graphql/codegen/graphql";
 
@@ -11,14 +12,16 @@ export interface HabitLogsContextType {
   habits: Habit[];
   loadingHabits?: boolean;
   errorHabits?: ApolloError;
-  onCreateHabitLog: (habitId: string) => void;
+  onAction: (habitId: string, action: "create" | "delete") => void;
   createHabitLogLoading?: boolean;
   createHabitLogError?: ApolloError;
+  deleteHabitLogLoading?: boolean;
+  deleteHabitLogError?: ApolloError;
 }
 
 const DEFAULT_VALUES = {
   habits: [],
-  onCreateHabitLog: () => {},
+  onAction: () => {},
 };
 
 const HabitLogsContext = createContext<HabitLogsContextType>(DEFAULT_VALUES);
@@ -39,10 +42,20 @@ const HabitLogsProvider: React.FC<{ children: React.ReactNode }> = ({
     error: createHabitLogError,
   } = useCreateHabitLog();
 
-  const handlePlusClick = useCallback(
-    async (habitId: string) => {
+  const {
+    deleteHabitLog,
+    loading: deleteHabitLogLoading,
+    error: deleteHabitLogError,
+  } = useDeleteHabitLog();
+
+  const handleAction = useCallback(
+    async (habitId: string, action: "create" | "delete") => {
       try {
-        await createHabitLog(habitId);
+        if (action === "create") {
+          await createHabitLog(habitId);
+        } else {
+          await deleteHabitLog({ habit_id: habitId });
+        }
       } catch (error) {
         if (error instanceof ApolloError) {
           toast({
@@ -53,7 +66,7 @@ const HabitLogsProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [createHabitLog],
+    [createHabitLog, deleteHabitLog],
   );
 
   return (
@@ -62,9 +75,11 @@ const HabitLogsProvider: React.FC<{ children: React.ReactNode }> = ({
         habits: dataHabits?.habits ?? [],
         loadingHabits,
         errorHabits,
-        onCreateHabitLog: handlePlusClick,
+        onAction: handleAction,
         createHabitLogLoading,
         createHabitLogError,
+        deleteHabitLogLoading,
+        deleteHabitLogError,
       }}
     >
       {children}

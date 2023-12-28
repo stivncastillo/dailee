@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import { GetHabitLogArgs } from "./dto/args/get-habit-log.args";
 import { GetHabitLogsArgs } from "./dto/args/get-habits-logs";
 import { CreateHabitLogInput } from "./dto/input/create-habit-log.input";
+import { DeleteHabitLogInput } from "./dto/input/delete-habit-log.input";
 import { DeleteManyInput } from "./dto/input/delete-many.input";
-import { DeleteInput } from "./dto/input/delete.input";
 import { UpdateHabitLogInput } from "./dto/input/update-habit-log.input";
 import { HabitsService } from "./habits.service";
 import { HabitLogRepository } from "./repositories/habit-logs.repository";
@@ -68,10 +68,10 @@ export class HabitLogsService {
     });
   }
 
-  public async delete(deleteHabitData: DeleteInput): Promise<HabitLog> {
-    return await this.habitLogRepository.delete({
-      where: { id: deleteHabitData.id },
-    });
+  public async delete(deleteHabitData: DeleteHabitLogInput): Promise<HabitLog> {
+    return await this.habitLogRepository.deleteLastByHabitId(
+      deleteHabitData.habit_id,
+    );
   }
 
   public async deleteMany(deleteHabitData: DeleteManyInput): Promise<number> {

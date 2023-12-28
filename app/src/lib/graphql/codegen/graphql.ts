@@ -69,7 +69,12 @@ export type DateTimeFilter = {
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
+export type DeleteHabitLogInput = {
+  habit_id: Scalars['String']['input'];
+};
+
 export type DeleteInput = {
+  habit_id: Scalars['String']['input'];
   id: Scalars['String']['input'];
 };
 
@@ -79,6 +84,7 @@ export type DeleteManyInput = {
 
 export type Habit = {
   __typename?: 'Habit';
+  completions?: Maybe<Scalars['Int']['output']>;
   created_at: Scalars['DateTime']['output'];
   current_frequency?: Maybe<Scalars['Int']['output']>;
   difficulty: Scalars['String']['output'];
@@ -164,6 +170,7 @@ export type Mutation = {
   createUser: User;
   deleteHabit: Habit;
   deleteHabitLog: HabitLog;
+  deleteHabitLogs: Scalars['Float']['output'];
   deleteHabits: Scalars['Float']['output'];
   deleteTask: Task;
   logout: LogoutResponse;
@@ -202,7 +209,12 @@ export type MutationDeleteHabitArgs = {
 
 
 export type MutationDeleteHabitLogArgs = {
-  deleteHabitLogInput: DeleteInput;
+  deleteHabitLogInput: DeleteHabitLogInput;
+};
+
+
+export type MutationDeleteHabitLogsArgs = {
+  deleteHabitLogsInput: DeleteManyInput;
 };
 
 
@@ -495,6 +507,13 @@ export type CreateHabitLogMutationVariables = Exact<{
 
 export type CreateHabitLogMutation = { __typename?: 'Mutation', createHabitLog: { __typename?: 'HabitLog', id: string, is_completed: boolean, is_target_completed: boolean, points?: number | null, date: any, habit_id: { __typename?: 'User', id: string } } };
 
+export type DeleteHabitLogMutationVariables = Exact<{
+  deleteHabitLogInput: DeleteHabitLogInput;
+}>;
+
+
+export type DeleteHabitLogMutation = { __typename?: 'Mutation', deleteHabitLog: { __typename?: 'HabitLog', id: string } };
+
 export type UserFieldsFragment = { __typename?: 'User', id: string, name: string, email: string };
 
 export type HabitFieldsFragment = { __typename?: 'Habit', id: string, name: string, difficulty: string, start_date?: any | null, due_date?: any | null, target_frequency?: number | null, current_frequency?: number | null, is_paused: boolean, points?: number | null, created_at: any, updated_at: any, user_id: { __typename?: 'User', id: string, name: string, email: string } };
@@ -529,5 +548,6 @@ export const CreateHabitDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const DeleteHabitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteHabits"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"deleteHabitsInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteManyInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteHabits"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"deleteHabitsInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"deleteHabitsInput"}}}]}]}}]} as unknown as DocumentNode<DeleteHabitsMutation, DeleteHabitsMutationVariables>;
 export const UpdateHabitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateHabit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updateHabitInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateHabitInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateHabit"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"updateHabitInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updateHabitInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"HabitFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"HabitFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Habit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"start_date"}},{"kind":"Field","name":{"kind":"Name","value":"due_date"}},{"kind":"Field","name":{"kind":"Name","value":"target_frequency"}},{"kind":"Field","name":{"kind":"Name","value":"current_frequency"}},{"kind":"Field","name":{"kind":"Name","value":"is_paused"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"user_id"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}}]} as unknown as DocumentNode<UpdateHabitMutation, UpdateHabitMutationVariables>;
 export const CreateHabitLogDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateHabitLog"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createHabitLogInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateHabitLogInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createHabitLog"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createHabitLogInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createHabitLogInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"HabitLogFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"HabitLogFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"HabitLog"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"habit_id"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"is_completed"}},{"kind":"Field","name":{"kind":"Name","value":"is_target_completed"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<CreateHabitLogMutation, CreateHabitLogMutationVariables>;
+export const DeleteHabitLogDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteHabitLog"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"deleteHabitLogInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteHabitLogInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteHabitLog"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"deleteHabitLogInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"deleteHabitLogInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteHabitLogMutation, DeleteHabitLogMutationVariables>;
 export const GetHabitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getHabits"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"HabitWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HabitOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"habits"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"HabitFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"HabitFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Habit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"start_date"}},{"kind":"Field","name":{"kind":"Name","value":"due_date"}},{"kind":"Field","name":{"kind":"Name","value":"target_frequency"}},{"kind":"Field","name":{"kind":"Name","value":"current_frequency"}},{"kind":"Field","name":{"kind":"Name","value":"is_paused"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"user_id"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserFields"}}]}}]}}]} as unknown as DocumentNode<GetHabitsQuery, GetHabitsQueryVariables>;
 export const GetTasksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getTasks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TaskOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TaskFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TaskFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Task"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"completed_date"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}}]}}]} as unknown as DocumentNode<GetTasksQuery, GetTasksQueryVariables>;

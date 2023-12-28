@@ -1,10 +1,7 @@
 import { Field, InputType } from "@nestjs/graphql";
 
 @InputType()
-export class DeleteInput {
+export class DeleteHabitLogInput {
   @Field()
-  id?: string;
-
-  @Field()
-  habit_id?: string;
+  habit_id: string;
 }

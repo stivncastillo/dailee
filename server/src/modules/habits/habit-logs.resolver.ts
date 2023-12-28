@@ -11,8 +11,8 @@ import {
 import { GetHabitLogArgs } from "./dto/args/get-habit-log.args";
 import { GetHabitLogsArgs } from "./dto/args/get-habits-logs";
 import { CreateHabitLogInput } from "./dto/input/create-habit-log.input";
+import { DeleteHabitLogInput } from "./dto/input/delete-habit-log.input";
 import { DeleteManyInput } from "./dto/input/delete-many.input";
-import { DeleteInput } from "./dto/input/delete.input";
 import { UpdateHabitLogInput } from "./dto/input/update-habit-log.input";
 import { HabitLog } from "./entities/habit-log.entity";
 import { HabitLogsService } from "./habit-logs.service";
@@ -59,14 +59,14 @@ export class HabitLogsResolver {
 
   @Mutation(() => HabitLog)
   async deleteHabitLog(
-    @Args("deleteHabitLogInput") deleteHabitLogInput: DeleteInput,
+    @Args("deleteHabitLogInput") deleteHabitLogInput: DeleteHabitLogInput,
   ): Promise<HabitLog> {
     return this.habitLogsService.delete(deleteHabitLogInput);
   }
 
   @Mutation(() => Number)
-  async deleteHabits(
-    @Args("deleteHabitsInput") deleteHabitLogsInput: DeleteManyInput,
+  async deleteHabitLogs(
+    @Args("deleteHabitLogsInput") deleteHabitLogsInput: DeleteManyInput,
   ): Promise<number> {
     return await this.habitLogsService.deleteMany(deleteHabitLogsInput);
   }

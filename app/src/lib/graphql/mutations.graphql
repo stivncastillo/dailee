@@ -39,3 +39,9 @@ mutation CreateHabitLog($createHabitLogInput: CreateHabitLogInput!) {
     ...HabitLogFields
   }
 }
+
+mutation DeleteHabitLog($deleteHabitLogInput: DeleteHabitLogInput!) {
+  deleteHabitLog(deleteHabitLogInput: $deleteHabitLogInput){
+    id
+  }
+}

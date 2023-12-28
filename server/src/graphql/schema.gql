@@ -57,6 +57,7 @@ type Habit {
   created_at: DateTime!
   updated_at: DateTime!
   user_id: User!
+  completions: Int
 }
 
 type Task {
@@ -212,7 +213,8 @@ type Mutation {
   deleteHabits(deleteHabitsInput: DeleteManyInput!): Float!
   createHabitLog(createHabitLogInput: CreateHabitLogInput!): HabitLog!
   updateHabitLog(updateHabitLogInput: UpdateHabitLogInput!): HabitLog!
-  deleteHabitLog(deleteHabitLogInput: DeleteInput!): HabitLog!
+  deleteHabitLog(deleteHabitLogInput: DeleteHabitLogInput!): HabitLog!
+  deleteHabitLogs(deleteHabitLogsInput: DeleteManyInput!): Float!
   createUser(createUserInput: CreateUserInput!): User!
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
@@ -252,6 +254,7 @@ input UpdateHabitInput {
 
 input DeleteInput {
   id: String!
+  habit_id: String!
 }
 
 input DeleteManyInput {
@@ -275,6 +278,10 @@ input UpdateHabitLogInput {
   is_target_completed: Boolean = false
   notes: String
   id: String!
+}
+
+input DeleteHabitLogInput {
+  habit_id: String!
 }
 
 input CreateUserInput {

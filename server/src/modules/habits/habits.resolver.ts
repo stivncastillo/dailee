@@ -38,8 +38,10 @@ export class HabitsResolver {
   }
 
   @Query(() => Habit, { name: "habit", nullable: false })
-  getHabit(@Args() getHabitArgs: GetHabitArgs): Promise<Habit> {
-    return this.habitsService.getOne(getHabitArgs);
+  async getHabit(@Args() getHabitArgs: GetHabitArgs): Promise<Habit> {
+    const habit = await this.habitsService.getOne(getHabitArgs);
+
+    return { ...habit, completions: 4 };
   }
 
   // Mutations
