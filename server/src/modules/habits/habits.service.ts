@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { Habit } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
 import { GetHabitArgs } from "./dto/args/get-habit.args";
@@ -8,14 +7,60 @@ import { CreateHabitInput } from "./dto/input/create-habit.input";
 import { DeleteManyInput } from "./dto/input/delete-many.input";
 import { DeleteInput } from "./dto/input/delete.input";
 import { UpdateHabitInput } from "./dto/input/update-habit.input";
+import { Habit } from "./entities/habit.entity";
+import { HabitLogRepository } from "./repositories/habit-logs.repository";
 import { HabitRepository } from "./repositories/habits.repository";
 
 @Injectable()
 export class HabitsService {
-  constructor(private habitRepository: HabitRepository) {}
+  constructor(
+    private habitRepository: HabitRepository,
+    private habitLogRepository: HabitLogRepository,
+  ) {}
 
-  public async getMany(getHabitsArgs: GetHabitsArgs): Promise<Habit[]> {
-    return await this.habitRepository.getMany(getHabitsArgs);
+  public async getMany(getHabitsArgs: GetHabitsArgs): Promise<any> {
+    const habits = await this.habitRepository.getMany(getHabitsArgs);
+
+    const newHabits = habits.map(async (habit) => {
+      const { completions, is_completed, is_target_completed, points_scored } =
+        await this.getCompletions(habit.id);
+
+      return {
+        ...habit,
+        completions,
+        is_completed,
+        is_target_completed,
+        points_scored,
+      };
+    });
+
+    return newHabits;
+  }
+
+  public async getCompletions(habitId: string) {
+    const completions = await this.habitLogRepository.getMany({
+      where: {
+        habit_id: habitId,
+      },
+    });
+
+    const isCompleted = completions.find(
+      (completion) => completion.is_completed,
+    );
+    const isTargetCompleted = completions.find(
+      (completion) => completion.is_target_completed,
+    );
+
+    const pointsScored = completions.reduce((acc, completion) => {
+      return acc + completion.points;
+    }, 0);
+
+    return {
+      completions: completions.length,
+      is_completed: !!isCompleted,
+      is_target_completed: !!isTargetCompleted,
+      points_scored: pointsScored,
+    };
   }
 
   public async getOne(getHabitArgs: GetHabitArgs) {

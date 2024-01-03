@@ -40,6 +40,17 @@ export class Habit {
   @Field(() => User)
   user_id: HabitDB["user_id"];
 
-  @Field(() => Int, { nullable: true })
+  // Fields from habit logs
+
+  @Field(() => Int, { defaultValue: 0 })
   completions?: number;
+
+  @Field(() => Boolean, { defaultValue: false })
+  is_completed?: boolean;
+
+  @Field(() => Boolean, { defaultValue: false })
+  is_target_completed?: boolean;
+
+  @Field(() => Int, { defaultValue: 0 })
+  points_scored?: number;
 }

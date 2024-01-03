@@ -19,6 +19,10 @@ fragment HabitFields on Habit {
   user_id {
     ...UserFields
   }
+  completions
+  is_completed
+  is_target_completed
+  points_scored
 }
 
 fragment HabitLogFields on HabitLog {

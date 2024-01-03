@@ -14,7 +14,10 @@ const UserMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="relative h-8 w-8 rounded-full">
+        <Button
+          variant="outline"
+          className="relative h-8 w-8 rounded-full bg-primary hover:shadow-solid-sm transition-shadow ease-in-out duration-150"
+        >
           <Avatar className="h-8 w-8">
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>

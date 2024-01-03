@@ -5,7 +5,7 @@ export type MainNavigationItem = {
 
 export const MAIN_NAVIGATION: Array<MainNavigationItem> = [
   {
-    name: 'Home',
+    name: 'Dashboard',
     path: '/',
   },
   {
@@ -14,7 +14,7 @@ export const MAIN_NAVIGATION: Array<MainNavigationItem> = [
   },
   {
     name: 'Tasks',
-    path: '/admin/habits',
+    path: '/admin/tasks',
   },
 ];
 

@@ -5,6 +5,7 @@ import {
   CreateHabitLogInput,
   CreateHabitLogMutation,
   CreateHabitLogMutationVariables,
+  GetHabitsDocument,
 } from "@/lib/graphql/codegen/graphql";
 
 const useCreateHabitLog = () => {
@@ -12,7 +13,7 @@ const useCreateHabitLog = () => {
     CreateHabitLogMutation,
     CreateHabitLogMutationVariables
   >(CreateHabitLogDocument, {
-    // refetchQueries: [GetHabitLogsDocument],
+    refetchQueries: [GetHabitsDocument],
   });
 
   const createHabitLog = async (habitId: CreateHabitLogInput["habit_id"]): Promise<void> => {

@@ -3,6 +3,8 @@ import React from "react";
 import MessageCard from "./components/Cards/MessageCard";
 import OverviewCard from "./components/Cards/OverviewCard";
 import HabitLogContainer from "./components/HabitLogs";
+import WeeklyBarChart from "@/components/data-display/WeeklyBarChart";
+import { Icon } from "@/components/icon";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import {
   Card,
@@ -11,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 const DashboardPage: React.FC = () => {
   return (
@@ -21,10 +24,36 @@ const DashboardPage: React.FC = () => {
           <span>Fri 8th Dec 2023</span>
         </div>
       </div>
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
-        <OverviewCard value={40} title="This Week" caption="3 Average points" />
-        <OverviewCard value={12} title="Today" caption="2 Average points" />
+        <OverviewCard
+          className="col-span-2"
+          value={40}
+          title="This Week"
+          caption="3 Average points"
+          rightContent={() => (
+            <WeeklyBarChart
+              data={[
+                { value: 10, tooltip: "Mon [10%]" },
+                { value: 60, tooltip: "Tue [60%]" },
+                { value: 40, tooltip: "Wed [40%]" },
+                { value: 80, tooltip: "Thu [40%]" },
+                { value: 0, tooltip: "Fri [40%]" },
+              ]}
+            />
+          )}
+        />
+        <OverviewCard
+          className="col-span-2"
+          value={12}
+          title="Today"
+          footerContent={() => (
+            <Progress size="sm" className="w-full" value={90} max={100} />
+          )}
+          rightContent={() => <Icon name="alert-triangle" />}
+        />
         <MessageCard
+          className="col-span-2 col-start-7"
           title="Steady Progress"
           message="Every little progress counts. Keep pushing!"
         />

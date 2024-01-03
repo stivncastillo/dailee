@@ -17,7 +17,6 @@ import { UpdateHabitLogInput } from "./dto/input/update-habit-log.input";
 import { HabitLog } from "./entities/habit-log.entity";
 import { HabitLogsService } from "./habit-logs.service";
 import { HabitsService } from "./habits.service";
-import { CurrentUserId } from "../auth/decorators/currentUserId.decorator";
 
 @Resolver(() => HabitLog)
 export class HabitLogsResolver {
@@ -29,12 +28,9 @@ export class HabitLogsResolver {
   // Queries
   @Query(() => [HabitLog], { name: "habitLogs", nullable: false })
   getHabitLogs(
-    @CurrentUserId() userId: string,
     @Args() getHabitLogsArgs: GetHabitLogsArgs,
   ): Promise<HabitLog[]> {
-    const { where, ...rest } = getHabitLogsArgs;
-    const whereUser = { ...where, user_id: { equals: userId } };
-    return this.habitLogsService.getMany({ where: whereUser, ...rest });
+    return this.habitLogsService.getMany({ ...getHabitLogsArgs });
   }
 
   @Query(() => HabitLog, { name: "habitLog", nullable: false })

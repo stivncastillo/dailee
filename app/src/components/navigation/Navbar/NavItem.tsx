@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { MainNavigationItem } from "@/lib/config";
 
@@ -10,13 +10,17 @@ type Props = {
 
 const NavItem: React.FC<Props> = ({ item }) => {
   return (
-    <Link
-      className="text-sm font-medium transition-colors hover:text-primary"
+    <NavLink
+      className={({ isActive }) =>
+        `text-sm font-medium transition-colors hover:underline ${
+          isActive && "underline"
+        }`
+      }
       key={item.name}
       to={item.path}
     >
       {item.name}
-    </Link>
+    </NavLink>
   );
 };
 

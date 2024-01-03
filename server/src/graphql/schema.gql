@@ -57,7 +57,10 @@ type Habit {
   created_at: DateTime!
   updated_at: DateTime!
   user_id: User!
-  completions: Int
+  completions: Int!
+  is_completed: Boolean!
+  is_target_completed: Boolean!
+  points_scored: Int!
 }
 
 type Task {
@@ -76,7 +79,7 @@ type Task {
 type Query {
   habits(where: HabitWhereInput, orderBy: [HabitOrderByWithRelationInput!], cursor: HabitWhereUniqueInput, take: Float, skip: Float): [Habit!]!
   habit(where: HabitWhereUniqueInput): Habit!
-  habitLogs(where: HabitWhereInput, orderBy: [HabitOrderByWithRelationInput!], cursor: HabitWhereUniqueInput, take: Float, skip: Float): [HabitLog!]!
+  habitLogs(where: HabitLogWhereInput, orderBy: [HabitLogOrderByWithRelationInput!], cursor: HabitLogWhereUniqueInput, take: Float, skip: Float): [HabitLog!]!
   habitLog(where: HabitLogWhereUniqueInput): HabitLog!
   user(where: UserWhereUniqueInput): User!
   tasks(where: TaskWhereInput, orderBy: [TaskOrderByWithRelationInput!], cursor: TaskWhereUniqueInput, take: Float, skip: Float): [Task!]!
@@ -165,6 +168,26 @@ enum SortOrder {
 
 input HabitWhereUniqueInput {
   id: String
+}
+
+input HabitLogWhereInput {
+  id: StringFilter
+  date: DateTimeFilter
+  points: IntFilter
+  is_completed: BoolFilter
+  notes: StringFilter
+  habit_id: StringFilter
+  AND: [HabitLogWhereInput!]
+  OR: [HabitLogWhereInput!]
+  NOT: [HabitLogWhereInput!]
+}
+
+input HabitLogOrderByWithRelationInput {
+  id: SortOrder
+  date: SortOrder
+  points: SortOrder
+  is_completed: SortOrder
+  is_target_completed: SortOrder
 }
 
 input HabitLogWhereUniqueInput {

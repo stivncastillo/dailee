@@ -13,7 +13,7 @@ const HabitLogs = () => {
   const { habits, loadingHabits } = useHabitLogsContext();
 
   return (
-    <Card className="col-span-3">
+    <Card className="col-span-4">
       <CardHeader>
         <CardTitle>Habits</CardTitle>
         <CardDescription>You have 5 habits uncompleted today.</CardDescription>

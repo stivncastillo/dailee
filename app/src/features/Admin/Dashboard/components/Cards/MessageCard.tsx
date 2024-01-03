@@ -16,10 +16,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 }) => {
   return (
     <Card
-      className={cn(
-        "col-span-2 flex flex-col justify-center items-center p-0",
-        className,
-      )}
+      className={cn("flex flex-col justify-center items-center p-0", className)}
     >
       <CardContent className="py-0 text-center flex flex-col gap-2">
         <h3 className="text-md font-medium">{title}</h3>

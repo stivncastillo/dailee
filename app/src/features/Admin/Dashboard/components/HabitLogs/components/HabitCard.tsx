@@ -24,6 +24,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
     target_frequency,
     is_paused,
     due_date,
+    completions,
   },
 }) => {
   const daysRemaining = getDaysRemaining(new Date(due_date));
@@ -51,7 +52,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
           </div>
           <div className="flex flex-row justify-between">
             <div className="flex flex-row h-5 gap-2 text-gray-500">
-              <span className="text-sm">3 this week</span>
+              <span className="text-sm">{completions} this week</span>
               <Separator orientation="vertical" />
               <span className="text-sm">current: {current_frequency}</span>
               <Separator orientation="vertical" />
@@ -63,10 +64,11 @@ const HabitCard: React.FC<HabitCardProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col bg-red-300 shrink-0">
+        <div className="flex flex-col shrink-0">
           <Button
             size="icon"
             className="grow aspect-square rounded-none"
+            disabled={completions === 0}
             onClick={() => onAction?.(id, "delete")}
           >
             <Icon name="minus" />
@@ -76,7 +78,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
             className="grow aspect-square rounded-none"
             onClick={() => onAction?.(id, "create")}
           >
-            <Icon name="plus" />
+            {completions > 0 ? <Icon name="plus" /> : <Icon name="check" />}
           </Button>
         </div>
       </div>

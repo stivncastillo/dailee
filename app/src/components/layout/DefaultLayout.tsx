@@ -10,7 +10,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   return (
     <div className="hidden flex-col md:flex">
       <Navbar items={MAIN_NAVIGATION} />
-      <main className="flex-1 space-y-4 p-8 pt-6">{children}</main>
+      <main className="flex-1 space-y-4 p-8">{children}</main>
     </div>
   );
 };
